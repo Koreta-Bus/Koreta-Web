@@ -17,11 +17,12 @@ textarea,
 button,
 select,
 a,
-span, 
+span,
 svg,
 div,
 li,
-ul {
+ul,
+ol {
   -webkit-tap-highlight-color: transparent;
 }
 
