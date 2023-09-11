@@ -5,7 +5,6 @@ import { FlexAllCenter } from "./styled.global";
 import { WebsiteColors } from "theme/colors";
 
 import styled from "styled-components";
-import { WebsitePageLayouts } from "layouts/website";
 
 export const SocialMedia = [
   {
@@ -174,6 +173,7 @@ const MenuItemHeader = styled.div`
   width: 100%;
   justify-content: space-between;
 `;
+
 
 const HeaderOptionsContainer = styled.div`
   @media (max-width: 768px) {

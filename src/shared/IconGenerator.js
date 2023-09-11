@@ -17,14 +17,20 @@ import {
   LocationIcon,
   OperatorIcon,
   MiddleDotIcon,
+  InstagramBoldIcon,
+  FacebookBoldIcon,
+  TelegramBoldIcon,
 } from "theme/icons";
 
 export const Icon = ({ name, ...rest }) => {
   const icons = {
-    instagram: InstaIcon,
     phone: PhoneIcon,
+    instagram: InstaIcon,
     facebook: FbIcon,
     telegram: TgIcon,
+    instagram_bold: InstagramBoldIcon,
+    telegram_bold: TelegramBoldIcon,
+    facebook_bold: FacebookBoldIcon,
     hamburger: HamburgerIcon,
     exchange: ExchangeIcon,
     calendar: CalendarIcon,

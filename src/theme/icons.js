@@ -423,3 +423,74 @@ export const MiddleDotIcon = () => (
     <circle cx="3" cy="3" r="3" fill="#203063" />
   </svg>
 );
+
+export const InstagramBoldIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_527_5410)">
+      <path
+        d="M3.33398 6.66658C3.33398 5.78253 3.68517 4.93468 4.31029 4.30956C4.93542 3.68444 5.78326 3.33325 6.66732 3.33325H13.334C14.218 3.33325 15.0659 3.68444 15.691 4.30956C16.3161 4.93468 16.6673 5.78253 16.6673 6.66658V13.3333C16.6673 14.2173 16.3161 15.0652 15.691 15.6903C15.0659 16.3154 14.218 16.6666 13.334 16.6666H6.66732C5.78326 16.6666 4.93542 16.3154 4.31029 15.6903C3.68517 15.0652 3.33398 14.2173 3.33398 13.3333V6.66658Z"
+        stroke="#1C1C1C"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.5 10C7.5 10.663 7.76339 11.2989 8.23223 11.7678C8.70107 12.2366 9.33696 12.5 10 12.5C10.663 12.5 11.2989 12.2366 11.7678 11.7678C12.2366 11.2989 12.5 10.663 12.5 10C12.5 9.33696 12.2366 8.70107 11.7678 8.23223C11.2989 7.76339 10.663 7.5 10 7.5C9.33696 7.5 8.70107 7.76339 8.23223 8.23223C7.76339 8.70107 7.5 9.33696 7.5 10Z"
+        stroke="#1C1C1C"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.75 6.25V6.26"
+        stroke="#1C1C1C"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_527_5410">
+        <rect width="20" height="20" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+export const FacebookBoldIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_527_5407)">
+      <path
+        d="M5.83398 8.33333V11.6667H8.33399V17.5H11.6673V11.6667H14.1673L15.0007 8.33333H11.6673V6.66667C11.6673 6.44565 11.7551 6.23369 11.9114 6.07741C12.0677 5.92113 12.2796 5.83333 12.5007 5.83333H15.0007V2.5H12.5007C11.3956 2.5 10.3358 2.93899 9.55437 3.72039C8.77297 4.50179 8.33399 5.5616 8.33399 6.66667V8.33333H5.83398Z"
+        stroke="#1C1C1C"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_527_5407">
+        <rect width="20" height="20" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+export const TelegramBoldIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_527_5404)">
+      <path
+        d="M12.5 8.33325L9.16667 11.6666L14.1667 16.6666L17.5 3.33325L2.5 9.16658L5.83333 10.8333L7.5 15.8333L10 12.4999"
+        stroke="#1C1C1C"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_527_5404">
+        <rect width="20" height="20" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);

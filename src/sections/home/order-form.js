@@ -4,7 +4,7 @@ import { InputField } from "components/input-field";
 import { Button } from "components/button";
 import { TextField } from "@mui/material";
 import { WebsiteColors } from "theme/colors";
-import { Header, SocialMedia } from "components/header";
+import { Header } from "components/header";
 import { DesktopDatePicker, MobileDatePicker } from "@mui/x-date-pickers";
 import { Icon } from "shared/IconGenerator";
 import { useRouter } from "next/router";
@@ -44,6 +44,24 @@ const inputFields = [
     icon: "person",
     className: "person",
     containerClass: "personContainer",
+  },
+];
+
+export const SocialMedia = [
+  {
+    key: "Instagram",
+    title: "Instagram",
+    icon: "instagram_bold",
+  },
+  {
+    key: "Facebook",
+    title: "Facebook",
+    icon: "facebook_bold",
+  },
+  {
+    key: "Telegram",
+    title: "Telegram",
+    icon: "telegram_bold",
   },
 ];
 
