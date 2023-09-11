@@ -174,6 +174,7 @@ const MenuItemHeader = styled.div`
   justify-content: space-between;
 `;
 
+
 const HeaderOptionsContainer = styled.div`
   @media (max-width: 768px) {
     padding: 24px 16px;
