@@ -1,0 +1,87 @@
+:root {
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+*:focus {
+  outline: none;
+}
+
+input,
+textarea,
+button,
+select,
+a,
+span,
+svg,
+div,
+li,
+ul {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.htmlOverflowHidden {
+  overflow-y: hidden;
+}
+
+.htmlOverFlowScroll {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  html,
+  body {
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  ::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+}
+
+.MuiPickersDay-root:hover {
+  background-color: #d2d6e0 !important;
+}
+
+.MuiButtonBase-root.MuiPickersDay-root.Mui-selected {
+  background-color: #203063 !important;
+}
+
+.MuiFormControl-root.MuiTextField-root {
+  max-height: 64.4px;
+  position: relative;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .MuiFormControl-root.MuiTextField-root {
+    border-radius: 0px;
+    border-bottom-left-radius: 8px;
+    max-height: 64px;
+  }
+}
+
+.MuiInputBase-root.MuiFilledInput-root.MuiFilledInput-underline.MuiInputBase-colorPrimary.Mui-error {
+  box-shadow: white 0 0 0 0 !important;
+  border-color: white !important;
+}
+
+.PrivatePickersYear-yearButton.Mui-selected {
+  background-color: #203063 !important;
+}
+
+.MuiPickersPopper-root {
+  margin-top: 0.5rem !important;
+  margin-left: 5.4rem !important;
+}
