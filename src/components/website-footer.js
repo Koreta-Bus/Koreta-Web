@@ -255,6 +255,6 @@ const CopyRightContainer = styled.div`
 
 const Footer = styled.footer`
   width: 100%;
-  border-top: 1px solid ${WebsiteColors.PRIMARY};
+  border-top: 2px solid ${WebsiteColors.PRIMARY};
   font-family: Sora, sans-serif;
 `;

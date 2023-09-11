@@ -119,7 +119,7 @@ export const OrderForm = () => {
                         isMobile={true}
                         fontSize={formik.values["date"] === "Дата"}
                         placeholder={"Date"}
-                        inputFormat="DD-MM-YYYY"
+                        inputFormat="DD.MM.YYYY"
                         value={formik.values["date"]}
                         onChange={(newValue) => formik.setFieldValue("date", newValue)}
                         renderInput={(params) => (
@@ -142,7 +142,7 @@ export const OrderForm = () => {
                       <CustomDatePicker
                         fontSize={formik.values["date"] === "Дата"}
                         value={formik.values["date"]}
-                        inputFormat="DD-MM-YYYY"
+                        inputFormat="DD.MM.YYYY"
                         onChange={(newValue) => formik.setFieldValue("date", newValue)}
                         renderInput={(params) => (
                           <TextField
