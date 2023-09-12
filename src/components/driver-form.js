@@ -1,9 +1,9 @@
 import { useFormik } from "formik";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { WebsiteColors } from "theme/colors";
+import { Button } from "./button";
 
 import * as Yup from "yup";
-import { Button } from "./button";
 
 export const DriverForm = () => {
   const formik = useFormik({

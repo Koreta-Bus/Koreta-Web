@@ -19,7 +19,7 @@ const ContactCardInfos = [
     iconName: "operator",
     title: "Номер телефону",
     //TODO: change number
-    subTitle: "+38 xxx xxx xxx",
+    subTitle: "+380 73 216 6696",
     type: "operator",
   },
   {

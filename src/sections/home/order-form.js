@@ -44,6 +44,7 @@ const inputFields = [
     icon: "person",
     className: "person",
     containerClass: "personContainer",
+    maxLength: '2'
   },
 ];
 
@@ -52,6 +53,7 @@ export const SocialMedia = [
     key: "Instagram",
     title: "Instagram",
     icon: "instagram_bold",
+    path: "https://instagram.com/koreta.ua",
   },
   {
     key: "Facebook",
@@ -62,6 +64,7 @@ export const SocialMedia = [
     key: "Telegram",
     title: "Telegram",
     icon: "telegram_bold",
+    path: "tg://resolve?domain=horizonscream",
   },
 ];
 
@@ -79,7 +82,7 @@ export const OrderForm = () => {
     initialValues: {
       from: "",
       to: "",
-      date: "Дата",
+      date: "",
       personCount: "",
     },
     validationSchema: Yup.object({
@@ -108,15 +111,15 @@ export const OrderForm = () => {
       <WebsitePageLayouts>
         <StyledHeaderMedia>
           <StyledOnlyMedia>
-            {SocialMedia?.map(({ key, icon }) => (
-              <ContactDetail key={key}>
+            {SocialMedia?.map(({ key, icon, path }) => (
+              <ContactDetail key={key} href={path} target="_blank">
                 <span>
                   <Icon name={icon} />
                 </span>
               </ContactDetail>
             ))}
           </StyledOnlyMedia>
-          <span>Тел: +38 xxx xxx xxx</span>
+          <span>Тел: +380 73 216 6696</span>
         </StyledHeaderMedia>
       </WebsitePageLayouts>
       <OrderFormContainer ishomepage={ishomepage}>
@@ -131,7 +134,7 @@ export const OrderForm = () => {
             <FormWrapper onSubmit={submitHandler}>
               {inputFields.map((input) => {
                 return input?.date ? (
-                  <Fragment key={input?.name}>
+                  <div className="datePickerContainer" key={input?.name}>
                     <StyledMobileDatePicker>
                       <CustomDatePicker
                         isMobile={true}
@@ -178,9 +181,10 @@ export const OrderForm = () => {
                         maxDate={maxDate}
                       />
                     </StyledDesktopDatePicker>
-                  </Fragment>
+                  </div>
                 ) : (
                   <InputField
+                    formik={formik}
                     key={input.id}
                     type={input.type}
                     name={input.name}
@@ -193,6 +197,7 @@ export const OrderForm = () => {
                     iconStyle={input.iconStyle}
                     className={input.className}
                     containerClass={input.containerClass}
+                    maxLength={input.maxLength}
                   />
                 );
               })}
@@ -206,7 +211,8 @@ export const OrderForm = () => {
   );
 };
 
-const ContactDetail = styled.div`
+const ContactDetail = styled.a`
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -286,8 +292,9 @@ const CustomDatePicker = styled(({ isMobile, fontSize, ...props }) =>
   }
 
   & .MuiInputBase-input.MuiFilledInput-input {
-    color: ${WebsiteColors.CARD_BORDER} !important;
-    font-size: ${({ fontSize }) => (!fontSize ? "14.5px" : "18px")}!important;
+    color: ${WebsiteColors.BLACK_PRIMARY};
+    font-weight: 400;
+    font-size: ${({ fontSize }) => (!fontSize ? "16px" : "18px")}!important;
   }
 
   & .MuiInputBase-root.MuiFilledInput-root.Mui-focused {
@@ -295,7 +302,7 @@ const CustomDatePicker = styled(({ isMobile, fontSize, ...props }) =>
     box-shadow: white 0 0 0 0;
   }
 
-  & .MuiInputBase-input .MuiFilledInput-input .MuiInputBase-inputAdornedEnd {
+  & .MuiInputBase-input.MuiFilledInput-input.MuiInputBase-inputAdornedEnd {
     border: none;
     :focus {
       border-color: white;
@@ -313,12 +320,16 @@ const CustomDatePicker = styled(({ isMobile, fontSize, ...props }) =>
     background-color: white;
   }
 
-  & .css-1u3bzj6-MuiFormControl-root-MuiTextField-root:focus {
+  & .MuiFormControl-root.MuiTextField-root:focus {
     border: 1px solid ${WebsiteColors.BLACK_PRIMARY};
+
+    ::placeholder {
+      font-size: 19px;
+    }
   }
 
   @media (max-width: 768px) {
-    font-size: 14px !important;
+    font-size: 16px !important;
   }
 `;
 
@@ -429,6 +440,15 @@ const OrderFormContainer = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  .MuiFormControl-root.MuiTextField-root {
+    max-height: 64px;
+    position: relative;
+    width: 100%;
+    top: 0.06rem;
+    border: 1px solid white;
+    padding-left: 0.7rem;
+  }
 
   @media (max-width: 768px) {
     height: 413px;

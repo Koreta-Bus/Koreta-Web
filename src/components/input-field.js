@@ -22,26 +22,33 @@ export const InputField = ({
   iconStyle = null,
   className = null,
   containerClass = null,
+  maxLength = null,
+  formik,
 }) => {
-  const [inputValue, setInputValue] = useState(value || "");
-
   const handleInputChange = (event) => {
     const inputText = event.target.value;
-
-    if (/^\d+$/.test(inputText) || inputText === "") {
-      setInputValue(inputText);
-      if (onChange) {
-        onChange(inputText);
-      }
+    console.log('I am inside the handleInputChange')
+    if (+inputText < 100) {
+      formik.handleChange(event, inputText);
     }
   };
+  console.log(name,'name')
 
   return (
     <InputContainer className={containerClass}>
       <InputWrapper className={className}>
         <Input
-          {...{ value: inputValue, onBlur, onFocus, type, id, name, placeholder }}
-          onChange={handleInputChange}
+          {...{
+            value,
+            onBlur,
+            onFocus,
+            type,
+            id,
+            name,
+            placeholder,
+            onChange: name === "personCount" ? (e) => handleInputChange(e) : onChange,
+            maxLength,
+          }}
           autoComplete="off"
         />
         {icon && (
@@ -85,7 +92,7 @@ const ResultOption = styled.div`
   border: 0.5px solid ${WebsiteColors.CARD_BORDER};
   color: ${WebsiteColors.CARD_BORDER};
   max-width: 198px;
-  min-height: 64px;
+  height: 64px;
   background: #ffff;
   border-radius: 4px;
   color: ${WebsiteColors.CARD_BORDER};
@@ -121,16 +128,17 @@ const InputContainer = styled.div`
 `;
 
 const Input = styled.input`
-  font-size: 16px;
+  font-size: 20px;
   border: 1px solid white;
   outline: none;
   position: relative;
-  min-height: 64px;
-  font-size: 16px;
+  height: 64px;
   border-radius: 8px;
   color: ${WebsiteColors.BLACK_PRIMARY};
-  padding-left: 12px;
+  padding-left: 24px;
   width: 100%;
+  font-family: Sora, sans-serif;
+  color: ${WebsiteColors.BLACK_PRIMARY};
 
   :focus,
   :focus-visible,
@@ -141,9 +149,13 @@ const Input = styled.input`
 
   &::placeholder {
     color: #6a7682;
-    font-size: 20px;
+    font-size:20px;
     position: relative;
     top: 0.12rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
   }
 `;
 
