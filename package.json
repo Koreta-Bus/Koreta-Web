@@ -34,8 +34,10 @@
     "react-apexcharts": "1.4.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.1.2",
+    "sass": "^1.66.1",
     "simplebar-react": "^3.2.1",
     "styled-components": "^6.0.7",
+    "sweetalert2": "^11.7.27",
     "yup": "^1.0.0"
   },
   "devDependencies": {

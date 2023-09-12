@@ -51,38 +51,55 @@ body {
   }
 }
 
-.MuiPickersDay-root:hover {
+.datePickerContainer .MuiPickersDay-root:hover {
   background-color: #d2d6e0 !important;
 }
 
-.MuiButtonBase-root.MuiPickersDay-root.Mui-selected {
+.datePickerContainer .MuiButtonBase-root.MuiPickersDay-root.Mui-selected {
   background-color: #203063 !important;
 }
 
-.MuiFormControl-root.MuiTextField-root {
-  max-height: 64.4px;
-  position: relative;
-  width: 100%;
+.datePickerContainer .MuiInputBase-input.MuiFilledInput-input::placeholder {
+  color: #6a7682;
+  font-weight: 500;
+  font-size: 20px;
 }
 
 @media (max-width: 768px) {
-  .MuiFormControl-root.MuiTextField-root {
+  .datePickerContainer .MuiInputBase-input.MuiFilledInput {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.datePickerContainer .MuiInputBase-root.MuiFilledInput-root {
+  border: 1px solid white;
+}
+
+.datePickerContainer .MuiFormControl-root.MuiTextField-root {
+  border: 1px solid #edecec;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .datePickerContainer .MuiFormControl-root.MuiTextField-root {
     border-radius: 0px;
     border-bottom-left-radius: 8px;
+    top: 0;
     max-height: 64px;
   }
 }
 
-.MuiInputBase-root.MuiFilledInput-root.MuiFilledInput-underline.MuiInputBase-colorPrimary.Mui-error {
+.datePickerContainer .MuiInputBase-root.MuiFilledInput-root.MuiFilledInput-underline.MuiInputBase-colorPrimary.Mui-error {
   box-shadow: white 0 0 0 0 !important;
   border-color: white !important;
 }
 
-.PrivatePickersYear-yearButton.Mui-selected {
+.datePickerContainer .PrivatePickersYear-yearButton.Mui-selected {
   background-color: #203063 !important;
 }
 
-.MuiPickersPopper-root {
+.datePickerContainer .MuiPickersPopper-root {
   margin-top: 0.5rem !important;
   margin-left: 5.4rem !important;
 }

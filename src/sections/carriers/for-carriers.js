@@ -113,7 +113,7 @@ export const ForCarriersSection = () => {
             </OrderedList>
             <BottomInfo>
               Якщо Вас зацікавила наша пропозиція, ви можете зв'язатись з нами за номером:
-              <strong>+38 xxx xxx xxx</strong>, або заповніть форму нижче і ми з Вами зв'яжемось.
+              <strong>+380 73 216 6696</strong>, або заповніть форму нижче і ми з Вами зв'яжемось.
             </BottomInfo>
           </AboutUsInfoSection>
           <InfoCardWrapper>

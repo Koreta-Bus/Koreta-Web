@@ -13,6 +13,7 @@ import { store } from "store/store";
 import { uk } from "date-fns/locale";
 
 import "simplebar-react/dist/simplebar.min.css";
+import 'sweetalert2/src/sweetalert2.scss'
 import '../styles/index.css';
 
 const clientSideEmotionCache = createEmotionCache();

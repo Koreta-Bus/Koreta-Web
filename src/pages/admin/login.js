@@ -7,30 +7,43 @@ import { useAuth } from "hooks/use-auth";
 import { Layout as AuthLayout } from "layouts/auth/layout";
 import { Button } from "components/button";
 import { styled } from "styled-components";
+import { emailAuth } from "config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { Popup } from "shared/alerts";
 
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
+  const [error, setError] = useState();
 
   const formik = useFormik({
     initialValues: {
-      email: "example@gmail.com",
-      password: "password",
+      email: "",
+      password: "",
       submit: null,
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
       password: Yup.string().max(255).required("Password is required"),
     }),
-    onSubmit: async (values, helpers) => {
-      try {
-        await auth.signIn(values.email, values.password);
-        router.push("/admin");
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
+    onSubmit: async (values) => {
+      return signInWithEmailAndPassword(emailAuth, values.email, values.password)
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          router.push("/admin");
+          auth.setIsAuthenticated(user.accessToken);
+          auth.signIn();
+        })
+        .catch((error) => {
+          Popup({
+            icon: "error",
+            title: "Ошибка аутентификации",
+            text: "Aдрес электронной почты или пароль неверный",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        });
     },
   });
 
@@ -65,11 +78,11 @@ const Page = () => {
             </Tabs>
             {
               <form noValidate onSubmit={formik.handleSubmit}>
-                <Stack spacing={3}>
+                <Stack spacing={2}>
                   <TextField
                     error={!!(formik.touched.email && formik.errors.email)}
-                    fullWidth
                     helperText={formik.touched.email && formik.errors.email}
+                    fullWidth
                     label="Email Address"
                     name="email"
                     onBlur={formik.handleBlur}
@@ -89,12 +102,14 @@ const Page = () => {
                     value={formik.values.password}
                   />
                 </Stack>
-                {formik.errors.submit && (
+                {error && (
                   <Typography color="error" sx={{ mt: 3 }} variant="body2">
-                    {formik.errors.submit}
+                    {error}
                   </Typography>
                 )}
-                <Button type="text" text={"Continue"} />
+                <div style={{ marginTop: "1rem" }}>
+                  <Button type="text" text={"Continue"} padding="10px 0" />
+                </div>
                 <Alert color="primary" severity="info" sx={{ mt: 3 }}>
                   <div>
                     Admin Login: Unlock <b>Insights</b>, <b>Manage</b> Effortlessly.
@@ -110,10 +125,10 @@ const Page = () => {
 };
 
 const StyledTypography = styled(Typography)`
-   @media (max-width: 768px) {
+  @media (max-width: 768px) {
     font-size: 1.2rem;
   }
-`
+`;
 
 Page.getLayout = (page) => <AuthLayout>{page}</AuthLayout>;
 

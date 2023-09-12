@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import PropTypes from "prop-types";
 
 const HANDLERS = {
@@ -8,7 +16,6 @@ const HANDLERS = {
 };
 
 const initialState = {
-  isAuthenticated: false,
   isLoading: true,
   user: null,
 };
@@ -59,6 +66,7 @@ export const AuthContext = createContext({ undefined });
 export const AuthProvider = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isAuthenticated, setIsAuthenticated] = useState("");
   const initialized = useRef(false);
 
   const initialize = async () => {
@@ -69,25 +77,18 @@ export const AuthProvider = (props) => {
 
     initialized.current = true;
 
-    let isAuthenticated = false;
-
     try {
-      isAuthenticated = window.sessionStorage.getItem("authenticated") === "true";
+      if (isAuthenticated) {
+        setIsAuthenticated(window.sessionStorage.getItem("token"));
+      }
     } catch (err) {
       console.error(err);
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: "5e86809283e28b96d2d38537",
-        avatar: "/assets/koreta-logo.png",
-        name: "Koreta",
-        email: "example@gmail.com",
-      };
-
       dispatch({
         type: HANDLERS.INITIALIZE,
-        payload: user,
+        payload: "user",
       });
     } else {
       dispatch({
@@ -97,61 +98,42 @@ export const AuthProvider = (props) => {
   };
 
   useEffect(
-    () => {
-      initialize();
-    },
+    () => initialize(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  const skip = () => {
+  const skip = useCallback(() => {
     try {
-      window.sessionStorage.setItem("authenticated", "true");
+      window.sessionStorage.setItem("token", "true");
     } catch (err) {
       console.error(err);
     }
 
-    const user = {
-      id: "5e86809283e28b96d2d38537",
-      avatar: "/assets/koreta-logo.png",
-      name: "Koreta",
-      email: "example@gmail.com",
-    };
-
     dispatch({
       type: HANDLERS.SIGN_IN,
-      payload: user,
+      payload: "authUserInfo",
     });
-  };
+  }, [isAuthenticated]);
 
-  const signIn = async (email, password) => {
-    if (email !== "example@gmail.com" || password !== "password") {
-      throw new Error("Please check your email and password");
-    }
-
+  const signIn = useCallback(() => {
     try {
-      window.sessionStorage.setItem("authenticated", "true");
+      window.sessionStorage.setItem("token", "true");
     } catch (err) {
       console.error(err);
     }
 
-    const user = {
-      id: "5e86809283e28b96d2d38537",
-      avatar: "/assets/koreta-logo.png",
-      name: "Koreta",
-      email: "example@gmail.com",
-    };
-
     dispatch({
       type: HANDLERS.SIGN_IN,
-      payload: user,
+      payload: "authUserInfo",
     });
-  };
+  }, [isAuthenticated]);
 
   const signOut = () => {
     dispatch({
       type: HANDLERS.SIGN_OUT,
     });
+    window.sessionStorage.removeItem("token");
   };
 
   return (
@@ -161,6 +143,8 @@ export const AuthProvider = (props) => {
         skip,
         signIn,
         signOut,
+        setIsAuthenticated,
+        isAuthenticated,
       }}
     >
       {children}

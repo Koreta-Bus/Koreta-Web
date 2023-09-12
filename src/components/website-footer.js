@@ -6,6 +6,7 @@ import Image from "next/image";
 import { WebsitePageLayouts } from "layouts/website";
 
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 const mobileAddImages = [
   {
@@ -56,7 +57,7 @@ const FooterMenuLists = [
       },
       {
         key: "+38",
-        title: "+38 xxx xxx xxx",
+        title: "+380 73 216 6696",
         icon: "phone",
       },
     ],
@@ -68,6 +69,7 @@ const FooterMenuLists = [
         key: "Instagram",
         title: "Instagram",
         icon: "instagram",
+        path:'https://instagram.com/koreta.ua'
       },
       {
         key: "Facebook",
@@ -84,6 +86,7 @@ const FooterMenuLists = [
 ];
 
 export const MainFooter = () => {
+  const router = useRouter()
   return (
     <Footer>
       <WebsitePageLayouts>
@@ -93,8 +96,8 @@ export const MainFooter = () => {
               <MenuListWrapper key={title}>
                 <FooterListTitle>{title}</FooterListTitle>
                 <FooterUnorderList>
-                  {lists?.map(({ key, title, icon }) => (
-                    <ListContainer key={key}>
+                  {lists?.map(({ key, title, icon, path }) => (
+                    <ListContainer key={key} onClick={() => path && router.push(path)}>
                       {icon && <Icon name={icon} />}
                       <MenuList>{title}</MenuList>
                     </ListContainer>

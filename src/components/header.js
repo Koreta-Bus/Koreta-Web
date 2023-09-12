@@ -11,6 +11,7 @@ export const SocialMedia = [
     key: "Instagram",
     title: "Instagram",
     icon: "instagram",
+    path: "https://instagram.com/koreta.ua",
   },
   {
     key: "Facebook",
@@ -21,6 +22,7 @@ export const SocialMedia = [
     key: "Telegram",
     title: "Telegram",
     icon: "telegram",
+    path: "tg://resolve?domain=horizonscream",
   },
 ];
 
@@ -32,7 +34,7 @@ const ContactDetails = [
   },
   {
     key: "Phone",
-    title: "+38 xxx xxx xxx",
+    title: "+380 73 216 6696",
     icon: "phone",
   },
   ...SocialMedia,
@@ -122,8 +124,8 @@ export const Header = () => {
             </ExitIcon>
           </MobileHamburgerHeader>
           <ContactDetailsContainer>
-            {ContactDetails?.map(({ key, title, icon }) => (
-              <ContactDetail key={key}>
+            {ContactDetails?.map(({ key, title, icon, path }) => (
+              <ContactDetail key={key} href={path} target="_blank">
                 <span>
                   <Icon name={icon} />
                 </span>
@@ -173,7 +175,6 @@ const MenuItemHeader = styled.div`
   width: 100%;
   justify-content: space-between;
 `;
-
 
 const HeaderOptionsContainer = styled.div`
   @media (max-width: 768px) {
@@ -289,12 +290,6 @@ const MenuItemSelect = styled.div`
   }
 `;
 
-const HeaderSocialMedias = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: 1120px;
-`;
-
 const HeaderContainer = styled.div`
   width: 100%;
   height: 60px;
@@ -317,6 +312,7 @@ const Logo = styled.div`
   font-weight: bold;
   color: ${({ black }) => (black ? "black" : "white")};
   font-family: Lora, sans-serif;
+  cursor: pointer;
 
   @media (max-width: 768px) {
     font-size: 24px;

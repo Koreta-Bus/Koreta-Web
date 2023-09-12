@@ -7,7 +7,6 @@ export const AuthGuard = (props) => {
   const { children } = props;
 
   const router = useRouter();
-  const { isAuthenticated } = useAuthContext();
   
   const ignore = useRef(false);
   const [checked, setChecked] = useState(false);
@@ -28,10 +27,10 @@ export const AuthGuard = (props) => {
 
     ignore.current = true;
 
-    if (!isAuthenticated) {
+    if (!window.sessionStorage.getItem('token')) {
       router
         .replace({
-          pathname: "/auth/login",
+          pathname: "/admin/login",
           query: router.asPath !== "/" ? { continueUrl: router.asPath } : undefined,
         })
         .catch(console.error);

@@ -1,7 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
+// import "firebase/firestore";
+import "firebase/auth";
+import { EmailAuthProvider } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,5 +15,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-export const db = firebase.firestore();
+
+const emailAuth = getAuth();
+const user = getAuth().currentUser;
+const emailProvider = new EmailAuthProvider();
+
+export { emailAuth, emailProvider, user };
+
+// const { GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider } = firebase.auth
+// const analytics = getAnalytics(app);
+// export const db = firebase.firestore();
