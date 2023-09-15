@@ -63,10 +63,8 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        console.log("buradayam");
         const db = getDatabase(app);
         const reference = ref(db, "cities/" + values.uniqueKey);
-        console.log("1");
 
         set(reference, {
           from: values?.from,
@@ -82,7 +80,7 @@ const Page = () => {
             icon: "success",
             title: "Додавання напрямку міста",
             text: "Напрямок міста успішно додано.",
-            timer: 2500,
+            timer: 1800,
             showConfirmButton: false,
           });
         }, 300);
@@ -93,7 +91,7 @@ const Page = () => {
           title: "Додавання напрямку міста",
           text: "Під час додавання напрямку міста сталася помилка.",
           timer: 2500,
-          showConfirmButton: false,
+          showConfirmButton: true,
         });
       }
     },
