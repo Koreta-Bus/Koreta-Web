@@ -1,39 +1,27 @@
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
 } from "@mui/material";
 import { Scrollbar } from "components/scrollbar";
-import { getInitials } from "utils/get-initials";
 
 export const CustomersTable = (props) => {
   const {
     count = 0,
     items = [],
-    onDeselectAll,
-    onDeselectOne,
     onPageChange = () => {},
     onRowsPerPageChange,
-    onSelectAll,
-    onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = [],
+    tableCells = []
   } = props;
-
-  const selectedSome = selected.length > 0 && selected.length < items.length;
-  const selectedAll = items.length > 0 && selected.length === items.length;
 
   return (
     <Card>
@@ -42,57 +30,24 @@ export const CustomersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  />
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Signed Up</TableCell>
+                {tableCells?.map((cell) => (
+                  <TableCell>{cell}</TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, "dd/MM/yyyy");
-
+              {items?.map(({ key, data }) => {
                 return (
-                  <TableRow hover key={customer.id} selected={isSelected}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(customer.id);
-                          } else {
-                            onDeselectOne?.(customer.id);
-                          }
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={customer.avatar}>{getInitials(customer.name)}</Avatar>
-                        <Typography variant="subtitle2">{customer.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
-                    </TableCell>
-                    <TableCell>{customer.phone}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                  <TableRow hover key={data?.mobileNumber}>
+                    {data?.name && <TableCell>{data?.name}</TableCell>}
+                    {data?.email && <TableCell>{data?.email}</TableCell>}
+                    {data?.description && <TableCell>{data?.description}</TableCell>}
+                    {data?.mobileNumber && <TableCell>{data?.mobileNumber}</TableCell>}
+                    {data?.nameOfLegalEntity && <TableCell>{data?.nameOfLegalEntity}</TableCell>}
+                    {data?.from && <TableCell>{data?.from}</TableCell>}
+                    {data?.to && <TableCell>{data?.to}</TableCell>}
+                    {data?.price && <TableCell>{data?.price}</TableCell>}
+                    {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>}
                   </TableRow>
                 );
               })}
@@ -107,7 +62,7 @@ export const CustomersTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[1, 5, 10]}
       />
     </Card>
   );
