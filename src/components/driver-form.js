@@ -1,19 +1,25 @@
 import { useFormik } from "formik";
-import styled from "styled-components";
 import { WebsiteColors } from "theme/colors";
 import { Button } from "./button";
+import { getDatabase, ref, set } from "firebase/database";
+import { Popup } from "shared/alerts";
+import { app } from "config/firebase";
 
 import * as Yup from "yup";
 
+import styled from "styled-components";
+
+const initialValues = {
+  name: "",
+  mobileNumber: "",
+  nameOfLegalEntity: "",
+  email: "",
+  description: "",
+};
+
 export const DriverForm = () => {
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      mobileNumber: "",
-      nameOfLegalEntity: "",
-      email: "",
-      description: "",
-    },
+    initialValues,
     validationSchema: Yup.object({
       name: Yup.string().required("Поле \"Ім'я\" обов'язкове"),
       mobileNumber: Yup.string()
@@ -30,60 +36,147 @@ export const DriverForm = () => {
         .required('Поле "Опис" обов\'язкове'),
     }),
     onSubmit: async (values, helpers) => {
-      //   try {
-      //     await auth.signIn(values.email, values.password);
-      //     router.push("/admin");
-      //   } catch (err) {
-      //     helpers.setStatus({ success: false });
-      //     helpers.setErrors({ submit: err.message });
-      //     helpers.setSubmitting(false);
-      //   }
+      try {
+        const db = getDatabase(app);
+        const reference = ref(db, "drivers/" + values.mobileNumber);
+
+        set(reference, {
+          name: values?.name,
+          mobileNumber: values?.mobileNumber,
+          nameOfLegalEntity: values?.nameOfLegalEntity,
+          email: values?.email,
+          description: values?.description,
+        });
+
+        Popup({
+          icon: "success",
+          title: "Форма запроса водителя",
+          text: "Вы успешно отправили свою форму.",
+          timer: 2500,
+          showConfirmButton: false,
+        });
+        formik.setValues(initialValues);
+      } catch (err) {
+        Popup({
+          icon: "error",
+          title: "Форма запроса водителя",
+          text: "Что-то пошло не так при отправке запроса",
+          timer: 2500,
+          showConfirmButton: false,
+        });
+      }
     },
   });
   return (
     <DriverFormContainer>
       <FormTitle>Напишіть нам</FormTitle>
-      <StyledDriverForm onSubmit={() => {}}>
+      <StyledDriverForm onSubmit={formik.handleSubmit}>
         <DriverFormWrapper>
           <FieldWrapper>
-            <label for="name">Ім'я та прізвише</label>
-            <input type="text" id="name" name="name" />
+            <label htmlFor="name">Ім'я та прізвише</label>
+            <InputTextField
+              type="text"
+              id="name"
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+            />
+            <ErrorText>{formik.values.name && formik.touched.name && formik.errors.name}</ErrorText>
           </FieldWrapper>
           <FieldWrapper>
-            <label for="mobileNumber">Номер телефону</label>
-            <input type="text" id="mobileNumber" name="mobileNumber" />
+            <label htmlFor="mobileNumber">Номер телефону</label>
+            <InputTextField
+              type="text"
+              id="mobileNumber"
+              name="mobileNumber"
+              value={formik.values.mobileNumber}
+              onChange={formik.handleChange}
+            />
+            <ErrorText>
+              {formik.values.mobileNumber &&
+                formik.touched.mobileNumber &&
+                formik.errors.mobileNumber}
+            </ErrorText>
           </FieldWrapper>
           <FieldWrapper>
-            <label for="nameOfLegalEntity">Назва юр.особи (якщо наявна)</label>
-            <input type="text" id="nameOfLegalEntity" name="nameOfLegalEntity" />
+            <label htmlFor="nameOfLegalEntity">Назва юр.особи (якщо наявна)</label>
+            <InputTextField
+              type="text"
+              id="nameOfLegalEntity"
+              name="nameOfLegalEntity"
+              value={formik.values.nameOfLegalEntity}
+              onChange={formik.handleChange}
+            />
+            <ErrorText>
+              {formik.values.nameOfLegalEntity &&
+                formik.touched.nameOfLegalEntity &&
+                formik.errors.nameOfLegalEntity}
+            </ErrorText>
           </FieldWrapper>
           <FieldWrapper>
-            <label for="email">Email, веб-сайт (якщо наявні)</label>
-            <input type="text" id="email" name="email" />
+            <label htmlFor="email">Email, веб-сайт (якщо наявні)</label>
+            <InputTextField
+              type="text"
+              id="email"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+            />
+            <ErrorText>
+              {formik.values.email && formik.touched.email && formik.errors.email}
+            </ErrorText>
           </FieldWrapper>
           <FieldWrapper textarea={true}>
-            <label for="description">
+            <label htmlFor="description">
               Додаткові відомості, напр. досвід роботи, об'єм поточних продажів та ін.
             </label>
-            <textarea rows={4} id="description" name="description" />
+            <TextareaField
+              rows={4}
+              id="description"
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+            />
+            <ErrorText>
+              {formik.values.description && formik.touched.description && formik.errors.description}
+            </ErrorText>
           </FieldWrapper>
         </DriverFormWrapper>
         <ButtonWrapper>
-          <Button padding="12px 0px" type="submit" text={"Надіслати"} />
+          <Button padding="10px 0px" type="submit" text={"Надіслати"} />
         </ButtonWrapper>
       </StyledDriverForm>
     </DriverFormContainer>
   );
 };
 
+const TextareaField = styled.textarea`
+  padding: 1rem;
+`;
+
+const ErrorText = styled.div`
+  width: 100%;
+  color: red;
+  font-family: Sora, sans-serif;
+`;
+
+const InputTextField = styled.input`
+  padding: 1rem;
+  font-family: Sora, sans-serif;
+`;
+
 const ButtonWrapper = styled.div`
-  width: 232px;
+  width: 200px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 `;
 
 const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  font-family: Sora, sans-serif;
   grid-column: ${({ textarea }) => {
     return textarea ? "1 / span 2" : "";
   }};
@@ -93,6 +186,7 @@ const DriverFormWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
+  padding-bottom: 4rem;
 
   @media (max-width: 768px) {
     display: flex;
@@ -142,6 +236,7 @@ const StyledDriverForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  position: relative;
 `;
 
 const FormTitle = styled.h2`

@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 // import "firebase/firestore";
 import "firebase/auth";
-import { EmailAuthProvider } from "firebase/auth";
 import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,9 +18,9 @@ const app = initializeApp(firebaseConfig);
 
 const emailAuth = getAuth();
 const user = getAuth().currentUser;
-const emailProvider = new EmailAuthProvider();
+const db = getDatabase(app);
 
-export { emailAuth, emailProvider, user };
+export { emailAuth, user, db, app };
 
 // const { GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider } = firebase.auth
 // const analytics = getAnalytics(app);
