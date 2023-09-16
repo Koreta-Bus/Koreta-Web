@@ -2,10 +2,9 @@ import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Alert, Box, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { useAuth } from "hooks/use-auth";
 import { Layout as AuthLayout } from "layouts/auth/layout";
-import { Button } from "components/button";
 import { styled } from "styled-components";
 import { emailAuth } from "config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -108,7 +107,7 @@ const Page = () => {
                   </Typography>
                 )}
                 <div style={{ marginTop: "1rem" }}>
-                  <Button type="text" text={"Continue"} padding="10px 0" />
+                  <Button variant="contained" fullWidth type="submit">Continue</Button>
                 </div>
                 <Alert color="primary" severity="info" sx={{ mt: 3 }}>
                   <div>
