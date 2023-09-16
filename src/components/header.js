@@ -228,7 +228,7 @@ const MobileHeaderContainer = styled.div`
     margin-bottom: 4rem;
     left: ${({ hamburgervisible }) => (!hamburgervisible ? "100vw" : "0")};
     opacity: 1;
-    transition-duration: 0.5s;
+    transition-duration: 0.33s;
   }
 `;
 
