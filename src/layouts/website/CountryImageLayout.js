@@ -38,6 +38,7 @@ const Title = styled.span`
   font-size: 24px;
   font-weight: 600;
   line-height: 32px;
+  font-family: Lora, sans-serif;
 
   @media (max-width: 768px) {
     font-size: 24px;
@@ -59,4 +60,5 @@ const CardContainer = styled.div`
 
 const CardWrapper = styled(FlexColumn)`
   gap: 16px;
+  font-family: Sora, sans-serif;
 `;

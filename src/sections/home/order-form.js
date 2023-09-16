@@ -31,6 +31,7 @@ const inputFields = [
     placeholder: "Куди",
     className: "to",
     containerClass: "gridContainer",
+    result: [{},{}]
   },
   {
     date: true,
@@ -119,7 +120,7 @@ export const OrderForm = () => {
               </ContactDetail>
             ))}
           </StyledOnlyMedia>
-          <span>Тел: +380 73 216 6696</span>
+          <TelePhone>Тел: +380 73 216 6696</TelePhone>
         </StyledHeaderMedia>
       </WebsitePageLayouts>
       <OrderFormContainer ishomepage={ishomepage}>
@@ -198,6 +199,7 @@ export const OrderForm = () => {
                     className={input.className}
                     containerClass={input.containerClass}
                     maxLength={input.maxLength}
+                    result={input.result}
                   />
                 );
               })}
@@ -210,6 +212,10 @@ export const OrderForm = () => {
     </>
   );
 };
+
+const TelePhone = styled.span`
+  font-family: Lora, sans-serif;
+`
 
 const ContactDetail = styled.a`
   text-decoration: none;

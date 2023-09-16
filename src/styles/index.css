@@ -38,6 +38,7 @@ ol {
 html,
 body {
   overflow-x: hidden;
+  font-family: Sora, sans-serif;
 }
 
 @media screen and (max-width: 768px) {
@@ -81,12 +82,18 @@ body {
   border-radius: 8px;
 }
 
+
 @media (max-width: 768px) {
   .datePickerContainer .MuiFormControl-root.MuiTextField-root {
     border-radius: 0px;
     border-bottom-left-radius: 8px;
     top: 0;
     max-height: 64px;
+  }
+
+  .datePickerContainer{
+    position: relative;
+    bottom: 0.05rem;
   }
 }
 

@@ -13,7 +13,7 @@ const CARD_INFOS = [
   {
     key: "Відмінно",
     title: "Відмінно",
-    subTitle: "обслуговування",
+    subTitle: "Oбслуговування",
   },
   {
     key: "Підтримка",

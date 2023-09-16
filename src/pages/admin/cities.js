@@ -8,12 +8,13 @@ import { getDatabase, onValue, ref, set } from "firebase/database";
 import { app } from "config/firebase";
 import { useFormik } from "formik";
 import { WebsiteColors } from "theme/colors";
+import { Popup } from "shared/alerts";
+import { Icon } from "shared/IconGenerator";
 
 import * as Yup from "yup";
 
 import { styled } from "styled-components";
-import { Popup } from "shared/alerts";
-import { Icon } from "shared/IconGenerator";
+
 
 const TableCells = ["С", "По", "Цена", "Микро автобус Уникальный ключ"];
 
@@ -116,7 +117,7 @@ const Page = () => {
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" alignItems={"center"} spacing={4}>
-              <Stack spacing={1}>
+              <Stack spacing={1} sx={{ width: "100%" }}>
                 <StyledTypography variant="h4">Cities Directions</StyledTypography>
               </Stack>
               <ButtonWrapper>

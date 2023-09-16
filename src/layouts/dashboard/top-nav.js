@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import BellIcon from "@heroicons/react/24/solid/BellIcon";
-import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
-import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import {
   Avatar,
   Badge,
@@ -16,12 +14,16 @@ import {
 import { alpha } from "@mui/material/styles";
 import { AccountPopover } from "./account-popover";
 import { usePopover } from "hooks/use-popover";
+import HomeIcon from "@heroicons/react/24/solid/HomeIcon";
+import { useRouter } from "next/router";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = (props) => {
   const { onNavOpen } = props;
+  const router = useRouter();
+
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   const accountPopover = usePopover();
 
@@ -63,10 +65,10 @@ export const TopNav = (props) => {
             )}
           </Stack>
           <Stack alignItems="center" direction="row" spacing={2}>
-            <Tooltip title="Contacts">
+            <Tooltip title="Contacts" onClick={() => router.push('/')}>
               <IconButton>
                 <SvgIcon fontSize="small">
-                  <UsersIcon />
+                  <HomeIcon />
                 </SvgIcon>
               </IconButton>
             </Tooltip>

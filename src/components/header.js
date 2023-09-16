@@ -334,6 +334,7 @@ const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  font-family: Sora, sans-serif;
   color: ${({ black }) => {
     return black ? "#1c1c1c" : "#ffff";
   }};

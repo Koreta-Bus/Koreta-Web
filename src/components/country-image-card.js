@@ -92,6 +92,7 @@ const HeaderTitle = styled.h2`
   line-height: 64px;
   margin: 0 auto;
   color: ${WebsiteColors.PRIMARY};
+  font-family: Lora, sans-serif;
 
   @media (max-width: 768px) {
     font-size: 18px;

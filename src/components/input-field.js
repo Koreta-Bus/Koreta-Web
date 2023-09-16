@@ -1,8 +1,8 @@
 import { Icon } from "shared/IconGenerator";
 import { WebsiteColors } from "theme/colors";
+import { IconButton } from "@mui/material";
 
 import styled from "styled-components";
-import { IconButton } from "@mui/material";
 import { useState } from "react";
 
 export const InputField = ({
@@ -25,14 +25,18 @@ export const InputField = ({
   maxLength = null,
   formik,
 }) => {
+  const [optionModalVisibility, setOptionModalVisibility] = useState(true);
+
   const handleInputChange = (event) => {
     const inputText = event.target.value;
-    console.log('I am inside the handleInputChange')
     if (+inputText < 100) {
       formik.handleChange(event, inputText);
     }
   };
-  console.log(name,'name')
+
+  const selectPlaceHandler = () => {
+    setOptionModalVisibility(false);
+  };
 
   return (
     <InputContainer className={containerClass}>
@@ -59,20 +63,20 @@ export const InputField = ({
           </IconWrapper>
         )}
       </InputWrapper>
-      {Array.isArray(result) &&
-        (!result ? (
-          <ResultOptionsWrapper>
-            <ResultOption>Звідки</ResultOption>
-            <ResultOption>Звідки</ResultOption>
-            <ResultOption>Звідки</ResultOption>
-            <ResultOption>Звідки</ResultOption>
-            <ResultOption>Звідки</ResultOption>
-          </ResultOptionsWrapper>
-        ) : (
-          <ResultOptionsWrapper>
-            <ResultOption>no result found</ResultOption>
-          </ResultOptionsWrapper>
-        ))}
+      {Array.isArray(result) && optionModalVisibility && result?.length > 0 && (
+        <ResultOptionsWrapper>
+          <ResultOption onClick={() => selectPlaceHandler()}>Звідки</ResultOption>
+          <ResultOption>Звідки</ResultOption>
+          <ResultOption>Звідки</ResultOption>
+          <ResultOption>Звідки</ResultOption>
+          <ResultOption>Звідки</ResultOption>
+        </ResultOptionsWrapper>
+      )}
+      {result?.length === 0 && (
+        <ResultOptionsWrapper>
+          <ResultOption>no result found</ResultOption>
+        </ResultOptionsWrapper>
+      )}
     </InputContainer>
   );
 };
@@ -100,9 +104,15 @@ const ResultOption = styled.div`
   font-size: 20px;
   line-height: 24px;
 
-  :hover {
-    background: ${WebsiteColors.HOVER_INPUT};
+  &:hover{
+    border: 1px solid ${WebsiteColors.BLACK_PRIMARY};
   }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    max-width: 100%;
+  }
+
 `;
 
 const ResultOptionsWrapper = styled.div`
@@ -113,8 +123,15 @@ const ResultOptionsWrapper = styled.div`
   gap: 0.5px;
   position: absolute;
   top: 70px;
-  border-radius: 8px;
-  overflow-y: scroll;
+  z-index: 200;
+  overflow: scroll;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    border-radius: 0px;
+    max-height: 150px;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -122,7 +139,9 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
 
-  :focus {
+  :focus,
+  :focus-visible,
+  :focus-within {
     outline: none;
   }
 `;
@@ -134,7 +153,6 @@ const Input = styled.input`
   position: relative;
   height: 64px;
   border-radius: 8px;
-  color: ${WebsiteColors.BLACK_PRIMARY};
   padding-left: 24px;
   width: 100%;
   font-family: Sora, sans-serif;
@@ -149,7 +167,7 @@ const Input = styled.input`
 
   &::placeholder {
     color: #6a7682;
-    font-size:20px;
+    font-size: 20px;
     position: relative;
     top: 0.12rem;
   }
