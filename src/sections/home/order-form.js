@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useCallback, useMemo } from "react";
 import { useFormik } from "formik";
 import { InputField } from "components/input-field";
 import { Button } from "components/button";
@@ -13,41 +13,6 @@ import { WebsitePageLayouts } from "layouts/website";
 import * as Yup from "yup";
 
 import styled from "styled-components";
-
-const inputFields = [
-  {
-    id: "from",
-    type: "text",
-    name: "from",
-    placeholder: "Звідки",
-    icon: "exchange",
-    className: "from",
-    containerClass: "gridContainer",
-  },
-  {
-    id: "to",
-    type: "text",
-    name: "to",
-    placeholder: "Куди",
-    className: "to",
-    containerClass: "gridContainer",
-    result: [{},{}]
-  },
-  {
-    date: true,
-    className: "date",
-  },
-  {
-    id: "personCount",
-    type: "text",
-    name: "personCount",
-    placeholder: "Пасажирів",
-    icon: "person",
-    className: "person",
-    containerClass: "personContainer",
-    maxLength: '2'
-  },
-];
 
 export const SocialMedia = [
   {
@@ -101,9 +66,43 @@ export const OrderForm = () => {
     },
   });
 
-  const submitHandler = () => {
-    // Handle submit
-  };
+  const inputFields = useMemo(
+    () => [
+      {
+        id: "from",
+        type: "text",
+        name: "from",
+        placeholder: "Звідки",
+        icon: "exchange",
+        className: "from",
+        containerClass: "gridContainer",
+      },
+      {
+        id: "to",
+        type: "text",
+        name: "to",
+        placeholder: "Куди",
+        className: "to",
+        containerClass: "gridContainer",
+        result: [{}, {}],
+      },
+      {
+        date: true,
+        className: "date",
+      },
+      {
+        id: "personCount",
+        type: "text",
+        name: "personCount",
+        placeholder: "Пасажирів",
+        icon: "person",
+        className: "person",
+        containerClass: "personContainer",
+        maxLength: "2",
+      },
+    ],
+    []
+  );
 
   const ishomepage = useMemo(() => router?.asPath === "/", [router]);
 
@@ -132,7 +131,7 @@ export const OrderForm = () => {
             <h3>Пасажирські перевезення в Європу</h3>
           </OrderFormTitle>
           {router?.asPath === "/" && (
-            <FormWrapper onSubmit={submitHandler}>
+            <FormWrapper onSubmit={formik.handleSubmit}>
               {inputFields.map((input) => {
                 return input?.date ? (
                   <div className="datePickerContainer" key={input?.name}>
@@ -215,7 +214,7 @@ export const OrderForm = () => {
 
 const TelePhone = styled.span`
   font-family: Lora, sans-serif;
-`
+`;
 
 const ContactDetail = styled.a`
   text-decoration: none;

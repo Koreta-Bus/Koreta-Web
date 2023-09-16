@@ -9,7 +9,7 @@ import { SvgIcon } from "@mui/material";
 
 export const items = [
   {
-    title: "Overview",
+    title: "Обзор",
     path: "/admin",
     icon: (
       <SvgIcon fontSize="small">
@@ -18,7 +18,7 @@ export const items = [
     ),
   },
   {
-    title: "Customers",
+    title: "Клиенты",
     path: "/admin/customers",
     icon: (
       <SvgIcon fontSize="small">
@@ -27,7 +27,7 @@ export const items = [
     ),
   },
   {
-    title: "Companies",
+    title: "Компании",
     path: "/admin/companies",
     icon: (
       <SvgIcon fontSize="small">
@@ -36,7 +36,7 @@ export const items = [
     ),
   },
   {
-    title: "Drivers",
+    title: "Водители",
     path: "/admin/drivers",
     icon: (
       <SvgIcon fontSize="small">
@@ -45,7 +45,7 @@ export const items = [
     ),
   },
   {
-    title: "Cities",
+    title: "Города",
     path: "/admin/cities",
     icon: (
       <SvgIcon fontSize="small">
@@ -54,7 +54,7 @@ export const items = [
     ),
   },
   {
-    title: "Account",
+    title: "Аккаунт",
     path: "/admin/account",
     icon: (
       <SvgIcon fontSize="small">
@@ -63,7 +63,7 @@ export const items = [
     ),
   },
   {
-    title: "Settings",
+    title: "Настройки",
     path: "/admin/settings",
     icon: (
       <SvgIcon fontSize="small">

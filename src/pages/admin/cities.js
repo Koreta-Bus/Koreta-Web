@@ -10,18 +10,25 @@ import { useFormik } from "formik";
 import { WebsiteColors } from "theme/colors";
 import { Popup } from "shared/alerts";
 import { Icon } from "shared/IconGenerator";
+import { createdAt } from "shared/date";
 
 import * as Yup from "yup";
 
 import { styled } from "styled-components";
 
-const TableCells = ["С", "По", "Цена", "Микро автобус Уникальный ключ"];
+const TableCells = [
+  "С",
+  "По",
+  "Цена",
+  "Микро автобус Уникальный ключ",
+  "Время создания направлении",
+];
 
 const initialValues = {
   from: "",
   to: "",
   price: "",
-  microAutobus: "Микро автобус",
+  uniqueKey: "",
 };
 
 const Page = () => {
@@ -60,19 +67,26 @@ const Page = () => {
       from: Yup.string().required("Поле 'Звідки' обов'язкове"),
       to: Yup.string().required('Поле "Куди" обов\'язкове'),
       price: Yup.string().required('Поле "Ціна" обов\'язкове'),
-      uniqueKey: Yup.string().required('Поле "Унікальний ключ" обов\'язкове'),
+      uniqueKey: Yup.string()
+        .required('Поле "Унікальний ключ" обов\'язкове')
+        .matches(
+          /^(?=.*[0-9])(?=.*[a-zA-Z]).+$/,
+          "Унікальний ключ повинен містити як букви, так і цифри"
+        ),
     }),
     onSubmit: async (values, helpers) => {
       try {
         const db = getDatabase(app);
-        const reference = ref(db, "cities/" + values.uniqueKey);
+        const reference = ref(db, "cities/" + values?.uniqueKey);
 
         set(reference, {
           from: values?.from,
           to: values?.to,
           price: values?.price,
           uniqueKey: values?.uniqueKey,
+          citiesCreatedAt: createdAt(),
         });
+
         formik.setValues(initialValues);
         handleClose();
 
@@ -104,7 +118,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Cities | Devias Kit</title>
+        <title>Города | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -117,7 +131,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" alignItems={"center"} spacing={4}>
               <Stack spacing={1} sx={{ width: "100%" }}>
-                <StyledTypography variant="h4">Cities Directions</StyledTypography>
+                <StyledTypography variant="h4">Направления городов</StyledTypography>
               </Stack>
               <ButtonWrapper>
                 <Button variant="contained" onClick={handleOpen}>
@@ -144,7 +158,7 @@ const Page = () => {
                           name="from"
                           onBlur={formik.handleBlur}
                           onChange={formik.handleChange}
-                          type="email"
+                          type="text"
                           value={formik.values.from}
                         />
 
@@ -157,35 +171,34 @@ const Page = () => {
                           name="to"
                           onBlur={formik.handleBlur}
                           onChange={formik.handleChange}
-                          type="email"
+                          type="text"
                           value={formik.values.to}
                         />
-
-                        <TextField
-                          error={!!(formik.touched.uniqueKey && formik.errors.uniqueKey)}
-                          helperText={formik.touched.uniqueKey && formik.errors.uniqueKey}
-                          fullWidth
-                          label="Цена"
-                          id="uniqueKey"
-                          name="uniqueKey"
-                          onBlur={formik.handleBlur}
-                          onChange={formik.handleChange}
-                          type="email"
-                          value={formik.values.uniqueKey}
-                        />
-
                         <TextField
                           error={!!(formik.touched.price && formik.errors.price)}
                           helperText={formik.touched.price && formik.errors.price}
                           fullWidth
-                          label="Уникальный ключ направления"
+                          label="Цена"
                           id="price"
                           name="price"
                           onBlur={formik.handleBlur}
                           onChange={formik.handleChange}
-                          type="email"
+                          type="text"
                           value={formik.values.price}
                         />
+                        <TextField
+                          error={!!(formik.touched.uniqueKey && formik.errors.uniqueKey)}
+                          helperText={formik.touched.uniqueKey && formik.errors.uniqueKey}
+                          fullWidth
+                          label="Уникальный ключ направления"
+                          id="uniqueKey"
+                          name="uniqueKey"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.uniqueKey}
+                        />
+
                         <ButtonWrapper>
                           <Button variant="contained" type="submit" onClick={handleOpen} fullWidth>
                             Надіслати

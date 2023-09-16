@@ -4,11 +4,11 @@ import { Button } from "./button";
 import { getDatabase, ref, set } from "firebase/database";
 import { Popup } from "shared/alerts";
 import { app } from "config/firebase";
+import { createdAt } from "shared/date";
 
 import * as Yup from "yup";
 
 import styled from "styled-components";
-import { createdAt } from "shared/date";
 
 const initialValues = {
   name: "",
@@ -38,17 +38,16 @@ export const DriverForm = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        const date = createdAt()
         const db = getDatabase(app);
         const reference = ref(db, "drivers/" + values.mobileNumber);
 
         set(reference, {
           name: values?.name,
-          mobileNumber: values?.mobileNumber,
-          nameOfLegalEntity: values?.nameOfLegalEntity,
           email: values?.email,
           description: values?.description,
-          createdAt: date,
+          mobileNumber: values?.mobileNumber,
+          nameOfLegalEntity: values?.nameOfLegalEntity,
+          createdAt: createdAt(),
         });
 
         Popup({

@@ -494,3 +494,17 @@ export const TelegramBoldIcon = () => (
     </defs>
   </svg>
 );
+
+export const StarIcon = () => (
+  <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2.04193 0H2.96657V5H2.04193V0Z" fill="#FF0000" />
+    <path
+      d="M0.462328 4.10973L6.1543e-06 3.34559L4.53768 0.84559L5 1.60973L0.462328 4.10973Z"
+      fill="#FF0000"
+    />
+    <path
+      d="M4.99999 3.34559L4.53767 4.10973L0 1.60973L0.462322 0.845588L4.99999 3.34559Z"
+      fill="#FF0000"
+    />
+  </svg>
+);

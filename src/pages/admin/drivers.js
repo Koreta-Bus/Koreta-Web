@@ -13,6 +13,7 @@ const TableCells = [
   "Описание",
   "Мобильный телефон",
   "Наименование юридического лица",
+  'Время отправки запроса',
 ];
 
 const Page = () => {
@@ -48,7 +49,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Drivers | Devias Kit</title>
+        <title>Водители | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -61,7 +62,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Drivers</Typography>
+                <Typography variant="h4">Водители</Typography>
               </Stack>
             </Stack>
             <CustomersTable

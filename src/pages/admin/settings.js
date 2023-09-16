@@ -6,7 +6,7 @@ import { SettingsPassword } from "sections/settings/settings-password";
 const Page = () => (
   <>
     <Head>
-      <title>Settings | Devias Kit</title>
+      <title>Настройки | Devias Kit</title>
     </Head>
     <Box
       component="main"
@@ -17,7 +17,7 @@ const Page = () => (
     >
       <Container maxWidth="lg">
         <Stack spacing={3}>
-          <Typography variant="h4">Settings</Typography>
+          <Typography variant="h4">Настройки</Typography>
           <SettingsPassword />
         </Stack>
       </Container>

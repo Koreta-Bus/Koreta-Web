@@ -7,7 +7,7 @@ import { AccountProfileDetails } from "sections/account/account-profile-details"
 const Page = () => (
   <>
     <Head>
-      <title>Account | Koreta</title>
+      <title>Аккаунт | Koreta</title>
     </Head>
     <Box
       component="main"
@@ -19,7 +19,7 @@ const Page = () => (
       <Container maxWidth="lg">
         <Stack spacing={3}>
           <div>
-            <Typography variant="h4">Account</Typography>
+            <Typography variant="h4">Аккаунт</Typography>
           </div>
           <div>
             <Grid container spacing={3}>
