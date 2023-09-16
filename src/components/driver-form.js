@@ -8,6 +8,7 @@ import { app } from "config/firebase";
 import * as Yup from "yup";
 
 import styled from "styled-components";
+import { createdAt } from "shared/date";
 
 const initialValues = {
   name: "",
@@ -37,6 +38,7 @@ export const DriverForm = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+        const date = createdAt()
         const db = getDatabase(app);
         const reference = ref(db, "drivers/" + values.mobileNumber);
 
@@ -46,6 +48,7 @@ export const DriverForm = () => {
           nameOfLegalEntity: values?.nameOfLegalEntity,
           email: values?.email,
           description: values?.description,
+          createdAt: date,
         });
 
         Popup({
