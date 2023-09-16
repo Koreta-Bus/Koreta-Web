@@ -173,6 +173,7 @@ const MenuListsContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 64px;
+  font-family: Sora, sans-serif;
 
   @media (max-width: 768px) {
     display: flex;

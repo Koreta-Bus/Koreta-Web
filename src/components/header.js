@@ -228,7 +228,7 @@ const MobileHeaderContainer = styled.div`
     margin-bottom: 4rem;
     left: ${({ hamburgervisible }) => (!hamburgervisible ? "100vw" : "0")};
     opacity: 1;
-    transition-duration: 0.5s;
+    transition-duration: 0.33s;
   }
 `;
 
@@ -334,6 +334,7 @@ const MenuItem = styled.div`
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
+  font-family: Sora, sans-serif;
   color: ${({ black }) => {
     return black ? "#1c1c1c" : "#ffff";
   }};

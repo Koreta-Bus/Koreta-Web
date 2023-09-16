@@ -12,7 +12,9 @@ export const AboutusCard = ({ cardInfos, height, mobileHeight }) => {
           <AboutUsInfoWrapper>
             {detailTitles?.map(({ key, text }) => (
               <AboutUsInfoTitle {...{ key }} e>
-                <Icon name="middle_dot" />
+                <MiddleIcon>
+                  <Icon name="middle_dot" />
+                </MiddleIcon>
                 <p>{text}</p>
               </AboutUsInfoTitle>
             ))}
@@ -23,6 +25,11 @@ export const AboutusCard = ({ cardInfos, height, mobileHeight }) => {
   );
 };
 
+export const MiddleIcon = styled.span`
+  position: relative;
+  top: -.2rem;
+`
+
 const AboutUsInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +38,7 @@ const AboutUsInfoWrapper = styled.div`
 `;
 
 const AboutusCardContainer = styled.div`
+  font-family: Sora, sans-serif;
   display: grid;
   gap: 20px;
   width: 100%;
@@ -43,7 +51,6 @@ const AboutusCardContainer = styled.div`
 
 const AboutUsInfoTitle = styled.div`
   display: flex;
-  align-items: center;
   gap: 8px;
   font-size: 16px;
   color: ${WebsiteColors.BLACK_PRIMARY};

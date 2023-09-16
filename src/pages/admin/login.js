@@ -106,9 +106,9 @@ const Page = () => {
                     {error}
                   </Typography>
                 )}
-                <div style={{ marginTop: "1rem" }}>
+                <ButtonWrapper style={{ marginTop: "1rem" }}>
                   <Button variant="contained" fullWidth type="submit">Continue</Button>
-                </div>
+                </ButtonWrapper>
                 <Alert color="primary" severity="info" sx={{ mt: 3 }}>
                   <div>
                     Admin Login: Unlock <b>Insights</b>, <b>Manage</b> Effortlessly.
@@ -122,6 +122,26 @@ const Page = () => {
     </>
   );
 };
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 1 / span 2;
+
+  .MuiButtonBase-root.MuiButton-root {
+    border-radius: 8px;
+    padding: 13px 20px;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .MuiButtonBase-root.MuiButton-root {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+  }
+`;
 
 const StyledTypography = styled(Typography)`
   @media (max-width: 768px) {

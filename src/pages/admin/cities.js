@@ -8,13 +8,15 @@ import { getDatabase, onValue, ref, set } from "firebase/database";
 import { app } from "config/firebase";
 import { useFormik } from "formik";
 import { WebsiteColors } from "theme/colors";
+import { Popup } from "shared/alerts";
+import { Icon } from "shared/IconGenerator";
 
 import * as Yup from "yup";
 
 import { styled } from "styled-components";
-import { Popup } from "shared/alerts";
 
-const TableCells = ["С", "По", "Цена", "Микро автобус"];
+
+const TableCells = ["С", "По", "Цена", "Микро автобус Уникальный ключ"];
 
 const initialValues = {
   from: "",
@@ -84,7 +86,6 @@ const Page = () => {
             showConfirmButton: false,
           });
         }, 300);
-        
       } catch (err) {
         Popup({
           icon: "error",
@@ -115,17 +116,24 @@ const Page = () => {
       >
         <Container maxWidth="xl">
           <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Stack spacing={1}>
-                <Typography variant="h4">Cities Directions</Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems={"center"} spacing={4}>
+              <Stack spacing={1} sx={{ width: "100%" }}>
+                <StyledTypography variant="h4">Cities Directions</StyledTypography>
               </Stack>
-              <Button variant="contained" onClick={handleOpen}>
-                Создать направление
-              </Button>
+              <ButtonWrapper>
+                <Button variant="contained" onClick={handleOpen}>
+                  Создать направление
+                </Button>
+              </ButtonWrapper>
               <Modal open={isVisibleModal} onClose={handleClose}>
                 <ModalContainer>
                   <ModalWrapperCities>
-                    <CityAddTitle>Добавление направления в город</CityAddTitle>
+                    <ModalHeader>
+                      <CityAddTitle>Добавление направления в город</CityAddTitle>
+                      <IconWrapper onClick={handleClose}>
+                        <Icon name="exit" />
+                      </IconWrapper>
+                    </ModalHeader>
                     <StyledDriverForm onSubmit={formik.handleSubmit}>
                       <DriverFormWrapper>
                         <FieldWrapper>
@@ -182,12 +190,12 @@ const Page = () => {
                               formik.errors.uniqueKey}
                           </ErrorText>
                         </FieldWrapper>
+                        <ButtonWrapper>
+                          <Button variant="contained" type="submit" onClick={handleOpen} fullWidth>
+                            Надіслати
+                          </Button>
+                        </ButtonWrapper>
                       </DriverFormWrapper>
-                      <ButtonWrapper>
-                        <Button variant="contained" type="submit" onClick={handleOpen}>
-                          Надіслати
-                        </Button>
-                      </ButtonWrapper>
                     </StyledDriverForm>
                   </ModalWrapperCities>
                 </ModalContainer>
@@ -209,12 +217,33 @@ const Page = () => {
   );
 };
 
+const StyledTypography = styled(Typography)`
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+
+const IconWrapper = styled.span`
+  cursor: pointer;
+`;
+
+const ModalHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const ModalContainer = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `;
 
 const CityAddTitle = styled.h2`
@@ -222,7 +251,7 @@ const CityAddTitle = styled.h2`
   font-weight: 600;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
   }
 `;
@@ -237,13 +266,21 @@ const ModalWrapperCities = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 const ErrorText = styled.div`
   width: 100%;
   color: red;
   font-family: Sora, sans-serif;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const InputTextField = styled.input`
@@ -253,12 +290,21 @@ const InputTextField = styled.input`
 
 const ButtonWrapper = styled.div`
   width: 100%;
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 1 / span 2;
 
-  button:hover {
-    background-color: ${WebsiteColors.PRIMARY};
+  .MuiButtonBase-root.MuiButton-root {
+    border-radius: 4px;
+    padding: 13px 20px;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .MuiButtonBase-root.MuiButton-root {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
   }
 `;
 
@@ -266,13 +312,12 @@ const DriverFormWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
-  padding-bottom: 4rem;
 
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 24px;
+    gap: 10px;
     width: 100%;
   }
 
@@ -327,6 +372,12 @@ const FieldWrapper = styled.div`
   grid-column: ${({ textarea }) => {
     return textarea ? "1 / span 2" : "";
   }};
+
+  @media (max-width: 768px) {
+    label {
+      font-size: 0.9rem;
+    }
+  }
 `;
 
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

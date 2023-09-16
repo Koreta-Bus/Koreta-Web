@@ -132,6 +132,7 @@ const AboutUsInfoSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-family: Sora, sans-serif;
   color: ${WebsiteColors.BLACK_PRIMARY};
   font-size: 16px;
   line-height: 24px;

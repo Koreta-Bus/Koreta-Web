@@ -24,6 +24,7 @@ const ImageContainer = styled.div`
 
 const SubTitle = styled.span`
   color: ${WebsiteColors.BLACK_PRIMARY};
+  font-family: Sora, sans-serif;
   font-size: 16px;
   line-height: 24px;
 `;
@@ -33,6 +34,7 @@ const Title = styled.span`
   font-size: 32px;
   font-weight: 600;
   line-height: 32px;
+  font-family: Lora, sans-serif;
 
   @media (max-width: 768px) {
     font-size: 24px;
