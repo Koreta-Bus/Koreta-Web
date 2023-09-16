@@ -199,7 +199,7 @@ const Page = () => {
               </Stack>
             </Stack>
             <CustomersTable
-              count={data.length}
+              count={data?.length}
               items={customers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

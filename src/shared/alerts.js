@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { WebsiteColors } from "theme/colors";
 
 export const Popup = ({
   icon = "success",
