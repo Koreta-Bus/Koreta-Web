@@ -1,9 +1,9 @@
 import { Icon } from "shared/IconGenerator";
 import { WebsiteColors } from "theme/colors";
 import { IconButton } from "@mui/material";
+import { useCallback, useState } from "react";
 
 import styled from "styled-components";
-import { useCallback, useState } from "react";
 
 export const InputField = ({
   icon,
