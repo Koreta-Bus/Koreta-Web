@@ -52,6 +52,7 @@ export const CustomersTable = (props) => {
                     {data?.price && <TableCell>{data?.price}</TableCell>}
                     {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>}
                     {data?.citiesCreatedAt && <TableCell>{data?.citiesCreatedAt}</TableCell>}
+
                   </TableRow>
                 );
               })}
