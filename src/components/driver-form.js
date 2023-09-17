@@ -73,10 +73,12 @@ export const DriverForm = () => {
   return (
     <DriverFormContainer>
       <FormTitle>Напишіть нам</FormTitle>
-      <StyledDriverForm onSubmit={formik.handleSubmit}>
+      <StyledDriverForm onSubmit={formik.handleSubmit}> 
         <DriverFormWrapper>
           <FieldWrapper>
-            <label htmlFor="name">Ім'я та прізвише</label>
+            <label htmlFor="name">
+              Ім'я та прізвише <Icon name="star" />
+            </label>
             <InputTextField
               type="text"
               id="name"
@@ -87,7 +89,9 @@ export const DriverForm = () => {
             <ErrorText>{formik.values.name && formik.touched.name && formik.errors.name}</ErrorText>
           </FieldWrapper>
           <FieldWrapper>
-            <label htmlFor="mobileNumber">Номер телефону</label>
+            <label htmlFor="mobileNumber">
+              Номер телефону <Icon name="star" />
+            </label>
             <InputTextField
               type="text"
               id="mobileNumber"

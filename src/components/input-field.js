@@ -23,6 +23,7 @@ export const InputField = ({
   containerClass = null,
   maxLength = null,
   formik,
+  borderRed = false,
 }) => {
   const [optionModalVisibility, setOptionModalVisibility] = useState(true);
 
@@ -38,12 +39,14 @@ export const InputField = ({
   };
 
   const exchangeHandler = useCallback(() => {
-    formik.setFieldValue("from", formik.values.to);
-    formik.setFieldValue("to", formik.values.from);
+    if (formik.values.to || formik.values.from) {
+      formik.setFieldValue("from", formik.values.to);
+      formik.setFieldValue("to", formik.values.from);
+    }
   }, [formik]);
 
   return (
-    <InputContainer className={containerClass}>
+    <InputContainer className={containerClass} borderRed={borderRed}>
       <InputWrapper className={className}>
         <Input
           {...{
@@ -142,6 +145,8 @@ const InputContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  border: 1px solid ${({ borderRed }) => (borderRed ? "red" : "white")};
+  border-radius: 8px;
 
   :focus,
   :focus-visible,
