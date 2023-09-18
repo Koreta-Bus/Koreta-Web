@@ -19,8 +19,9 @@ import { styled } from "styled-components";
 const TableCells = [
   "С",
   "По",
+  "Адрес отправления",
+  "Адреса прибытия",
   "Цена",
-  "Микро автобус Уникальный ключ",
   "Время создания направлении",
 ];
 
@@ -29,6 +30,8 @@ const initialValues = {
   to: "",
   price: "",
   uniqueKey: "",
+  goesFrom: "",
+  goesTo: "",
 };
 
 const Page = () => {
@@ -69,10 +72,9 @@ const Page = () => {
       price: Yup.string().required('Поле "Ціна" обов\'язкове'),
       uniqueKey: Yup.string()
         .required('Поле "Унікальний ключ" обов\'язкове')
-        .matches(
-          /^(?=.*[0-9])(?=.*[a-zA-Z]).+$/,
-          "Унікальний ключ повинен містити як букви, так і цифри"
-        ),
+        .matches(/^(?=.*[0-9]).+$/, "Унікальний ключ повинен містити як букви, так і цифри"),
+      goesFrom: Yup.string().required('Поле "Звідки" обов\'язкове'),
+      goesTo: Yup.string().required('Поле "Куди" обов\'язкове'),
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -84,6 +86,8 @@ const Page = () => {
           to: values?.to,
           price: values?.price,
           uniqueKey: values?.uniqueKey,
+          goesFrom: values?.goesFrom,
+          goesTo: values?.goesTo,
           citiesCreatedAt: createdAt(),
         });
 
@@ -197,6 +201,30 @@ const Page = () => {
                           onChange={formik.handleChange}
                           type="text"
                           value={formik.values.uniqueKey}
+                        />
+                        <TextField
+                          error={!!(formik.touched.goesFrom && formik.errors.goesFrom)}
+                          helperText={formik.touched.goesFrom && formik.errors.goesFrom}
+                          fullWidth
+                          label="Адрес отправления"
+                          id="goesFrom"
+                          name="goesFrom"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.goesFrom}
+                        />
+                        <TextField
+                          error={!!(formik.touched.goesTo && formik.errors.goesTo)}
+                          helperText={formik.touched.goesTo && formik.errors.goesTo}
+                          fullWidth
+                          label="Адреса прибытия"
+                          id="goesTo"
+                          name="goesTo"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.goesTo}
                         />
 
                         <ButtonWrapper>
@@ -355,19 +383,6 @@ const StyledDriverForm = styled.form`
   flex-direction: column;
   gap: 24px;
   position: relative;
-`;
-
-const FieldWrapper = styled.div`
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: 12px;
-  //   font-family: Sora, sans-serif;
-
-  //   @media (max-width: 768px) {
-  //     label {
-  //       font-size: 0.9rem;
-  //     }
-  //   }
 `;
 
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

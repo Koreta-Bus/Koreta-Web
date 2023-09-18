@@ -166,7 +166,8 @@ export const OrderForm = ({ searchedInitialValues, searchValue = false }) => {
                         value={formik.values["date"]}
                         onChange={(newValue) => formik.setFieldValue("date", newValue)}
                         renderInput={(params) => (
-                          <TextField
+                          <StyledDatePickerTextField
+                            borderRed={!!(formik.touched["date"] && formik.errors["date"])}
                             {...params}
                             inputProps={{
                               ...params.inputProps,
@@ -181,13 +182,15 @@ export const OrderForm = ({ searchedInitialValues, searchValue = false }) => {
                         maxDate={maxDate}
                       />
                     </StyledMobileDatePicker>
-                    <StyledDesktopDatePicker>
+                    <StyledDesktopDatePicker
+                      borderRed={!!(formik.touched["date"] && formik.errors["date"])}
+                    >
                       <CustomDatePicker
                         fontSize={formik.values["date"] === "Дата"}
                         value={formik.values["date"]}
                         onChange={(newValue) => formik.setFieldValue("date", newValue)}
                         renderInput={(params) => (
-                          <TextField
+                          <StyledDatePickerTextField
                             {...params}
                             inputProps={{
                               ...params.inputProps,
@@ -235,6 +238,8 @@ export const OrderForm = ({ searchedInitialValues, searchValue = false }) => {
     </>
   );
 };
+
+const StyledDatePickerTextField = styled(TextField)``;
 
 const TelePhone = styled.span`
   font-family: Lora, sans-serif;
@@ -284,6 +289,11 @@ const StyledMobileDatePicker = styled.div`
 
 const StyledDesktopDatePicker = styled.div`
   display: block;
+
+  & .MuiFormControl-root.MuiTextField-root {
+    border: 1px solid ${({ borderRed }) => (borderRed ? "red !important" : "white")};
+  }
+
   @media (max-width: 768px) {
     display: none;
   }

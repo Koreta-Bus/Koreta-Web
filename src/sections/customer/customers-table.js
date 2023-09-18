@@ -49,10 +49,11 @@ export const CustomersTable = (props) => {
 
                     {data?.from && <TableCell>{data?.from}</TableCell>}
                     {data?.to && <TableCell>{data?.to}</TableCell>}
+                    {/* {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>} */}
+                    {data?.goesFrom && <TableCell>{data?.goesFrom}</TableCell>}
+                    {data?.goesTo && <TableCell>{data?.goesTo}</TableCell>}
                     {data?.price && <TableCell>{data?.price}</TableCell>}
-                    {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>}
                     {data?.citiesCreatedAt && <TableCell>{data?.citiesCreatedAt}</TableCell>}
-
                     
                   </TableRow>
                 );
