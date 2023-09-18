@@ -38,16 +38,23 @@ export const CustomersTable = (props) => {
             <TableBody>
               {items?.map(({ key, data }) => {
                 return (
-                  <TableRow hover key={data?.mobileNumber}>
+                  <TableRow hover key={data?.mobileNumber ?? data?.uniqueKey}>
+                    
                     {data?.name && <TableCell>{data?.name}</TableCell>}
                     {data?.email && <TableCell>{data?.email}</TableCell>}
                     {data?.description && <TableCell>{data?.description}</TableCell>}
                     {data?.mobileNumber && <TableCell>{data?.mobileNumber}</TableCell>}
                     {data?.nameOfLegalEntity && <TableCell>{data?.nameOfLegalEntity}</TableCell>}
+                    {data?.createdAt && <TableCell>{data?.createdAt}</TableCell>}
+
                     {data?.from && <TableCell>{data?.from}</TableCell>}
                     {data?.to && <TableCell>{data?.to}</TableCell>}
+                    {/* {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>} */}
+                    {data?.goesFrom && <TableCell>{data?.goesFrom}</TableCell>}
+                    {data?.goesTo && <TableCell>{data?.goesTo}</TableCell>}
                     {data?.price && <TableCell>{data?.price}</TableCell>}
-                    {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>}
+                    {data?.citiesCreatedAt && <TableCell>{data?.citiesCreatedAt}</TableCell>}
+                    
                   </TableRow>
                 );
               })}
@@ -62,7 +69,7 @@ export const CustomersTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[1, 5, 10]}
+        rowsPerPageOptions={[5, 10, 20]}
       />
     </Card>
   );

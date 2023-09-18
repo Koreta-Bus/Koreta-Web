@@ -20,6 +20,8 @@ import {
   InstagramBoldIcon,
   FacebookBoldIcon,
   TelegramBoldIcon,
+  StarIcon,
+  MicroAutobus,
 } from "theme/icons";
 
 export const Icon = ({ name, ...rest }) => {
@@ -44,6 +46,8 @@ export const Icon = ({ name, ...rest }) => {
     location: LocationIcon,
     operator: OperatorIcon,
     middle_dot: MiddleDotIcon,
+    star: StarIcon,
+    micro_autobus: MicroAutobus
   };
   const SelectedIcon = icons[name];
   return <SelectedIcon {...rest} />;

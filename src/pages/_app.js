@@ -4,17 +4,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { AuthConsumer,AuthProvider } from "contexts/auth-context";
+import { AuthConsumer, AuthProvider } from "contexts/auth-context";
 import { useNProgress } from "hooks/use-nprogress";
 import { createTheme } from "theme/index";
-import { createEmotionCache } from "utils/create-emotion-cache";createEmotionCache
+import { createEmotionCache } from "utils/create-emotion-cache";
+createEmotionCache;
 import { Provider } from "react-redux";
 import { store } from "store/store";
 import { uk } from "date-fns/locale";
 
 import "simplebar-react/dist/simplebar.min.css";
-import 'sweetalert2/src/sweetalert2.scss'
-import '../styles/index.css';
+import "sweetalert2/src/sweetalert2.scss";
+import "../styles/index.css";
 
 const clientSideEmotionCache = createEmotionCache();
 

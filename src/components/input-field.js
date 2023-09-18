@@ -1,13 +1,12 @@
 import { Icon } from "shared/IconGenerator";
 import { WebsiteColors } from "theme/colors";
 import { IconButton } from "@mui/material";
+import { useCallback, useState } from "react";
 
 import styled from "styled-components";
-import { useState } from "react";
 
 export const InputField = ({
   icon,
-  iconClick,
   value,
   onChange,
   onBlur,
@@ -24,6 +23,7 @@ export const InputField = ({
   containerClass = null,
   maxLength = null,
   formik,
+  borderRed = false,
 }) => {
   const [optionModalVisibility, setOptionModalVisibility] = useState(true);
 
@@ -38,8 +38,15 @@ export const InputField = ({
     setOptionModalVisibility(false);
   };
 
+  const exchangeHandler = useCallback(() => {
+    if (formik.values.to || formik.values.from) {
+      formik.setFieldValue("from", formik.values.to);
+      formik.setFieldValue("to", formik.values.from);
+    }
+  }, [formik]);
+
   return (
-    <InputContainer className={containerClass}>
+    <InputContainer className={containerClass} borderRed={borderRed}>
       <InputWrapper className={className}>
         <Input
           {...{
@@ -53,10 +60,11 @@ export const InputField = ({
             onChange: name === "personCount" ? (e) => handleInputChange(e) : onChange,
             maxLength,
           }}
+          icon={!icon}
           autoComplete="off"
         />
         {icon && (
-          <IconWrapper onClick={iconClick}>
+          <IconWrapper onClick={icon === "exchange" ? exchangeHandler : null}>
             <IconButton>
               <Icon name={icon} width={iconWidth} height={iconHeight} style={iconStyle} />
             </IconButton>
@@ -104,7 +112,7 @@ const ResultOption = styled.div`
   font-size: 20px;
   line-height: 24px;
 
-  &:hover{
+  &:hover {
     border: 1px solid ${WebsiteColors.BLACK_PRIMARY};
   }
 
@@ -112,7 +120,6 @@ const ResultOption = styled.div`
     font-size: 16px;
     max-width: 100%;
   }
-
 `;
 
 const ResultOptionsWrapper = styled.div`
@@ -138,6 +145,8 @@ const InputContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  border: 1px solid ${({ borderRed }) => (borderRed ? "red" : "white")};
+  border-radius: 8px;
 
   :focus,
   :focus-visible,
@@ -154,6 +163,7 @@ const Input = styled.input`
   height: 64px;
   border-radius: 8px;
   padding-left: 24px;
+  padding-right: ${({ icon }) => icon && "24px"};
   width: 100%;
   font-family: Sora, sans-serif;
   color: ${WebsiteColors.BLACK_PRIMARY};
@@ -173,7 +183,7 @@ const Input = styled.input`
   }
 
   @media (max-width: 768px) {
-    font-size: 14px;
+    font-size: 18px;
   }
 `;
 

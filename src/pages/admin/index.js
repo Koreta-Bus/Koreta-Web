@@ -13,7 +13,7 @@ import { OverviewLatestOrders } from "sections/overview/overview-latest-orders";
 const Page = () => (
   <>
     <Head>
-      <title>Overview | Koreta</title>
+      <title>Обзор | Koreta</title>
     </Head>
     <Box
       component="main"

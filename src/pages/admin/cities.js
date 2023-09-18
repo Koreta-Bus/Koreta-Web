@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Head from "next/head";
-import { Box, Button, Container, Modal, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Modal, Stack, TextField, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "layouts/dashboard/layout";
 import { CustomersTable } from "sections/customer/customers-table";
 import { applyPagination } from "utils/apply-pagination";
@@ -10,19 +10,28 @@ import { useFormik } from "formik";
 import { WebsiteColors } from "theme/colors";
 import { Popup } from "shared/alerts";
 import { Icon } from "shared/IconGenerator";
+import { createdAt } from "shared/date";
 
 import * as Yup from "yup";
 
 import { styled } from "styled-components";
 
-
-const TableCells = ["С", "По", "Цена", "Микро автобус Уникальный ключ"];
+const TableCells = [
+  "С",
+  "По",
+  "Адрес отправления",
+  "Адреса прибытия",
+  "Цена",
+  "Время создания направлении",
+];
 
 const initialValues = {
   from: "",
   to: "",
   price: "",
-  microAutobus: "Микро автобус",
+  uniqueKey: "",
+  goesFrom: "",
+  goesTo: "",
 };
 
 const Page = () => {
@@ -61,19 +70,27 @@ const Page = () => {
       from: Yup.string().required("Поле 'Звідки' обов'язкове"),
       to: Yup.string().required('Поле "Куди" обов\'язкове'),
       price: Yup.string().required('Поле "Ціна" обов\'язкове'),
-      uniqueKey: Yup.string().required('Поле "Унікальний ключ" обов\'язкове'),
+      uniqueKey: Yup.string()
+        .required('Поле "Унікальний ключ" обов\'язкове')
+        .matches(/^(?=.*[0-9]).+$/, "Унікальний ключ повинен містити як букви, так і цифри"),
+      goesFrom: Yup.string().required('Поле "Звідки" обов\'язкове'),
+      goesTo: Yup.string().required('Поле "Куди" обов\'язкове'),
     }),
     onSubmit: async (values, helpers) => {
       try {
         const db = getDatabase(app);
-        const reference = ref(db, "cities/" + values.uniqueKey);
+        const reference = ref(db, "cities/" + values?.uniqueKey);
 
         set(reference, {
           from: values?.from,
           to: values?.to,
           price: values?.price,
           uniqueKey: values?.uniqueKey,
+          goesFrom: values?.goesFrom,
+          goesTo: values?.goesTo,
+          citiesCreatedAt: createdAt(),
         });
+
         formik.setValues(initialValues);
         handleClose();
 
@@ -105,7 +122,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Cities | Devias Kit</title>
+        <title>Города | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -118,7 +135,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" alignItems={"center"} spacing={4}>
               <Stack spacing={1} sx={{ width: "100%" }}>
-                <StyledTypography variant="h4">Cities Directions</StyledTypography>
+                <StyledTypography variant="h4">Направления городов</StyledTypography>
               </Stack>
               <ButtonWrapper>
                 <Button variant="contained" onClick={handleOpen}>
@@ -136,60 +153,80 @@ const Page = () => {
                     </ModalHeader>
                     <StyledDriverForm onSubmit={formik.handleSubmit}>
                       <DriverFormWrapper>
-                        <FieldWrapper>
-                          <label htmlFor="name">С</label>
-                          <InputTextField
-                            type="text"
-                            id="from"
-                            name="from"
-                            value={formik.values.from}
-                            onChange={formik.handleChange}
-                          />
-                          <ErrorText>
-                            {formik.values.from && formik.touched.from && formik.errors.from}
-                          </ErrorText>
-                        </FieldWrapper>
-                        <FieldWrapper>
-                          <label htmlFor="mobileNumber">По</label>
-                          <InputTextField
-                            type="text"
-                            id="to"
-                            name="to"
-                            value={formik.values.to}
-                            onChange={formik.handleChange}
-                          />
-                          <ErrorText>
-                            {formik.values.to && formik.touched.to && formik.errors.to}
-                          </ErrorText>
-                        </FieldWrapper>
-                        <FieldWrapper>
-                          <label htmlFor="nameOfLegalEntity">Цена</label>
-                          <InputTextField
-                            type="text"
-                            id="price"
-                            name="price"
-                            value={formik.values.price}
-                            onChange={formik.handleChange}
-                          />
-                          <ErrorText>
-                            {formik.values.price && formik.touched.price && formik.errors.price}
-                          </ErrorText>
-                        </FieldWrapper>
-                        <FieldWrapper>
-                          <label htmlFor="uniqueKey">Уникальный ключ направления</label>
-                          <InputTextField
-                            type="text"
-                            id="uniqueKey"
-                            name="uniqueKey"
-                            onChange={formik.handleChange}
-                            value={formik.values.uniqueKey}
-                          />
-                          <ErrorText>
-                            {formik.values.uniqueKey &&
-                              formik.touched.uniqueKey &&
-                              formik.errors.uniqueKey}
-                          </ErrorText>
-                        </FieldWrapper>
+                        <TextField
+                          error={!!(formik.touched.from && formik.errors.from)}
+                          helperText={formik.touched.from && formik.errors.from}
+                          fullWidth
+                          label="С"
+                          id="from"
+                          name="from"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.from}
+                        />
+
+                        <TextField
+                          error={!!(formik.touched.to && formik.errors.to)}
+                          helperText={formik.touched.to && formik.errors.to}
+                          fullWidth
+                          label="По"
+                          id="to"
+                          name="to"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.to}
+                        />
+                        <TextField
+                          error={!!(formik.touched.price && formik.errors.price)}
+                          helperText={formik.touched.price && formik.errors.price}
+                          fullWidth
+                          label="Цена"
+                          id="price"
+                          name="price"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.price}
+                        />
+                        <TextField
+                          error={!!(formik.touched.uniqueKey && formik.errors.uniqueKey)}
+                          helperText={formik.touched.uniqueKey && formik.errors.uniqueKey}
+                          fullWidth
+                          label="Уникальный ключ направления"
+                          id="uniqueKey"
+                          name="uniqueKey"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.uniqueKey}
+                        />
+                        <TextField
+                          error={!!(formik.touched.goesFrom && formik.errors.goesFrom)}
+                          helperText={formik.touched.goesFrom && formik.errors.goesFrom}
+                          fullWidth
+                          label="Адрес отправления"
+                          id="goesFrom"
+                          name="goesFrom"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.goesFrom}
+                        />
+                        <TextField
+                          error={!!(formik.touched.goesTo && formik.errors.goesTo)}
+                          helperText={formik.touched.goesTo && formik.errors.goesTo}
+                          fullWidth
+                          label="Адреса прибытия"
+                          id="goesTo"
+                          name="goesTo"
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          type="text"
+                          value={formik.values.goesTo}
+                        />
+
                         <ButtonWrapper>
                           <Button variant="contained" type="submit" onClick={handleOpen} fullWidth>
                             Надіслати
@@ -273,21 +310,6 @@ const ModalWrapperCities = styled.div`
   }
 `;
 
-const ErrorText = styled.div`
-  width: 100%;
-  color: red;
-  font-family: Sora, sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const InputTextField = styled.input`
-  padding: 1rem;
-  font-family: Sora, sans-serif;
-`;
-
 const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -296,7 +318,7 @@ const ButtonWrapper = styled.div`
 
   .MuiButtonBase-root.MuiButton-root {
     border-radius: 4px;
-    padding: 13px 20px;
+    padding: 11px 20px;
     font-size: 1rem;
   }
 
@@ -325,7 +347,6 @@ const DriverFormWrapper = styled.div`
     border-radius: 4px;
     background: #fff;
     box-shadow: 0px 0px 8px 0px rgba(32, 48, 99, 0.25);
-    height: 48px;
     outline: none;
     border: none;
 
@@ -362,22 +383,6 @@ const StyledDriverForm = styled.form`
   flex-direction: column;
   gap: 24px;
   position: relative;
-`;
-
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  font-family: Sora, sans-serif;
-  grid-column: ${({ textarea }) => {
-    return textarea ? "1 / span 2" : "";
-  }};
-
-  @media (max-width: 768px) {
-    label {
-      font-size: 0.9rem;
-    }
-  }
 `;
 
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

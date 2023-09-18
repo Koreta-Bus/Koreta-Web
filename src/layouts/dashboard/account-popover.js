@@ -32,7 +32,7 @@ export const AccountPopover = (props) => {
           px: 2,
         }}
       >
-        <Typography variant="overline">Account</Typography>
+        <Typography variant="overline">Аккаунт</Typography>
         <Typography color="text.secondary" variant="body2">
           Koreta
         </Typography>

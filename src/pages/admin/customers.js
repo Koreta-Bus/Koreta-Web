@@ -1,9 +1,8 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import Head from "next/head";
 import { subDays, subHours } from "date-fns";
 import { Box, Container, Stack, Typography } from "@mui/material";
-import { useSelection } from "hooks/use-selection";
-import { Layout as DashboardLayout} from "layouts/dashboard/layout";
+import { Layout as DashboardLayout } from "layouts/dashboard/layout";
 import { CustomersTable } from "sections/customer/customers-table";
 import { applyPagination } from "utils/apply-pagination";
 
@@ -152,37 +151,45 @@ const data = [
   },
 ];
 
-const useCustomers = (page, rowsPerPage) => {
-  return useMemo(() => {
-    return applyPagination(data, page, rowsPerPage);
-  }, [page, rowsPerPage]);
-};
-
-const useCustomerIds = (customers) => {
-  return useMemo(() => {
-    return customers.map((customer) => customer.id);
-  }, [customers]);
-};
-
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
+  const [customers, setCustomers] = useState([]);
 
-  const handlePageChange = useCallback((event, value) => {
-    setPage(value);
-  }, []);
+  const useCustomers = (page, rowsPerPage, customers) =>
+    useMemo(() => applyPagination(customers, page, rowsPerPage), [page, rowsPerPage, customers]);
 
-  const handleRowsPerPageChange = useCallback((event) => {
-    setRowsPerPage(event.target.value);
-  }, []);
+  const customersInfos = useCustomers(page, rowsPerPage, customers);
+
+  const handlePageChange = useCallback((_, value) => setPage(value), []);
+
+  const handleRowsPerPageChange = useCallback((event) => setRowsPerPage(event.target.value), []);
+
+  // useEffect(() => {
+  //   const getCustomers = () => {
+  //     let customersRes = [];
+  //     const dbRef = ref(getDatabase(app), "customers/");
+  //     dataRef.limitToLast(50).on("value", (snapshot) => {
+  //       const customersArray = [];
+
+  //       snapshot.forEach((childSnapshot) => {
+  //         const key = childSnapshot.key;
+  //         const data = childSnapshot.val();
+  //         customersArray.push({ key, data });
+  //       });
+
+  //       setCustomers(customersRes);
+  //     });
+  //   };
+  //   getCustomers();
+
+  //   return () => dataRef.off("child_added");
+  // }, []);
 
   return (
     <>
       <Head>
-        <title>Customers | Devias Kit</title>
+        <title>Клиенты | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -195,12 +202,12 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Customers</Typography>
+                <Typography variant="h4">Клиенты</Typography>
               </Stack>
             </Stack>
             <CustomersTable
               count={data?.length}
-              items={customers}
+              items={customersInfos}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

@@ -68,7 +68,7 @@ const companies = [
 const Page = () => (
   <>
     <Head>
-      <title>Companies | Devias Kit</title>
+      <title>Компании | Devias Kit</title>
     </Head>
     <Box
       component="main"
@@ -80,7 +80,7 @@ const Page = () => (
       <Container maxWidth="xl">
         <Stack spacing={3}>
           <Stack direction="row" justifyContent="space-between" spacing={4}>
-            <Typography variant="h4">Companies</Typography>
+            <Typography variant="h4">Компании</Typography>
           </Stack>
           <Grid container spacing={3}>
             {companies.map((company) => (
