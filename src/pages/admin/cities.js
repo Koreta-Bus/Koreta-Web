@@ -31,7 +31,7 @@ const initialValues = {
   price: "",
   uniqueKey: "",
   goesFrom: "",
-  goesTo: "",
+  goesTo: "До дому",
 };
 
 const Page = () => {
