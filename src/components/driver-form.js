@@ -9,6 +9,7 @@ import { createdAt } from "shared/date";
 import * as Yup from "yup";
 
 import styled from "styled-components";
+import { Icon } from "shared/IconGenerator";
 
 const initialValues = {
   name: "",
