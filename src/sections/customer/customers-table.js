@@ -19,7 +19,8 @@ export const CustomersTable = (props) => {
     onRowsPerPageChange,
     page = 0,
     rowsPerPage = 0,
-    tableCells = []
+    tableCells = [],
+    onClickRow,
   } = props;
 
   return (
@@ -37,8 +38,11 @@ export const CustomersTable = (props) => {
             <TableBody>
               {items?.map(({ key, data }) => {
                 return (
-                  <TableRow hover key={data?.mobileNumber ?? data?.uniqueKey}>
-                    
+                  <TableRow
+                    hover
+                    key={data?.mobileNumber ?? data?.uniqueKey ?? key}
+                    onClick={() => onClickRow(data)}
+                  >
                     {data?.name && <TableCell>{data?.name}</TableCell>}
                     {data?.email && <TableCell>{data?.email}</TableCell>}
                     {data?.description && <TableCell>{data?.description}</TableCell>}
@@ -53,7 +57,6 @@ export const CustomersTable = (props) => {
                     {data?.goesTo && <TableCell>{data?.goesTo}</TableCell>}
                     {data?.price && <TableCell>{data?.price}</TableCell>}
                     {data?.citiesCreatedAt && <TableCell>{data?.citiesCreatedAt}</TableCell>}
-                    
                   </TableRow>
                 );
               })}

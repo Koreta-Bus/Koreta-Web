@@ -1,9 +1,11 @@
 import { Icon } from "shared/IconGenerator";
 import { WebsiteColors } from "theme/colors";
 import { IconButton } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { setOrderFormValue } from "store/states";
 
 export const InputField = ({
   icon,
@@ -25,18 +27,29 @@ export const InputField = ({
   formik,
   borderRed = false,
 }) => {
+  const dispatch = useDispatch();
   const [optionModalVisibility, setOptionModalVisibility] = useState(true);
 
-  const handleInputChange = (event) => {
-    const inputText = event.target.value;
-    if (+inputText < 100) {
-      formik.handleChange(event, inputText);
-    }
-  };
+  console.log(result, "result");
 
-  const selectPlaceHandler = () => {
-    setOptionModalVisibility(false);
-  };
+  const handleInputChange = useCallback(
+    (event) => {
+      const inputText = event.target.value;
+      if (+inputText < 100) {
+        formik.handleChange(event, inputText);
+      }
+    },
+    [formik]
+  );
+
+  const selectPlaceHandler = useCallback(
+    (val, cityId) => {
+      setOptionModalVisibility(false);
+      formik.setFieldValue(name, val);
+      dispatch(setOrderFormValue({ name, cityId, cityName: val }));
+    },
+    [name, formik]
+  );
 
   const exchangeHandler = useCallback(() => {
     if (formik.values.to || formik.values.from) {
@@ -44,6 +57,12 @@ export const InputField = ({
       formik.setFieldValue("to", formik.values.from);
     }
   }, [formik]);
+
+  useEffect(() => {
+    if(result?.length > 0 && !optionModalVisibility) {
+      setOptionModalVisibility(true)
+    }
+  },[result])
 
   return (
     <InputContainer className={containerClass} borderRed={borderRed}>
@@ -72,17 +91,21 @@ export const InputField = ({
         )}
       </InputWrapper>
       {Array.isArray(result) && optionModalVisibility && result?.length > 0 && (
-        <ResultOptionsWrapper>
-          <ResultOption onClick={() => selectPlaceHandler()}>Звідки</ResultOption>
-          <ResultOption>Звідки</ResultOption>
-          <ResultOption>Звідки</ResultOption>
-          <ResultOption>Звідки</ResultOption>
-          <ResultOption>Звідки</ResultOption>
-        </ResultOptionsWrapper>
+        <ResultOptionsContainer>
+          <ResultOptionsWrapper>
+            {result?.map(({ name: cityName, city_id }) => {
+              return (
+                <ResultOption onClick={() => selectPlaceHandler(cityName, city_id)}>
+                  {cityName?.length > 11 ? `${cityName.substring(0, 11)}..` : cityName}
+                </ResultOption>
+              );
+            })}
+          </ResultOptionsWrapper>
+        </ResultOptionsContainer>
       )}
-      {result?.length === 0 && (
+      {Array.isArray(result) && result?.length === 0 && (
         <ResultOptionsWrapper>
-          <ResultOption>no result found</ResultOption>
+          <ResultOption noResult={true}>no result found</ResultOption>
         </ResultOptionsWrapper>
       )}
     </InputContainer>
@@ -102,15 +125,15 @@ const IconWrapper = styled.span`
 const ResultOption = styled.div`
   padding: 20px 24px 20px 0;
   border: 0.5px solid ${WebsiteColors.CARD_BORDER};
-  color: ${WebsiteColors.CARD_BORDER};
+  color: ${WebsiteColors.BLACK_PRIMARY};
   max-width: 198px;
   height: 64px;
   background: #ffff;
   border-radius: 4px;
-  color: ${WebsiteColors.CARD_BORDER};
   padding: 20px 24px 0;
   font-size: 20px;
   line-height: 24px;
+  margin-top: ${({ noResult }) => (noResult ? "2rem" : "")};
 
   &:hover {
     border: 1px solid ${WebsiteColors.BLACK_PRIMARY};
@@ -122,6 +145,15 @@ const ResultOption = styled.div`
   }
 `;
 
+const ResultOptionsContainer = styled.div`
+  position: absolute;
+  left: 0;
+
+  @media (max-width: 768px) {
+    overflow: scroll;
+  }
+`;
+
 const ResultOptionsWrapper = styled.div`
   width: 198px;
   display: flex;
@@ -129,7 +161,7 @@ const ResultOptionsWrapper = styled.div`
   justify-content: center;
   gap: 0.5px;
   position: absolute;
-  top: 70px;
+  top: 35px;
   z-index: 200;
   overflow: scroll;
   cursor: pointer;
@@ -137,7 +169,7 @@ const ResultOptionsWrapper = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     border-radius: 0px;
-    max-height: 150px;
+    left: 0;
   }
 `;
 
@@ -153,6 +185,10 @@ const InputContainer = styled.div`
   :focus-within {
     outline: none;
   }
+  @media (max-width: 768px) {
+    border: 0px solid transparent;
+    border-radius: 0px;
+  }
 `;
 
 const Input = styled.input`
@@ -161,7 +197,7 @@ const Input = styled.input`
   outline: none;
   position: relative;
   height: 64px;
-  border-radius: 8px;
+  border-radius: 6px;
   padding-left: 24px;
   padding-right: ${({ icon }) => icon && "24px"};
   width: 100%;

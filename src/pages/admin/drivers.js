@@ -49,7 +49,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Водители | Devias Kit</title>
+        <title>Водители | Koreta Bus</title>
       </Head>
       <Box
         component="main"

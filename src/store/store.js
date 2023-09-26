@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { searchBusApi } from "./apis";
+import { createOrderApi, searchBusApi } from "./apis";
 import { orderFormReducer } from "./states";
 
 export const store = configureStore({
@@ -10,11 +10,14 @@ export const store = configureStore({
 
     //apis rtk query
     [searchBusApi.reducerPath]: searchBusApi.reducer,
+    [createOrderApi.reducerPath]: createOrderApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(searchBusApi.middleware),
+    })
+      .concat(searchBusApi.middleware)
+      .concat(createOrderApi.middleware),
 });
 
 setupListeners(store.dispatch);

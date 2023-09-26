@@ -3,16 +3,15 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   publicRuntimeConfig: {
     // Will be available on both server and client
-    staticFolder: '/static',
+    // staticFolder: '/static',
   },
   images: {
     dangerouslyAllowSVG: true,
-    // domains: ["api.websiteca.com"],
+    // domains: ["api.koretabus.com"],
     minimumCacheTTL: 60,
   },
   env: {
-    // API_URL: "https://api.websiteca.com",
-    DOMAIN_NAME: "koreta",
+    API_URL: "http://api.koretabus.com/api",
     NEXT_PUBLIC_FIREBASE_API_KEY: "AIzaSyBFfPV58KchWOJBuYWmvKXCLcByC7GpgNw",
     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "koretabus-a309f.firebaseapp.com",
     NEXT_PUBLIC_FIREBASE_PROJECT_ID: "koretabus-a309f",

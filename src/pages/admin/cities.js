@@ -119,10 +119,15 @@ const Page = () => {
 
   const handleRowsPerPageChange = useCallback((event) => setRowsPerPage(event.target.value), []);
 
+  const handleRowClick = useCallback((rowData) => {
+    formik.setValues(rowData);
+    setIsVisibleModal(true);
+  }, []);
+
   return (
     <>
       <Head>
-        <title>Города | Devias Kit</title>
+        <title>Города | Koreta Bus</title>
       </Head>
       <Box
         component="main"
@@ -246,6 +251,7 @@ const Page = () => {
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
               rowsPerPage={rowsPerPage}
+              onRowClick={handleRowClick}
             />
           </Stack>
         </Container>

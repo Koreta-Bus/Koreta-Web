@@ -10,7 +10,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>404 | Devias Kit</title>
+        <title>404 | Koreta Bus</title>
       </Head>
       <ContainerError>
         <Box
