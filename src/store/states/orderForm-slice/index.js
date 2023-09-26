@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   seachFormValues: {},
-  isLoading:false
+  isLoading: false,
+  from: "",
+  to: "",
 };
 
 const orderFormSlice = createSlice({
@@ -13,11 +15,15 @@ const orderFormSlice = createSlice({
       state.seachFormValues = action.payload;
     },
     setIsLoading: (state, action) => {
-        state.isLoading = action.payload
-    }
+      state.isLoading = action.payload;
+    },
+    setOrderFormValue: (state, action) => {
+      const { name, cityId, cityName } = action.payload;
+      state[name] = { cityName, cityId };
+    },
   },
 });
 
-export const { setSeachFormValues, setIsLoading } = orderFormSlice.actions;
+export const { setSeachFormValues, setIsLoading, setOrderFormValue } = orderFormSlice.actions;
 
 export const orderFormReducer = orderFormSlice.reducer;

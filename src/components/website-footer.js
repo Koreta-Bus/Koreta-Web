@@ -2,21 +2,21 @@ import { WebsiteColors } from "theme/colors";
 import { FlexAllCenter } from "./styled.global";
 import { Icon } from "shared/IconGenerator";
 import Image from "next/image";
-
+import { SocialMedia } from "shared/socialMedia";
+import { useRouter } from "next/router";
 import { WebsitePageLayouts } from "layouts/website";
 
 import styled from "styled-components";
-import { useRouter } from "next/router";
 
 const mobileAddImages = [
   {
     id: "playStore",
-    src: "/assets/website/google-play.jpg",
+    src: "/assets/website/google-play.png",
     alt: "Koreta Bus Ticket Order - Play Store",
   },
   {
     id: "appleStore",
-    src: "/assets/website/apple-store.jpg",
+    src: "/assets/website/apple-store.png",
     alt: "Koreta Bus Ticket Order - Apple Store",
   },
 ];
@@ -64,24 +64,7 @@ const FooterMenuLists = [
   },
   {
     title: "Ми у соц. мережах",
-    lists: [
-      {
-        key: "Instagram",
-        title: "Instagram",
-        icon: "instagram",
-        path:'https://instagram.com/koreta.ua'
-      },
-      {
-        key: "Facebook",
-        title: "Facebook",
-        icon: "facebook",
-      },
-      {
-        key: "Telegram",
-        title: "Telegram",
-        icon: "telegram",
-      },
-    ],
+    lists: [...SocialMedia],
   },
 ];
 
@@ -135,7 +118,7 @@ const ListContainer = styled.span`
 
 const StyledImage = styled(Image)`
   width: 169px;
-  min-height: 50px;
+  height: 45px;
   border-radius: 8px;
 
   @media (max-width: 768px) {

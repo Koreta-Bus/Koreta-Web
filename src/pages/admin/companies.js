@@ -68,7 +68,7 @@ const companies = [
 const Page = () => (
   <>
     <Head>
-      <title>Компании | Devias Kit</title>
+      <title>Компании | Koreta Bus</title>
     </Head>
     <Box
       component="main"

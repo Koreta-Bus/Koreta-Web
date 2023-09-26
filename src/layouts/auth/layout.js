@@ -87,7 +87,7 @@ export const Layout = (props) => {
             </Typography>
             <Image
               alt="logo"
-              src="/assets/koreta-logo.png"
+              src="/assets/logo-white.png"
               width={500}
               height={500}
             />

@@ -5,11 +5,10 @@ import { getDatabase, ref, set } from "firebase/database";
 import { Popup } from "shared/alerts";
 import { app } from "config/firebase";
 import { createdAt } from "shared/date";
-
-import * as Yup from "yup";
+import { driverFormValidSchema } from "constant";
+import { Icon } from "shared/IconGenerator";
 
 import styled from "styled-components";
-import { Icon } from "shared/IconGenerator";
 
 const initialValues = {
   name: "",
@@ -22,21 +21,7 @@ const initialValues = {
 export const DriverForm = () => {
   const formik = useFormik({
     initialValues,
-    validationSchema: Yup.object({
-      name: Yup.string().required("Поле \"Ім'я\" обов'язкове"),
-      mobileNumber: Yup.string()
-        .matches(/^[0-9]+$/, "Номер має містити тільки цифри")
-        .min(10, "Номер повинен містити щонайменше 10 цифр")
-        .required('Поле "Номер телефону" обов\'язкове'),
-      nameOfLegalEntity: Yup.string().required('Поле "Назва юридичної особи" обов\'язкове'),
-      email: Yup.string()
-        .email("Введіть коректну електронну адресу")
-        .max(255, "Електронна адреса має бути менше 255 символів")
-        .required('Поле "Email" обов\'язкове'),
-      description: Yup.string()
-        .max(255, "Опис має бути менше 255 символів")
-        .required('Поле "Опис" обов\'язкове'),
-    }),
+    validationSchema: driverFormValidSchema,
     onSubmit: async (values, helpers) => {
       try {
         const db = getDatabase(app);

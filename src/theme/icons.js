@@ -511,7 +511,7 @@ export const StarIcon = () => (
 
 export const MicroAutobus = () => (
   <svg width="83" height="40" viewBox="0 0 83 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_615_4544)">
+    <g clipPath="url(#clip0_615_4544)">
       <path
         d="M33 17C33 17.5304 33.2107 18.0391 33.5858 18.4142C33.9609 18.7893 34.4696 19 35 19C35.5304 19 36.0391 18.7893 36.4142 18.4142C36.7893 18.0391 37 17.5304 37 17C37 16.4696 36.7893 15.9609 36.4142 15.5858C36.0391 15.2107 35.5304 15 35 15C34.4696 15 33.9609 15.2107 33.5858 15.5858C33.2107 15.9609 33 16.4696 33 17Z"
         stroke="#FF3A44"
@@ -551,8 +551,8 @@ export const MicroAutobus = () => (
         d="M36 5V10"
         stroke="#FF3A44"
         strokeWidth="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M41 5V10"

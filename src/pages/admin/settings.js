@@ -6,7 +6,7 @@ import { SettingsPassword } from "sections/settings/settings-password";
 const Page = () => (
   <>
     <Head>
-      <title>Настройки | Devias Kit</title>
+      <title>Настройки | Koreta Bus</title>
     </Head>
     <Box
       component="main"

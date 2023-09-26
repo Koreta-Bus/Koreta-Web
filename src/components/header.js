@@ -3,28 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Icon } from "shared/IconGenerator";
 import { FlexAllCenter } from "./styled.global";
 import { WebsiteColors } from "theme/colors";
-
+import { SocialMedia } from "shared/socialMedia";
 import styled from "styled-components";
 
-export const SocialMedia = [
-  {
-    key: "Instagram",
-    title: "Instagram",
-    icon: "instagram",
-    path: "https://instagram.com/koreta.ua",
-  },
-  {
-    key: "Facebook",
-    title: "Facebook",
-    icon: "facebook",
-  },
-  {
-    key: "Telegram",
-    title: "Telegram",
-    icon: "telegram",
-    path: "tg://resolve?domain=horizonscream",
-  },
-];
 
 const ContactDetails = [
   {
