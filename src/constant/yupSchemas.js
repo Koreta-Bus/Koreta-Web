@@ -28,3 +28,21 @@ export const driverFormValidSchema = () =>
       .max(255, "Опис має бути менше 255 символів")
       .required('Поле "Опис" обов\'язкове'),
   });
+
+export const citiesCreateFormValisSchema = () =>
+  Yup.object({
+    from: Yup.string().required("Поле 'Звідки' обов'язкове"),
+    to: Yup.string().required('Поле "Куди" обов\'язкове'),
+    price: Yup.string().required('Поле "Ціна" обов\'язкове'),
+    uniqueKey: Yup.string()
+      .required('Поле "Унікальний ключ" обов\'язкове')
+      .matches(/^(?=.*[0-9]).+$/, "Унікальний ключ повинен містити як букви, так і цифри"),
+    goesFrom: Yup.string().required('Поле "Звідки" обов\'язкове'),
+    goesTo: Yup.string().required('Поле "Куди" обов\'язкове'),
+  });
+
+export const loginFormValidSchema = () =>
+  Yup.object({
+    email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
+    password: Yup.string().max(255).required("Password is required"),
+  });

@@ -201,15 +201,15 @@ export const OrderFormTitle = styled.div`
   }
 
   @media (max-width: 768px) {
-    :first-child {
-      font-size: 20px;
-      line-height: 32px;
-    }
-
+    gap: 0px;
     :nth-child(2) {
       font-size: 16px;
       line-height: 16px;
     }
+    position: relative;
+    bottom: -2rem;
+    margin: 0 auto;
+    align-items: center;
   }
 `;
 
@@ -219,7 +219,7 @@ export const KvitkiText = styled.h1`
   line-height: 32px;
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 32px;
   }
 `;
@@ -292,5 +292,11 @@ export const SearchCityValues = styled.div`
     line-height: 56px;
     font-weight: 500;
     color: white;
+  }
+
+  @media (max-width: 768px) {
+    span {
+      font-size: 32px !important;
+    }
   }
 `;

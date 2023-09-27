@@ -10,6 +10,7 @@ import { emailAuth } from "config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Popup } from "shared/alerts";
+import { loginFormValidSchema } from "constant";
 
 const Page = () => {
   const router = useRouter();
@@ -22,10 +23,7 @@ const Page = () => {
       password: "",
       submit: null,
     },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
-      password: Yup.string().max(255).required("Password is required"),
-    }),
+    validationSchema: loginFormValidSchema(),
     onSubmit: async (values) => {
       return signInWithEmailAndPassword(emailAuth, values.email, values.password)
         .then(async (userCredential) => {

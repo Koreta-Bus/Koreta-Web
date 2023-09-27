@@ -2,13 +2,15 @@ import { Icon } from "shared/IconGenerator";
 import { WebsiteColors } from "theme/colors";
 import { IconButton } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-
-import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { setOrderFormValue } from "store/states";
 
+import styled from "styled-components";
+
+
 export const InputField = ({
   icon,
+  key,
   value,
   onChange,
   onBlur,
@@ -29,8 +31,6 @@ export const InputField = ({
 }) => {
   const dispatch = useDispatch();
   const [optionModalVisibility, setOptionModalVisibility] = useState(true);
-
-  console.log(result, "result");
 
   const handleInputChange = useCallback(
     (event) => {
@@ -65,7 +65,7 @@ export const InputField = ({
   },[result])
 
   return (
-    <InputContainer className={containerClass} borderRed={borderRed}>
+    <InputContainer className={containerClass} borderRed={borderRed} key={key}>
       <InputWrapper className={className}>
         <Input
           {...{
