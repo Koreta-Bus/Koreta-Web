@@ -12,7 +12,7 @@ export const Button = ({
 }) => {
   return (
     <StyledButton type={type} onClick={func} className={className} padding={padding}>
-      {loading ? (
+      {!!loading ? (
         <SpinnerContainer>
           <Text>
             <CircularProgress />

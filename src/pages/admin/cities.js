@@ -11,8 +11,8 @@ import { WebsiteColors } from "theme/colors";
 import { Popup } from "shared/alerts";
 import { Icon } from "shared/IconGenerator";
 import { createdAt } from "shared/date";
-
-import * as Yup from "yup";
+import { useCreateCityMutation, useLazyCreatedCitiesQuery } from "store/apis";
+import { citiesCreateFormValisSchema } from "constant";
 
 import { styled } from "styled-components";
 
@@ -40,6 +40,37 @@ const Page = () => {
   const [cities, setCitiesDirections] = useState([]);
   const [isVisibleModal, setIsVisibleModal] = useState(false);
 
+  const [createCity, { error, isSuccess, isLoading: createCityLoading }] = useCreateCityMutation();
+
+  const [
+    createdCities,
+    { data:createdCitiesData, isSuccess: createdCitiesIsSuccess, isLoading: createdCitiesLoading },
+  ] = useLazyCreatedCitiesQuery();
+
+  useEffect(() => {
+    if (isSuccess) {
+      Popup({
+        icon: "success",
+        title: "Додавання напрямку міста",
+        text: "Напрямок міста успішно додано.",
+        timer: 1800,
+        showConfirmButton: false,
+      });
+      setTimeout(() => {
+        setIsVisibleModal(false);
+      }, 1800);
+    }
+    if (error) {
+      Popup({
+        icon: "error",
+        title: "Додавання напрямку міста",
+        text: "Під час додавання напрямку міста сталася помилка.",
+        timer: 2500,
+        showConfirmButton: true,
+      });
+    }
+  }, [isSuccess, error]);
+
   const handleClose = useCallback(() => setIsVisibleModal(false), []);
   const handleOpen = useCallback(() => setIsVisibleModal(true), []);
 
@@ -49,60 +80,37 @@ const Page = () => {
   const citiesInfos = useCustomers(page, rowsPerPage, cities);
 
   useEffect(() => {
-    const getDrivers = () => {
-      let citiesRes = [];
-      const dbRef = ref(getDatabase(app), "cities/");
-      onValue(dbRef, (snapShot) => {
-        snapShot.forEach((childSnapShot) => {
-          let key = childSnapShot.key;
-          let data = childSnapShot.val();
-          citiesRes = [...citiesRes, { key, data }];
-        });
-        setCitiesDirections(citiesRes);
-      });
+    const getDrivers = async () => {
+      // let citiesRes = [];
+      // const dbRef = ref(getDatabase(app), "cities/");
+      // onValue(dbRef, (snapShot) => {
+      //   snapShot.forEach((childSnapShot) => {
+      //     let key = childSnapShot.key;
+      //     let data = childSnapShot.val();
+      //     citiesRes = [...citiesRes, { key, data }];
+      //   });
+      //   setCitiesDirections(citiesRes);
+      // });
     };
     getDrivers();
   }, []);
 
   const formik = useFormik({
     initialValues,
-    validationSchema: Yup.object({
-      from: Yup.string().required("Поле 'Звідки' обов'язкове"),
-      to: Yup.string().required('Поле "Куди" обов\'язкове'),
-      price: Yup.string().required('Поле "Ціна" обов\'язкове'),
-      uniqueKey: Yup.string()
-        .required('Поле "Унікальний ключ" обов\'язкове')
-        .matches(/^(?=.*[0-9]).+$/, "Унікальний ключ повинен містити як букви, так і цифри"),
-      goesFrom: Yup.string().required('Поле "Звідки" обов\'язкове'),
-      goesTo: Yup.string().required('Поле "Куди" обов\'язкове'),
-    }),
+    validationSchema: citiesCreateFormValisSchema(),
     onSubmit: async (values, helpers) => {
       try {
-        const db = getDatabase(app);
-        const reference = ref(db, "cities/" + values?.uniqueKey);
-
-        set(reference, {
-          from: values?.from,
-          to: values?.to,
+        await createCity({
+          from_city: values?.from,
+          to_city: values?.to,
           price: values?.price,
-          uniqueKey: values?.uniqueKey,
-          goesFrom: values?.goesFrom,
-          goesTo: values?.goesTo,
-          citiesCreatedAt: createdAt(),
+          from_address: values?.goesFrom,
+          to_address: values?.goesTo,
+          unique_id: values?.uniqueKey,
         });
 
         formik.setValues(initialValues);
         handleClose();
-
-        setTimeout(() => {
-          Popup({
-            icon: "success",
-            title: "Додавання напрямку міста",
-            text: "Напрямок міста успішно додано.",
-            timer: 1800,
-            showConfirmButton: false,
-          });
-        }, 300);
       } catch (err) {
         Popup({
           icon: "error",

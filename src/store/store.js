@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { createOrderApi, searchBusApi } from "./apis";
+import { createCityApi, createOrderApi, searchBusApi } from "./apis";
 import { orderFormReducer } from "./states";
 
 export const store = configureStore({
@@ -11,6 +11,7 @@ export const store = configureStore({
     //apis rtk query
     [searchBusApi.reducerPath]: searchBusApi.reducer,
     [createOrderApi.reducerPath]: createOrderApi.reducer,
+    [createCityApi.reducerPath]: createCityApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

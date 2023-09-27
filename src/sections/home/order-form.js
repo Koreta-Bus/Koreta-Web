@@ -9,8 +9,8 @@ import { WebsitePageLayouts } from "layouts/website";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLoading, setSeachFormValues } from "store/states";
 import { orderFormValidSchema } from "constant";
-import { format } from "date-fns";
-import { useLazyGetAllCitiesQuery, useLazyGetSearchBusDirectionsQuery } from "store/apis";
+import { format, parseISO } from "date-fns";
+import { useLazyGetAllCitiesQuery } from "store/apis";
 import {
   ContactDetail,
   CustomDatePicker,
@@ -29,6 +29,7 @@ import {
   TransparentDiv,
 } from "./styled.order.form";
 import { SocialMedia } from "shared/socialMedia";
+import dayjs from "dayjs";
 
 const validPaths = ["/", "/ticket-search"];
 
@@ -38,13 +39,6 @@ const maxDate = new Date(minDate.getFullYear() + 1, 11, 31);
 function DateIcon(props) {
   return <Icon name="calendar" {...props} />;
 }
-
-const initialValues = {
-  from: "",
-  to: "",
-  date: "",
-  personCount: "",
-};
 
 const inputFields = [
   {
@@ -95,6 +89,41 @@ export const OrderForm = ({
 
   const path = router.asPath.split("?")[0];
 
+  const item =
+    localStorage.getItem("orderForm") !== undefined
+      ? JSON.parse(localStorage.getItem("orderForm"))
+      : {};
+
+  const initialValues =
+    item?.from?.cityName && item?.to?.cityName && item?.date && item?.personCount
+      ? {
+          from: item?.from?.cityName ?? null,
+          to: item?.to?.cityName ?? null,
+          date: item?.date ?? null,
+          personCount: item?.personCount ?? null,
+        }
+      : {
+          from: "",
+          to: "",
+          date: "",
+          personCount: "",
+        };
+
+  useEffect(() => {
+    const getDirections = async () => {
+      if (item?.from && item?.to && item?.formattedDate && item?.personCount) {
+        await getSearchBusDirections({
+          from_city_id: item?.from?.cityId,
+          to_city_id: item?.to?.cityId,
+          departure_date: item?.formattedDate,
+          free_seats: item?.personCount,
+        });
+      }
+    };
+
+    getDirections();
+  }, []);
+
   const [
     getAllCities,
     {
@@ -119,11 +148,21 @@ export const OrderForm = ({
           router.push(`/ticket-search?from=${values.from}&to=${values.to}`);
         }
         if (path === "/ticket-search") {
+          window.localStorage.setItem(
+            "orderForm",
+            JSON.stringify({
+              from,
+              to,
+              date: values?.date,
+              personCount: values?.personCount,
+              formattedDate: dayjs(values.date).format("YYYY-MM-DD").toString(),
+            })
+          );
           await getSearchBusDirections({
             from_city_id: from.cityId,
             to_city_id: to.cityId,
-            departure_date: format(values.date, "yyyy-MM-dd").toString(),
             free_seats: values.personCount,
+            departure_date: dayjs(values.date).format("YYYY-MM-DD").toString(),
           });
         }
       }
@@ -155,7 +194,7 @@ export const OrderForm = ({
       if (inputValue) {
         await getAllCities(inputValue);
       }
-    }, 300);
+    }, 350);
   }, []);
 
   return (
@@ -184,9 +223,11 @@ export const OrderForm = ({
             </KvitkiText>
             {isSearchResult ? (
               <SearchCityValues>
-                <span>{from.cityName ?? "Звідки"}</span>
+                <span>
+                  {formik.values.from ?? from.cityName ?? item?.from?.cityName ?? "Звідки"}
+                </span>
                 <span>-</span>
-                <span>{to.cityName ?? "Куди"}</span>
+                <span>{formik.values.to ?? to.cityName ?? item?.to?.cityName ?? "Куди"}</span>
               </SearchCityValues>
             ) : (
               <>
@@ -259,7 +300,8 @@ export const OrderForm = ({
                       onChange={(e) => {
                         const { value } = e.target;
                         formik.handleChange(e);
-                        setFieldName(input.name);
+                        if (fieldName !== input.name) setFieldName(input.name);
+
                         debouncedGetAllCities(value);
                       }}
                       icon={input.icon}

@@ -5,23 +5,35 @@ import { Icon } from "shared/IconGenerator";
 import { useTrail, animated } from "react-spring";
 import { OrderForm } from "sections/home/order-form";
 import { MainFooter } from "./website-footer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
+import { useEffect } from "react";
 
 export const DirectionsCard = () => {
   const { seachFormValues } = useSelector((state) => state.searchBusDirections);
 
   const [
     getSearchBusDirections,
-    { data: busDirections, isSuccess, error, isLoading: busDirectionsLoading },
+    { data: busDirections, isSuccess, isError, isLoading: busDirectionsLoading },
   ] = useLazyGetSearchBusDirectionsQuery();
 
   const trail = useTrail(busDirections?.body?.length ?? 0, {
     from: { opacity: 0, transform: "translate3d(0, 40px, 0)" },
     to: { opacity: 1, transform: "translate3d(0, 0, 0)" },
-    config: { mass: 1, tension: 500, friction: 35 },
-    delay: 400,
+    config: { mass: 1, tension: 800, friction: 85 },
+    delay: 500,
   });
+
+  useEffect(() => {
+    if (isSuccess || isError || busDirections) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 350,
+          behavior: "smooth",
+        });
+      }, 2000);
+    }
+  }, [isSuccess, isError, busDirections]);
 
   return (
     <>
@@ -32,59 +44,91 @@ export const DirectionsCard = () => {
       />
       <Container>
         <h2>Графік відправлення</h2>
-        {trail?.map((style, index) => {
-          const direction = busDirections?.body?.[index];
-          console.log(style,'style')
-          return (
-            <animated.div style={style} key={index}>
-              <DirectionsCardContainer>
-                <TopContainer isMicroAuto={direction.is_microauto}>
-                  {direction.is_microauto && (
-                    <LogoContainer>
-                      <IconWrapper>
-                        <Icon name="micro_autobus" />
-                      </IconWrapper>
-                    </LogoContainer>
-                  )}
-                  <TopContent>
-                    <TopContent_Title>{direction?.route_name}</TopContent_Title>
-                    <Yellow_Content>
-                      Обов'язкова попередня оплата вартості одного квитка для груп з трьох і більше
-                      осіб
-                    </Yellow_Content>
-                  </TopContent>
-                </TopContainer>
-                <BottomContainer>
-                  <LeftContent>
-                    <BottonContent_Date>{direction?.date_departure}</BottonContent_Date>
-                    <LeftContent_SubTitle>{direction?.from_city}</LeftContent_SubTitle>
-                    <LeftContent_Street>{direction?.from_station}</LeftContent_Street>
-                  </LeftContent>
-                  <RightContent>
-                    <BottonContent_Date>{direction?.date_arrival}</BottonContent_Date>
-                    <BottomContent_Airport>{direction?.to_city}</BottomContent_Airport>
-                    <BottomContent_Enter>{direction?.to_station}</BottomContent_Enter>
-                  </RightContent>
-                </BottomContainer>
-                <Button
-                  func={() => {}}
-                  text={direction?.price}
-                  type={"text"}
-                  padding={"10px 0px"}
-                />
-              </DirectionsCardContainer>
-            </animated.div>
-          );
-        })}
+        {busDirections?.body?.length === 0 ? (
+          <NotFounDirectionContainer>
+            <span>Цей пункт призначення недоступний</span>
+          </NotFounDirectionContainer>
+        ) : null}
+        <CardMainContainer>
+          {trail?.map((style, index) => {
+            const direction = busDirections?.body?.[index];
+            return (
+              <animated.div style={style} key={index}>
+                <DirectionsCardContainer>
+                  <TopContainer isMicroAuto={direction.is_microauto}>
+                    {direction.is_microauto && (
+                      <LogoContainer>
+                        <IconWrapper>
+                          <Icon name="micro_autobus" />
+                        </IconWrapper>
+                      </LogoContainer>
+                    )}
+                    <TopContent>
+                      <TopContent_Title>{direction?.route_name}</TopContent_Title>
+                      <Yellow_Content>{direction?.carrier_name}</Yellow_Content>
+                      <SeatsCount>{`Вільне місце: ${direction?.free_seats}`}</SeatsCount>
+                    </TopContent>
+                  </TopContainer>
+                  <BottomContainer>
+                    <LeftContent>
+                      <BottonContent_Date>{direction?.date_departure}</BottonContent_Date>
+                      <LeftContent_SubTitle>{direction?.from_city}</LeftContent_SubTitle>
+                      <LeftContent_Street>{direction?.from_station}</LeftContent_Street>
+                    </LeftContent>
+                    <RightContent>
+                      <BottonContent_Date>{direction?.date_arrival}</BottonContent_Date>
+                      <BottomContent_Airport>{direction?.to_city}</BottomContent_Airport>
+                      <BottomContent_Enter>{direction?.to_station}</BottomContent_Enter>
+                    </RightContent>
+                  </BottomContainer>
+                  <Button
+                    func={() => {}}
+                    text={direction?.price}
+                    type={"text"}
+                    padding={"10px 0px"}
+                  />
+                </DirectionsCardContainer>
+              </animated.div>
+            );
+          })}
+        </CardMainContainer>
       </Container>
       <MainFooter />
     </>
   );
 };
 
+const NotFounDirectionContainer = styled.div`
+  border: 2px solid ${WebsiteColors.PRIMARY};
+  border-radius: 8px;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & span {
+    font-family: Sora, sans-serif;
+    font-size: 28px !important;
+    line-height: 28px !important;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    span {
+      font-family: Sora, sans-serif;
+      font-size: 18px !important;
+      line-height: 18px !important;
+    }
+  }
+`;
+
+const SeatsCount = styled.div``;
+
 const Container = styled.section`
   padding: 48px 0;
-  max-width: 1120px;
+  max-width: 820px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -94,8 +138,9 @@ const Container = styled.section`
 
   @media (max-width: 768px) {
     margin-top: 10rem;
-    padding: 1rem;
     gap: 32px;
+    max-width: 345px;
+    width: 100%;
   }
 
   h2 {
@@ -160,6 +205,12 @@ const BottomContainer = styled.div`
   font-size: 16px;
   line-height: 24px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+  }
 `;
 
 const Yellow_Content = styled.span`
@@ -225,8 +276,14 @@ const LogoContainer = styled.div`
   }
 `;
 
+const CardMainContainer  = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+`
+
 const DirectionsCardContainer = styled.div`
-  width: 1120px;
+  width: 1000px;
   padding: 32px 32px 24px 32px;
   border: 1px solid ${WebsiteColors.PRIMARY};
   border-radius: 8px;
@@ -236,4 +293,10 @@ const DirectionsCardContainer = styled.div`
   gap: 40px;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 20px;
+    gap: 20px;
+  }
 `;

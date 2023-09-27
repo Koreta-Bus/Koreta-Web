@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { OrderForm } from "./order-form";
 import { LandingContainer, LandingPage } from "./home.styled";
 import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
+import { ImageCard } from "components/image-card";
 
 export const BusTickerOrder = () => {
   const [
@@ -24,7 +25,7 @@ export const BusTickerOrder = () => {
           />
           <WebsitePageLayouts>
             <InfoCard />
-            {/* <ImageCard /> */}
+            <ImageCard />
             <CountryImageCard />
           </WebsitePageLayouts>
           <MainFooter />
