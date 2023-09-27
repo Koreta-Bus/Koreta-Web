@@ -21,9 +21,14 @@ const orderFormSlice = createSlice({
       const { name, cityId, cityName } = action.payload;
       state[name] = { cityName, cityId };
     },
+    exchangeValues: (state, action) => {
+      const a = state.to;
+      state.to = state.from
+      state.from = a
+    },
   },
 });
 
-export const { setSeachFormValues, setIsLoading, setOrderFormValue } = orderFormSlice.actions;
+export const { setSeachFormValues, setIsLoading, setOrderFormValue, exchangeValues } = orderFormSlice.actions;
 
 export const orderFormReducer = orderFormSlice.reducer;
