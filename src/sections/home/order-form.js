@@ -111,13 +111,19 @@ export const OrderForm = ({
 
   useEffect(() => {
     const getDirections = async () => {
-      if (item?.from && item?.to && item?.formattedDate && item?.personCount) {
-        await getSearchBusDirections({
+      if (
+        item?.from &&
+        item?.to &&
+        item?.formattedDate &&
+        item?.personCount &&
+        path === "/ticket-search"
+      ) {
+        (await getSearchBusDirections({
           from_city_id: item?.from?.cityId,
           to_city_id: item?.to?.cityId,
           departure_date: item?.formattedDate,
           free_seats: item?.personCount,
-        });
+        })) ?? null;
       }
     };
 
@@ -158,12 +164,12 @@ export const OrderForm = ({
               formattedDate: dayjs(values.date).format("YYYY-MM-DD").toString(),
             })
           );
-          await getSearchBusDirections({
+          (await getSearchBusDirections({
             from_city_id: from.cityId,
             to_city_id: to.cityId,
             free_seats: values.personCount,
             departure_date: dayjs(values.date).format("YYYY-MM-DD").toString(),
-          });
+          })) ?? null;
         }
       }
     },

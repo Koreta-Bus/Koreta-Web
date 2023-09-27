@@ -10,6 +10,21 @@ import {
   TableRow,
 } from "@mui/material";
 import { Scrollbar } from "components/scrollbar";
+import dayjs from "dayjs";
+
+const AllCels = {
+  name: "Имя",
+  id: "ID",
+  name: "Ім'я",
+  surname: "Прізвище",
+  phone: "Мобільний телефон",
+  email: "Електронна пошта",
+  price: "Ціна",
+  created_at: "Дата створення",
+  updated_at: "Дата оновлення",
+};
+
+const dateKeys = ["created_at", "updated_at"];
 
 export const CustomersTable = (props) => {
   const {
@@ -19,7 +34,6 @@ export const CustomersTable = (props) => {
     onRowsPerPageChange,
     page = 0,
     rowsPerPage = 0,
-    tableCells = [],
     onClickRow,
   } = props;
 
@@ -30,33 +44,27 @@ export const CustomersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                {tableCells?.map((cell) => (
-                  <TableCell>{cell}</TableCell>
-                ))}
+                {items?.length > 0 && Object?.entries(items?.[0])?.map(([key, _]) => {
+                  return <TableCell>{AllCels[key] ?? "Unknown"}</TableCell>;
+                })}
               </TableRow>
             </TableHead>
             <TableBody>
-              {items?.map(({ key, data }) => {
+              {items?.map((data) => {
                 return (
                   <TableRow
                     hover
-                    key={data?.mobileNumber ?? data?.uniqueKey ?? key}
+                    key={
+                      data?.id ?? data?.createdAt ?? Math.floor(Math.random() * 100 * Math.random())
+                    }
                     onClick={() => onClickRow(data)}
                   >
-                    {data?.name && <TableCell>{data?.name}</TableCell>}
-                    {data?.email && <TableCell>{data?.email}</TableCell>}
-                    {data?.description && <TableCell>{data?.description}</TableCell>}
-                    {data?.mobileNumber && <TableCell>{data?.mobileNumber}</TableCell>}
-                    {data?.nameOfLegalEntity && <TableCell>{data?.nameOfLegalEntity}</TableCell>}
-                    {data?.createdAt && <TableCell>{data?.createdAt}</TableCell>}
-
-                    {data?.from && <TableCell>{data?.from}</TableCell>}
-                    {data?.to && <TableCell>{data?.to}</TableCell>}
-                    {/* {data?.uniqueKey && <TableCell>{data?.uniqueKey}</TableCell>} */}
-                    {data?.goesFrom && <TableCell>{data?.goesFrom}</TableCell>}
-                    {data?.goesTo && <TableCell>{data?.goesTo}</TableCell>}
-                    {data?.price && <TableCell>{data?.price}</TableCell>}
-                    {data?.citiesCreatedAt && <TableCell>{data?.citiesCreatedAt}</TableCell>}
+                    {Object.entries(data).map(([key, value]) => {
+                      const val = dateKeys.includes(key)
+                        ? dayjs(data?.createdAt).format("YYYY-MM-DD").toString()
+                        : value;
+                      return <TableCell>{val}</TableCell>;
+                    })}
                   </TableRow>
                 );
               })}

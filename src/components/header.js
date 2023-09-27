@@ -5,7 +5,7 @@ import { FlexAllCenter } from "./styled.global";
 import { WebsiteColors } from "theme/colors";
 import { SocialMedia } from "shared/socialMedia";
 import styled from "styled-components";
-
+import Image from "next/image";
 
 const ContactDetails = [
   {
@@ -107,9 +107,9 @@ export const Header = () => {
           <ContactDetailsContainer>
             {ContactDetails?.map(({ key, title, icon, path }) => (
               <ContactDetail key={key} href={path} target="_blank">
-                <span>
-                  <Icon name={icon} />
-                </span>
+                  <span>
+                    <Icon name={icon} />
+                  </span>
                 <span>{title}</span>
               </ContactDetail>
             ))}

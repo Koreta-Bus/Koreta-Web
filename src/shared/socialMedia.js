@@ -11,4 +11,10 @@ export const SocialMedia = [
     icon: "telegram_bold",
     path: "https://t.me/+380971461991",
   },
+  {
+    key: "Viber",
+    title: "Viber",
+    icon: "viber",
+    path: "https://viber://add?number=380732166696",
+  },
 ];

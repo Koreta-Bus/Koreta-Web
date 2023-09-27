@@ -22,14 +22,15 @@ import {
   TelegramBoldIcon,
   StarIcon,
   MicroAutobus,
+  ViberIcon,
 } from "theme/icons";
 
 export const Icon = ({ name, ...rest }) => {
   const icons = {
     phone: PhoneIcon,
     instagram: InstaIcon,
-    facebook: FbIcon,
     telegram: TgIcon,
+    viber: ViberIcon,
     instagram_bold: InstagramBoldIcon,
     telegram_bold: TelegramBoldIcon,
     facebook_bold: FacebookBoldIcon,
@@ -47,7 +48,7 @@ export const Icon = ({ name, ...rest }) => {
     operator: OperatorIcon,
     middle_dot: MiddleDotIcon,
     star: StarIcon,
-    micro_autobus: MicroAutobus
+    micro_autobus: MicroAutobus,
   };
   const SelectedIcon = icons[name];
   return <SelectedIcon {...rest} />;

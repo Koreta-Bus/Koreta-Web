@@ -3,7 +3,7 @@ import { WebsiteColors } from "theme/colors";
 import { IconButton } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setOrderFormValue } from "store/states";
+import { exchangeValues, setOrderFormValue } from "store/states";
 
 import styled from "styled-components";
 
@@ -55,6 +55,7 @@ export const InputField = ({
     if (formik.values.to || formik.values.from) {
       formik.setFieldValue("from", formik.values.to);
       formik.setFieldValue("to", formik.values.from);
+      dispatch(exchangeValues())
     }
   }, [formik]);
 
