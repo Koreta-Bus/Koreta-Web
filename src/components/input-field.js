@@ -7,7 +7,6 @@ import { exchangeValues, setOrderFormValue } from "store/states";
 
 import styled from "styled-components";
 
-
 export const InputField = ({
   icon,
   key,
@@ -55,15 +54,15 @@ export const InputField = ({
     if (formik.values.to || formik.values.from) {
       formik.setFieldValue("from", formik.values.to);
       formik.setFieldValue("to", formik.values.from);
-      dispatch(exchangeValues())
+      dispatch(exchangeValues());
     }
   }, [formik]);
 
   useEffect(() => {
-    if(result?.length > 0 && !optionModalVisibility) {
-      setOptionModalVisibility(true)
+    if (result?.length > 0 && !optionModalVisibility) {
+      setOptionModalVisibility(true);
     }
-  },[result])
+  }, [result]);
 
   return (
     <InputContainer className={containerClass} borderRed={borderRed} key={key}>
@@ -97,7 +96,9 @@ export const InputField = ({
             {result?.map(({ name: cityName, city_id }) => {
               return (
                 <ResultOption onClick={() => selectPlaceHandler(cityName, city_id)}>
-                  {cityName?.length > 11 ? `${cityName.substring(0, 11)}..` : cityName}
+                  {cityName?.length > 11 && window.innerWidth > 780
+                    ? `${cityName.substring(0, 11)}..`
+                    : cityName}
                 </ResultOption>
               );
             })}
@@ -149,14 +150,11 @@ const ResultOption = styled.div`
 const ResultOptionsContainer = styled.div`
   position: absolute;
   left: 0;
-
-  @media (max-width: 768px) {
-    overflow: scroll;
-  }
+  width: 100%;
 `;
 
 const ResultOptionsWrapper = styled.div`
-  width: 198px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
