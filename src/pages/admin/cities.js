@@ -11,7 +11,11 @@ import { WebsiteColors } from "theme/colors";
 import { Popup } from "shared/alerts";
 import { Icon } from "shared/IconGenerator";
 import { createdAt } from "shared/date";
-import { useCreateCityMutation, useLazyCreatedCitiesQuery } from "store/apis";
+import {
+  useCreateCityMutation,
+  useCreatedCitiesQuery,
+  useLazyCreatedCitiesQuery,
+} from "store/apis";
 import { citiesCreateFormValisSchema } from "constant";
 
 import { styled } from "styled-components";
@@ -37,15 +41,19 @@ const initialValues = {
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [cities, setCitiesDirections] = useState([]);
   const [isVisibleModal, setIsVisibleModal] = useState(false);
 
   const [createCity, { error, isSuccess, isLoading: createCityLoading }] = useCreateCityMutation();
 
   const [
     createdCities,
-    { data:createdCitiesData, isSuccess: createdCitiesIsSuccess, isLoading: createdCitiesLoading },
+    { data: createdCitiesData, isSuccess: createdCitiesIsSuccess, isLoading: createdCitiesLoading },
   ] = useLazyCreatedCitiesQuery();
+
+  useEffect(() => {
+    const getCities = async () => await createdCities();
+    getCities();
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -77,23 +85,11 @@ const Page = () => {
   const useCustomers = (page, rowsPerPage, cities) =>
     useMemo(() => applyPagination(cities, page, rowsPerPage), [page, rowsPerPage, cities]);
 
-  const citiesInfos = useCustomers(page, rowsPerPage, cities);
-
-  useEffect(() => {
-    const getDrivers = async () => {
-      // let citiesRes = [];
-      // const dbRef = ref(getDatabase(app), "cities/");
-      // onValue(dbRef, (snapShot) => {
-      //   snapShot.forEach((childSnapShot) => {
-      //     let key = childSnapShot.key;
-      //     let data = childSnapShot.val();
-      //     citiesRes = [...citiesRes, { key, data }];
-      //   });
-      //   setCitiesDirections(citiesRes);
-      // });
-    };
-    getDrivers();
-  }, []);
+  const citiesInfos = (() => {
+    const originalData = createdCitiesData?.body?.data;
+    const reverseData = originalData ? [...originalData].reverse() : [];
+    return useCustomers(page, rowsPerPage, reverseData);
+  })();
 
   const formik = useFormik({
     initialValues,
@@ -109,8 +105,9 @@ const Page = () => {
           unique_id: values?.uniqueKey,
         });
 
-        formik.setValues(initialValues);
+        await createdCities()
         handleClose();
+        formik.setValues(initialValues);
       } catch (err) {
         Popup({
           icon: "error",
@@ -167,8 +164,8 @@ const Page = () => {
                     <StyledDriverForm onSubmit={formik.handleSubmit}>
                       <DriverFormWrapper>
                         <TextField
-                          error={!!(formik.touched.from && formik.errors.from)}
-                          helperText={formik.touched.from && formik.errors.from}
+                          error={!!(formik.touched.from &&  formik.values.from &&formik.errors.from)}
+                          helperText={formik.touched.from && formik.values.from && formik.errors.from}
                           fullWidth
                           label="С"
                           id="from"
@@ -180,8 +177,8 @@ const Page = () => {
                         />
 
                         <TextField
-                          error={!!(formik.touched.to && formik.errors.to)}
-                          helperText={formik.touched.to && formik.errors.to}
+                          error={!!(formik.touched.to && formik.values.to && formik.errors.to)}
+                          helperText={formik.touched.to && formik.values.to &&  formik.errors.to}
                           fullWidth
                           label="По"
                           id="to"
@@ -204,8 +201,8 @@ const Page = () => {
                           value={formik.values.price}
                         />
                         <TextField
-                          error={!!(formik.touched.uniqueKey && formik.errors.uniqueKey)}
-                          helperText={formik.touched.uniqueKey && formik.errors.uniqueKey}
+                          error={!!(formik.touched.uniqueKey && formik.values.uniqueKey && formik.errors.uniqueKey)}
+                          helperText={formik.touched.uniqueKey && formik.values.uniqueKey &&formik.errors.uniqueKey}
                           fullWidth
                           label="Уникальный ключ направления"
                           id="uniqueKey"
@@ -216,8 +213,8 @@ const Page = () => {
                           value={formik.values.uniqueKey}
                         />
                         <TextField
-                          error={!!(formik.touched.goesFrom && formik.errors.goesFrom)}
-                          helperText={formik.touched.goesFrom && formik.errors.goesFrom}
+                          error={!!(formik.touched.goesFrom && formik.values.goesFrom && formik.errors.goesFrom)}
+                          helperText={formik.touched.goesFrom && formik.values.goesFrom && formik.errors.goesFrom}
                           fullWidth
                           label="Адрес отправления"
                           id="goesFrom"
@@ -228,8 +225,8 @@ const Page = () => {
                           value={formik.values.goesFrom}
                         />
                         <TextField
-                          error={!!(formik.touched.goesTo && formik.errors.goesTo)}
-                          helperText={formik.touched.goesTo && formik.errors.goesTo}
+                          error={!!(formik.touched.goesTo && formik.values.goesTo &&formik.errors.goesTo)}
+                          helperText={formik.touched.goesTo && formik.values.goesTo && formik.errors.goesTo}
                           fullWidth
                           label="Адреса прибытия"
                           id="goesTo"
@@ -252,7 +249,7 @@ const Page = () => {
               </Modal>
             </Stack>
             <CustomersTable
-              count={cities?.length}
+              count={createdCitiesData?.body?.data?.length}
               items={citiesInfos}
               tableCells={TableCells}
               onPageChange={handlePageChange}

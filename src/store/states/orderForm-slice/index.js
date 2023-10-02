@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   from: "",
   to: "",
+  orderValues: {},
 };
 
 const orderFormSlice = createSlice({
@@ -23,12 +24,21 @@ const orderFormSlice = createSlice({
     },
     exchangeValues: (state, action) => {
       const a = state.to;
-      state.to = state.from
-      state.from = a
+      state.to = state.from;
+      state.from = a;
+    },
+    storeOrderValues: (state, action) => {
+      state.orderValues = action.payload;
     },
   },
 });
 
-export const { setSeachFormValues, setIsLoading, setOrderFormValue, exchangeValues } = orderFormSlice.actions;
+export const {
+  setSeachFormValues,
+  setIsLoading,
+  setOrderFormValue,
+  exchangeValues,
+  storeOrderValues,
+} = orderFormSlice.actions;
 
 export const orderFormReducer = orderFormSlice.reducer;

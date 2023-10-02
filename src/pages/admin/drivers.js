@@ -7,15 +7,6 @@ import { applyPagination } from "utils/apply-pagination";
 import { getDatabase, onValue, ref } from "firebase/database";
 import { app } from "config/firebase";
 
-const TableCells = [
-  "Имя",
-  "Электронная почта",
-  "Описание",
-  "Мобильный телефон",
-  "Наименование юридического лица",
-  'Время отправки запроса',
-];
-
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -34,7 +25,7 @@ const Page = () => {
         snapShot.forEach((childSnapShot) => {
           let key = childSnapShot.key;
           let data = childSnapShot.val();
-          driversRes = [...driversRes, { key, data }];
+          driversRes = [...driversRes, { key, ...data }];
         });
         setDrivers(driversRes);
       });
@@ -68,7 +59,6 @@ const Page = () => {
             <CustomersTable
               count={drivers?.length}
               items={driversInfos}
-              tableCells={TableCells}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

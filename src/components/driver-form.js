@@ -21,7 +21,7 @@ const initialValues = {
 export const DriverForm = () => {
   const formik = useFormik({
     initialValues,
-    validationSchema: driverFormValidSchema,
+    validationSchema: driverFormValidSchema(),
     onSubmit: async (values, helpers) => {
       try {
         const db = getDatabase(app);
@@ -31,9 +31,9 @@ export const DriverForm = () => {
           name: values?.name,
           email: values?.email,
           description: values?.description,
-          mobileNumber: values?.mobileNumber,
+          phone: values?.mobileNumber,
           nameOfLegalEntity: values?.nameOfLegalEntity,
-          createdAt: createdAt(),
+          created_at: createdAt(),
         });
 
         Popup({
@@ -56,10 +56,12 @@ export const DriverForm = () => {
     },
   });
 
+  console.log(formik.errors, "formik erros");
+
   return (
     <DriverFormContainer>
       <FormTitle>Напишіть нам</FormTitle>
-      <StyledDriverForm onSubmit={formik.handleSubmit}> 
+      <StyledDriverForm onSubmit={formik.handleSubmit}>
         <DriverFormWrapper>
           <FieldWrapper>
             <label htmlFor="name">
@@ -72,7 +74,7 @@ export const DriverForm = () => {
               value={formik.values.name}
               onChange={formik.handleChange}
             />
-            <ErrorText>{formik.values.name && formik.touched.name && formik.errors.name}</ErrorText>
+            <ErrorText>{formik.values.name && formik.errors.name}</ErrorText>
           </FieldWrapper>
           <FieldWrapper>
             <label htmlFor="mobileNumber">
@@ -85,11 +87,7 @@ export const DriverForm = () => {
               value={formik.values.mobileNumber}
               onChange={formik.handleChange}
             />
-            <ErrorText>
-              {formik.values.mobileNumber &&
-                formik.touched.mobileNumber &&
-                formik.errors.mobileNumber}
-            </ErrorText>
+            <ErrorText>{formik.values.mobileNumber && formik.errors.mobileNumber}</ErrorText>
           </FieldWrapper>
           <FieldWrapper>
             <label htmlFor="nameOfLegalEntity">Назва юр.особи (якщо наявна)</label>
@@ -101,9 +99,7 @@ export const DriverForm = () => {
               onChange={formik.handleChange}
             />
             <ErrorText>
-              {formik.values.nameOfLegalEntity &&
-                formik.touched.nameOfLegalEntity &&
-                formik.errors.nameOfLegalEntity}
+              {formik.values.nameOfLegalEntity && formik.errors.nameOfLegalEntity}
             </ErrorText>
           </FieldWrapper>
           <FieldWrapper>
@@ -115,9 +111,7 @@ export const DriverForm = () => {
               value={formik.values.email}
               onChange={formik.handleChange}
             />
-            <ErrorText>
-              {formik.values.email && formik.touched.email && formik.errors.email}
-            </ErrorText>
+            <ErrorText>{formik.values.email && formik.errors.email}</ErrorText>
           </FieldWrapper>
           <FieldWrapper textarea={true}>
             <label htmlFor="description">
@@ -130,9 +124,7 @@ export const DriverForm = () => {
               value={formik.values.description}
               onChange={formik.handleChange}
             />
-            <ErrorText>
-              {formik.values.description && formik.touched.description && formik.errors.description}
-            </ErrorText>
+            <ErrorText>{formik.values.description && formik.errors.description}</ErrorText>
           </FieldWrapper>
         </DriverFormWrapper>
         <ButtonWrapper>

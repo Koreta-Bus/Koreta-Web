@@ -5,12 +5,17 @@ import { Icon } from "shared/IconGenerator";
 import { useTrail, animated } from "react-spring";
 import { OrderForm } from "sections/home/order-form";
 import { MainFooter } from "./website-footer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
 import { useEffect } from "react";
+import { storeOrderValues } from "store/states";
+import { useRouter } from "next/router";
 
 export const DirectionsCard = () => {
   const { seachFormValues } = useSelector((state) => state.searchBusDirections);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const [
     getSearchBusDirections,
@@ -23,6 +28,11 @@ export const DirectionsCard = () => {
     config: { mass: 1, tension: 800, friction: 85 },
     delay: 500,
   });
+
+  const handleToOrderForm = (direction) => {
+    router.push("/ticket-search/order");
+    dispatch(storeOrderValues(direction));
+  };
 
   useEffect(() => {
     if (isSuccess || isError || busDirections) {
@@ -82,10 +92,11 @@ export const DirectionsCard = () => {
                     </RightContent>
                   </BottomContainer>
                   <Button
-                    func={() => {}}
+                    func={() => direction?.is_microauto && handleToOrderForm(direction)}
                     text={direction?.price}
                     type={"text"}
                     padding={"10px 0px"}
+                    disabled={!direction?.is_microauto}
                   />
                 </DirectionsCardContainer>
               </animated.div>
@@ -276,11 +287,11 @@ const LogoContainer = styled.div`
   }
 `;
 
-const CardMainContainer  = styled.div`
+const CardMainContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
-`
+`;
 
 const DirectionsCardContainer = styled.div`
   width: 1000px;
