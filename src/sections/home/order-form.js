@@ -7,9 +7,8 @@ import { Icon } from "shared/IconGenerator";
 import { useRouter } from "next/router";
 import { WebsitePageLayouts } from "layouts/website";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsLoading, setSeachFormValues } from "store/states";
+import { setSeachFormValues } from "store/states";
 import { orderFormValidSchema } from "constant";
-import { format, parseISO } from "date-fns";
 import { useLazyGetAllCitiesQuery } from "store/apis";
 import {
   ContactDetail,
