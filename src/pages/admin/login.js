@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { Alert, Box, Button, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { useAuth } from "hooks/use-auth";
 import { Layout as AuthLayout } from "layouts/auth/layout";

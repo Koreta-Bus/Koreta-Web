@@ -4,18 +4,11 @@ import { Box, Button, Container, Modal, Stack, TextField, Typography } from "@mu
 import { Layout as DashboardLayout } from "layouts/dashboard/layout";
 import { CustomersTable } from "sections/customer/customers-table";
 import { applyPagination } from "utils/apply-pagination";
-import { getDatabase, onValue, ref, set } from "firebase/database";
-import { app } from "config/firebase";
 import { useFormik } from "formik";
 import { WebsiteColors } from "theme/colors";
 import { Popup } from "shared/alerts";
 import { Icon } from "shared/IconGenerator";
-import { createdAt } from "shared/date";
-import {
-  useCreateCityMutation,
-  useCreatedCitiesQuery,
-  useLazyCreatedCitiesQuery,
-} from "store/apis";
+import { useCreateCityMutation, useLazyCreatedCitiesQuery } from "store/apis";
 import { citiesCreateFormValisSchema } from "constant";
 
 import { styled } from "styled-components";
@@ -105,7 +98,7 @@ const Page = () => {
           unique_id: values?.uniqueKey,
         });
 
-        await createdCities()
+        await createdCities();
         handleClose();
         formik.setValues(initialValues);
       } catch (err) {
@@ -164,8 +157,12 @@ const Page = () => {
                     <StyledDriverForm onSubmit={formik.handleSubmit}>
                       <DriverFormWrapper>
                         <TextField
-                          error={!!(formik.touched.from &&  formik.values.from &&formik.errors.from)}
-                          helperText={formik.touched.from && formik.values.from && formik.errors.from}
+                          error={
+                            !!(formik.touched.from && formik.values.from && formik.errors.from)
+                          }
+                          helperText={
+                            formik.touched.from && formik.values.from && formik.errors.from
+                          }
                           fullWidth
                           label="С"
                           id="from"
@@ -178,7 +175,7 @@ const Page = () => {
 
                         <TextField
                           error={!!(formik.touched.to && formik.values.to && formik.errors.to)}
-                          helperText={formik.touched.to && formik.values.to &&  formik.errors.to}
+                          helperText={formik.touched.to && formik.values.to && formik.errors.to}
                           fullWidth
                           label="По"
                           id="to"
@@ -201,8 +198,18 @@ const Page = () => {
                           value={formik.values.price}
                         />
                         <TextField
-                          error={!!(formik.touched.uniqueKey && formik.values.uniqueKey && formik.errors.uniqueKey)}
-                          helperText={formik.touched.uniqueKey && formik.values.uniqueKey &&formik.errors.uniqueKey}
+                          error={
+                            !!(
+                              formik.touched.uniqueKey &&
+                              formik.values.uniqueKey &&
+                              formik.errors.uniqueKey
+                            )
+                          }
+                          helperText={
+                            formik.touched.uniqueKey &&
+                            formik.values.uniqueKey &&
+                            formik.errors.uniqueKey
+                          }
                           fullWidth
                           label="Уникальный ключ направления"
                           id="uniqueKey"
@@ -213,8 +220,18 @@ const Page = () => {
                           value={formik.values.uniqueKey}
                         />
                         <TextField
-                          error={!!(formik.touched.goesFrom && formik.values.goesFrom && formik.errors.goesFrom)}
-                          helperText={formik.touched.goesFrom && formik.values.goesFrom && formik.errors.goesFrom}
+                          error={
+                            !!(
+                              formik.touched.goesFrom &&
+                              formik.values.goesFrom &&
+                              formik.errors.goesFrom
+                            )
+                          }
+                          helperText={
+                            formik.touched.goesFrom &&
+                            formik.values.goesFrom &&
+                            formik.errors.goesFrom
+                          }
                           fullWidth
                           label="Адрес отправления"
                           id="goesFrom"
@@ -225,8 +242,16 @@ const Page = () => {
                           value={formik.values.goesFrom}
                         />
                         <TextField
-                          error={!!(formik.touched.goesTo && formik.values.goesTo &&formik.errors.goesTo)}
-                          helperText={formik.touched.goesTo && formik.values.goesTo && formik.errors.goesTo}
+                          error={
+                            !!(
+                              formik.touched.goesTo &&
+                              formik.values.goesTo &&
+                              formik.errors.goesTo
+                            )
+                          }
+                          helperText={
+                            formik.touched.goesTo && formik.values.goesTo && formik.errors.goesTo
+                          }
                           fullWidth
                           label="Адреса прибытия"
                           id="goesTo"

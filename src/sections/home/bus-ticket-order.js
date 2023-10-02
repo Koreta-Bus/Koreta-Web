@@ -25,7 +25,7 @@ export const BusTickerOrder = () => {
           />
           <WebsitePageLayouts>
             <InfoCard />
-            <ImageCard />
+            {/* <ImageCard /> */}
             <CountryImageCard />
           </WebsitePageLayouts>
           <MainFooter />

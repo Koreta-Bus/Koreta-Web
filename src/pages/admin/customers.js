@@ -6,14 +6,11 @@ import { CustomersTable } from "sections/customer/customers-table";
 import { applyPagination } from "utils/apply-pagination";
 import { useGetAllOrdersQuery } from "store/apis";
 
-const now = new Date();
-
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const { data, isLoading, isSuccess, isError } = useGetAllOrdersQuery();
-
 
   const useCustomers = (page, rowsPerPage, customers) => useMemo(() => applyPagination(customers, page, rowsPerPage), [page, rowsPerPage, data])
 
@@ -33,38 +30,6 @@ const Page = () => {
       });
     }
   }, [isError]);
-
-  //   {
-  // "id":1,
-  // "name":"Khayal",
-  // "surname":"Teyyubov"
-  // ,"phone":"994776179575"
-  // ,"email":"teyyubovxeyal04@gmail.com"
-  // ,"price":"1200UAH"
-  // ,"created_at":"2023-09-25T19:00:12.000000Z"
-  // ,"updated_at":"2023-09-25T19:00:12.000000Z"
-  // }
-
-  // useEffect(() => {
-  //   const getCustomers = () => {
-  //     let customersRes = [];
-  //     const dbRef = ref(getDatabase(app), "customers/");
-  //     dataRef.limitToLast(50).on("value", (snapshot) => {
-  //       const customersArray = [];
-
-  //       snapshot.forEach((childSnapshot) => {
-  //         const key = childSnapshot.key;
-  //         const data = childSnapshot.val();
-  //         customersArray.push({ key, data });
-  //       });
-
-  //       setCustomers(customersRes);
-  //     });
-  //   };
-  //   getCustomers();
-
-  //   return () => dataRef.off("child_added");
-  // }, []);
 
   return (
     <>
