@@ -9,9 +9,16 @@ export const Button = ({
   loading = false,
   className,
   padding = "16px 0px",
+  disabled = false,
 }) => {
   return (
-    <StyledButton type={type} onClick={func} className={className} padding={padding}>
+    <StyledButton
+      type={type}
+      onClick={func}
+      className={className}
+      padding={padding}
+      disabled={disabled}
+    >
       {!!loading ? (
         <SpinnerContainer>
           <Text>

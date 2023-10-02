@@ -20,10 +20,10 @@ export const createCityApi = createApi({
       invalidatesTags: ["cityCreate"],
     }),
     createdCities: builder.query({
-      query: () => `departures`,
+      query: () => `departure`,
       providesTags: ["departures"],
     }),
   }),
 });
 
-export const { useCreateCityMutation, useLazyCreatedCitiesQuery } = createCityApi;
+export const { useCreateCityMutation, useLazyCreatedCitiesQuery, useCreatedCitiesQuery} = createCityApi;

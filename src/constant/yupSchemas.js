@@ -29,6 +29,20 @@ export const driverFormValidSchema = () =>
       .required('Поле "Опис" обов\'язкове'),
   });
 
+export const orderFormTicketValidSchema = () =>
+  Yup.object({
+    name: Yup.string().required("Поле \"Ім'я\" обов'язкове"),
+    surname: Yup.string().required('Поле "Прізвище'),
+    mobileNumber: Yup.string()
+      .matches(/^[0-9]+$/, "Номер має містити тільки цифри")
+      .min(10, "Номер повинен містити щонайменше 10 цифр")
+      .required('Поле "Номер телефону" обов\'язкове'),
+    email: Yup.string()
+      .email("Введіть коректну електронну адресу")
+      .max(255, "Електронна адреса має бути менше 255 символів")
+      .required('Поле "Email" обов\'язкове'),
+  });
+
 export const citiesCreateFormValisSchema = () =>
   Yup.object({
     from: Yup.string().required("Поле 'Звідки' обов'язкове"),

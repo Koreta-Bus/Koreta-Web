@@ -13,15 +13,24 @@ import { Scrollbar } from "components/scrollbar";
 import dayjs from "dayjs";
 
 const AllCels = {
-  name: "Имя",
-  id: "ID",
   name: "Ім'я",
+  id: "ID",
   surname: "Прізвище",
   phone: "Мобільний телефон",
   email: "Електронна пошта",
   price: "Ціна",
   created_at: "Дата створення",
   updated_at: "Дата оновлення",
+  description: "Опис",
+  nameOfLegalEntity: "Назва юридичної особи",
+  key: "Ключ",
+  unique_key: "Унікальний ключ",
+  from_station: "Зі станції",
+  to_station: "До станції",
+  from_city: "З міста",
+  from_city_id: "ID міста відправлення",
+  to_city: "До міста",
+  to_city_id: "ID міста призначення",
 };
 
 const dateKeys = ["created_at", "updated_at"];
@@ -34,7 +43,7 @@ export const CustomersTable = (props) => {
     onRowsPerPageChange,
     page = 0,
     rowsPerPage = 0,
-    onClickRow,
+    onClickRow = () => {},
   } = props;
 
   return (
@@ -44,9 +53,10 @@ export const CustomersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                {items?.length > 0 && Object?.entries(items?.[0])?.map(([key, _]) => {
-                  return <TableCell>{AllCels[key] ?? "Unknown"}</TableCell>;
-                })}
+                {items?.length > 0 &&
+                  Object?.entries(items?.[0])?.map(([key, _]) => {
+                    return <TableCell>{AllCels[key] ?? "Unknown"}</TableCell>;
+                  })}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -55,13 +65,16 @@ export const CustomersTable = (props) => {
                   <TableRow
                     hover
                     key={
-                      data?.id ?? data?.createdAt ?? Math.floor(Math.random() * 100 * Math.random())
+                      data?.id ??
+                      data?.created_at ??
+                      date?.key ??
+                      Math.floor(Math.random() * 100 * Math.random())
                     }
                     onClick={() => onClickRow(data)}
                   >
                     {Object.entries(data).map(([key, value]) => {
                       const val = dateKeys.includes(key)
-                        ? dayjs(data?.createdAt).format("YYYY-MM-DD").toString()
+                        ? dayjs(data?.created_at).format("YYYY-MM-DD").toString()
                         : value;
                       return <TableCell>{val}</TableCell>;
                     })}
