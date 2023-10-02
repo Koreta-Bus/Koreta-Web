@@ -93,7 +93,7 @@ export const DirectionsCard = () => {
                   </BottomContainer>
                   <Button
                     func={() => direction?.is_microauto && handleToOrderForm(direction)}
-                    text={direction?.price}
+                    text={direction?.is_microauto ? direction?.price : 'Не доступно для замовлення'}
                     type={"text"}
                     padding={"10px 0px"}
                     disabled={!direction?.is_microauto}
