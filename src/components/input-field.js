@@ -162,7 +162,6 @@ const ResultOptionsWrapper = styled.div`
   position: absolute;
   top: 35px;
   z-index: 200;
-  overflow: scroll;
   cursor: pointer;
 
   @media (max-width: 768px) {
