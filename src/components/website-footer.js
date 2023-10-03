@@ -57,7 +57,7 @@ const FooterMenuLists = [
       },
       {
         key: "+38",
-        title: "++380 97 146 1991",
+        title: "+380 97 146 1991",
         icon: "phone",
       },
     ],

@@ -15,7 +15,7 @@ const ContactDetails = [
   },
   {
     key: "Phone",
-    title: "++380 97 146 1991",
+    title: "+380 97 146 1991",
     icon: "phone",
   },
   ...SocialMedia,
