@@ -215,7 +215,7 @@ export const OrderForm = ({
               </ContactDetail>
             ))}
           </StyledOnlyMedia>
-          <TelePhone>Тел: ++380 97 146 1991</TelePhone>
+          <TelePhone>Тел: +380 97 146 1991</TelePhone>
         </StyledHeaderMedia>
       </WebsitePageLayouts>
       <OrderFormContainer ishomepage={validPath}>
