@@ -27,6 +27,8 @@ export const InputField = ({
   maxLength = null,
   formik,
   borderRed = false,
+  isLoading,
+  setSearchResult,
 }) => {
   const dispatch = useDispatch();
   const [optionModalVisibility, setOptionModalVisibility] = useState(true);
@@ -90,24 +92,38 @@ export const InputField = ({
           </IconWrapper>
         )}
       </InputWrapper>
-      {Array.isArray(result) && optionModalVisibility && result?.length > 0 && (
-        <ResultOptionsContainer>
-          <ResultOptionsWrapper>
-            {result?.map(({ name: cityName, city_id }) => {
-              return (
-                <ResultOption onClick={() => selectPlaceHandler(cityName, city_id)}>
-                  {cityName?.length > 11 && window.innerWidth > 780
-                    ? `${cityName.substring(0, 11)}..`
-                    : cityName}
-                </ResultOption>
-              );
-            })}
-          </ResultOptionsWrapper>
-        </ResultOptionsContainer>
-      )}
-      {Array.isArray(result) && result?.length === 0 && (
+      {isLoading && value ? (
         <ResultOptionsWrapper>
-          <ResultOption noResult={true}>no result found</ResultOption>
+          <ResultOption noResult={true}>loading...</ResultOption>
+        </ResultOptionsWrapper>
+      ) : (
+        Array.isArray(result) &&
+        optionModalVisibility &&
+        result?.length > 0 &&
+        value && (
+          <ResultOptionsContainer>
+            <ResultOptionsWrapper>
+              {result?.map(({ name: cityName, city_id }) => {
+                return (
+                  <ResultOption
+                    onClick={() => {
+                      // setSearchResult(null);
+                      selectPlaceHandler(cityName, city_id);
+                    }}
+                  >
+                    {cityName?.length > 11 && window.innerWidth > 780
+                      ? `${cityName.substring(0, 11)}..`
+                      : cityName}
+                  </ResultOption>
+                );
+              })}
+            </ResultOptionsWrapper>
+          </ResultOptionsContainer>
+        )
+      )}
+      {Array.isArray(result) && result?.length === 0 && value && (
+        <ResultOptionsWrapper>
+          <ResultOption noResult={true}>не знайдено</ResultOption>
         </ResultOptionsWrapper>
       )}
     </InputContainer>

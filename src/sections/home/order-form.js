@@ -39,40 +39,6 @@ function DateIcon(props) {
   return <Icon name="calendar" {...props} />;
 }
 
-const inputFields = [
-  {
-    id: "from",
-    type: "text",
-    name: "from",
-    placeholder: "Звідки",
-    icon: "exchange",
-    className: "from",
-    containerClass: "gridContainer",
-  },
-  {
-    id: "to",
-    type: "text",
-    name: "to",
-    placeholder: "Куди",
-    className: "to",
-    containerClass: "gridContainer",
-  },
-  {
-    date: true,
-    className: "date",
-  },
-  {
-    id: "personCount",
-    type: "text",
-    name: "personCount",
-    placeholder: "Пасажирів",
-    icon: "person",
-    className: "person",
-    containerClass: "personContainer",
-    maxLength: "2",
-  },
-];
-
 export const OrderForm = ({
   searchedInitialValues,
   searchValue = false,
@@ -83,6 +49,7 @@ export const OrderForm = ({
   const dispatch = useDispatch();
 
   const [fieldName, setFieldName] = useState("");
+  const [searchResult, setSearchResult] = useState(null)
 
   const { from, to } = useSelector((state) => state.searchBusDirections);
 
@@ -111,8 +78,8 @@ export const OrderForm = ({
   useEffect(() => {
     const getDirections = async () => {
       if (
-        item?.from &&
-        item?.to &&
+        item?.from?.cityId &&
+        item?.to?.cityId &&
         item?.formattedDate &&
         item?.personCount &&
         path === "/ticket-search"
@@ -123,6 +90,8 @@ export const OrderForm = ({
           departure_date: item?.formattedDate,
           free_seats: item?.personCount,
         })) ?? null;
+      }else {
+        formik.resetForm()
       }
     };
 
@@ -137,6 +106,44 @@ export const OrderForm = ({
       isLoading: searchedCitiesIsLoading,
     },
   ] = useLazyGetAllCitiesQuery();
+
+  useEffect(() => setSearchResult(searchedCitiesData?.body),[searchedCitiesData])
+
+  const inputFields = [
+    {
+      id: "from",
+      type: "text",
+      name: "from",
+      icon: "exchange",
+      className: "from",
+      placeholder: "Звідки",
+      containerClass: "gridContainer",
+      isLoading: fieldName === "from" && searchedCitiesIsLoading,
+    },
+    {
+      id: "to",
+      name: "to",
+      type: "text",
+      className: "to",
+      placeholder: "Куди",
+      containerClass: "gridContainer",
+      isLoading: fieldName === "to" && searchedCitiesIsLoading,
+    },
+    {
+      date: true,
+      className: "date",
+    },
+    {
+      type: "text",
+      maxLength: "2",
+      icon: "person",
+      id: "personCount",
+      className: "person",
+      name: "personCount",
+      placeholder: "Пасажирів",
+      containerClass: "personContainer",
+    },
+  ];
 
   const formik = useFormik({
     initialValues:
@@ -316,7 +323,9 @@ export const OrderForm = ({
                       className={input.className}
                       containerClass={input.containerClass}
                       maxLength={input.maxLength}
-                      result={input.name === fieldName ? searchedCitiesData?.body : ""}
+                      result={input.name === fieldName && searchResult}
+                      setSearchResult={setSearchResult}
+                      isLoading={input.isLoading ?? false}
                       borderRed={!!(formik.touched[input.name] && formik.errors[input.name])}
                     />
                   </>

@@ -11,7 +11,7 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
   env: {
-    API_URL: "http://api.koretabus.com/api",
+    API_URL: "https://api.koretabus.com/api",
     NEXT_PUBLIC_FIREBASE_API_KEY: "AIzaSyBFfPV58KchWOJBuYWmvKXCLcByC7GpgNw",
     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "koretabus-a309f.firebaseapp.com",
     NEXT_PUBLIC_FIREBASE_PROJECT_ID: "koretabus-a309f",

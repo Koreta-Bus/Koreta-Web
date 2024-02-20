@@ -76,7 +76,7 @@ export const DirectionsCard = () => {
                     <TopContent>
                       <TopContent_Title>{direction?.route_name}</TopContent_Title>
                       <Yellow_Content>{direction?.carrier_name}</Yellow_Content>
-                      <SeatsCount>{`Вільне місце: ${direction?.free_seats}`}</SeatsCount>
+                      <SeatsCount>{`Вільне місце: ${direction?.free_seats ?? 'доступний'}`}</SeatsCount>
                     </TopContent>
                   </TopContainer>
                   <BottomContainer>
@@ -92,11 +92,10 @@ export const DirectionsCard = () => {
                     </RightContent>
                   </BottomContainer>
                   <Button
-                    func={() => direction?.is_microauto && handleToOrderForm(direction)}
-                    text={direction?.is_microauto ? direction?.price : 'Не доступно для замовлення'}
                     type={"text"}
                     padding={"10px 0px"}
-                    disabled={!direction?.is_microauto}
+                    text={direction?.price}
+                    func={() => handleToOrderForm(direction)}
                   />
                 </DirectionsCardContainer>
               </animated.div>

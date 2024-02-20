@@ -9,28 +9,37 @@ import { Button } from "components/button";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useCreateOrderMutation } from "store/apis";
+import { useCreateOrderMutation, useGetFreeSeatsQuery } from "store/apis";
 
 import { styled } from "styled-components";
 
 const initialValues = {
-  name: "",
-  surname: "",
-  mobileNumber: "",
+  seat: "",
+  phone: "",
   email: "",
+  lastname: "",
+  firstname: "",
+  transport_id: "",
 };
 
 const Page = () => {
   const router = useRouter();
   const { orderValues } = useSelector((state) => state.searchBusDirections);
 
-  const [createOrder, { data, isError, isLoading, isSuccess }] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const {
+    isError,
+    isSuccess,
+    data: freeSeatsData,
+    isLoading: isFreeSeatsLoading,
+  } = useGetFreeSeatsQuery(orderValues?.route_id);
 
-  useEffect(() => {
-    if (Object.entries(orderValues)?.length < 12) {
-      router.push("/ticket-search");
-    }
-  }, [orderValues]);
+  useEffect(
+    () => Object.entries(orderValues)?.length < 12 && router.push("/ticket-search"),
+    [orderValues]
+  );
+
+  const freeSeats = freeSeatsData?.body?.data?.response?.free_seats
 
   const formik = useFormik({
     initialValues,
@@ -39,25 +48,35 @@ const Page = () => {
       try {
         if (orderValues?.price && !isLoading) {
           await createOrder({
-            name: values?.name,
-            surname: values?.surname,
-            phone: values?.mobileNumber,
             email: values?.email,
+            firstname: values?.name,
+            seat_id: values?.seat_id,
+            lastname: values?.surname,
             price: orderValues?.price,
+            seat_num: values?.seat_num,
+            phone: values?.mobileNumber,
+            route_id: orderValues?.route_id,
+            transport_id: values?.transport_id,
           });
           router.push("/ticket-search/order/success");
         }
       } catch (err) {
         Popup({
+          timer: 2500,
           icon: "error",
+          showConfirmButton: false,
           title: "Форма запроса водителя",
           text: "Что-то пошло не так при отправке запроса",
-          timer: 2500,
-          showConfirmButton: false,
         });
       }
     },
   });
+
+  //                seat_num
+  // req - route_id, seat, seat_id, transport_id, firstname, lastname, email, phone
+  // https://api.koretabus.com/api/route/eyJkYXRldGltZV9kZXBhcnR1cmUiOiIyMDI0LTAyLTIyIDE2OjUwOjAwIiwic3lzdGVtIjoibHV4cmVpc2VuIiwiZnJvbV9zdGF0aW9uX2lkIjoxLCJ0b19zdGF0aW9uX2lkIjoyLCJjYWxlbmRhcl9pZCI6OTI0OSwidHJpcF9pZCI6MjY1MjI5OCwidGltZXRhYmxlX2lkIjozNjE5LCJ1bmlxX3JvdXRlX2lkIjoxNTQ4fQ==/free_seats
+  // pay api postdan
+  // /orders/pay - order_id
 
   return (
     <>
@@ -76,8 +95,8 @@ const Page = () => {
                   Ім'я <Icon name="star" />
                 </label>
                 <InputTextField
-                  type="text"
                   id="name"
+                  type="text"
                   name="name"
                   value={formik.values.name}
                   onChange={formik.handleChange}
@@ -105,21 +124,68 @@ const Page = () => {
                   type="text"
                   id="mobileNumber"
                   name="mobileNumber"
-                  value={formik.values.mobileNumber}
                   onChange={formik.handleChange}
+                  value={formik.values.mobileNumber}
                 />
                 <ErrorText>{formik.values.mobileNumber && formik.errors.mobileNumber}</ErrorText>
               </FieldWrapper>
               <FieldWrapper>
                 <label htmlFor="email">Email, веб-сайт (якщо наявні)</label>
                 <InputTextField
-                  type="text"
                   id="email"
+                  type="text"
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
                 />
                 <ErrorText>{formik.values.email && formik.errors.email}</ErrorText>
+              </FieldWrapper>
+              <FieldWrapper>
+                <label htmlFor="transport_id">
+                  Виберіть автомобіль водія <Icon name="star" />
+                </label>
+                <SelectField
+                  id="transport_id"
+                  name="transport_id"
+                  onChange={formik.handleChange}
+                  value={formik.values.transport_id}
+                >
+                  <option value="" disabled>
+                    Оберіть автомобіль
+                  </option>
+                  {/* Map through your transport_ids data to generate options */}
+                  {freeSeats?.map((car) => (
+                    <option key={car.id} value={car.transport_id}>
+                      {car.description}
+                    </option>
+                  ))}
+                </SelectField>
+                <ErrorText>{formik.values.transport_id && formik.errors.transport_id}</ErrorText>
+              </FieldWrapper>
+              <FieldWrapper>
+                <label htmlFor="seat">
+                  Виберіть місце <Icon name="star" />
+                </label>
+                <SelectField
+                  id="seat"
+                  name="seat"
+                  value={formik.values.seat}
+                  onChange={formik.handleChange}
+                  disabled={!formik.values.transport_id}
+                >
+                  <option value="" disabled>
+                    Оберіть місце
+                  </option>
+                  {/* Map through your freeSeats data to generate options */}
+                  {freeSeats
+                    ?.filter((car) => car.transport_id == formik.values.transport_id)
+                    ?.[0]?.available?.map(seatDesc => (
+                      <option key={seatDesc?.seat_id} value={seatDesc}>
+                        {seatDesc?.seat_num}
+                      </option>
+                    ))}
+                </SelectField>
+                <ErrorText>{formik.values.seat && formik.errors.seat}</ErrorText>
               </FieldWrapper>
             </DriverFormWrapper>
             <PriceButtonContainer>
@@ -239,6 +305,11 @@ const WriteUsTitle = styled.span`
   }
 `;
 
+const SelectField = styled.select`
+  padding: 1rem;
+  font-family: Sora, sans-serif;
+`;
+
 const Container = styled.section`
   padding: 1rem;
   display: flex;
@@ -323,7 +394,7 @@ const DriverFormWrapper = styled.div`
     width: 100%;
   }
 
-  input {
+  input, select {
     border-radius: 4px;
     background: #fff;
     box-shadow: 0px 0px 8px 0px rgba(32, 48, 99, 0.25);

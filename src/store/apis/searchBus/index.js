@@ -18,7 +18,7 @@ export const searchBusApi = createApi({
       providesTags: ["search"],
     }),
     getAllCities: builder.query({
-      query: (keyword) => `cities?search=${decodeURIComponent(keyword)}`,
+      query: (keyword) => `cities?search=${keyword}`,
       providesTags: ["getAllCities"],
     }),
   }),

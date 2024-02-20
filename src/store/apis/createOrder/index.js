@@ -9,7 +9,7 @@ export const createOrderApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["orders"],
+  tagTypes: ["orders", "free_seats"],
   endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (body) => ({
@@ -19,7 +19,11 @@ export const createOrderApi = createApi({
       }),
       invalidatesTags: ["orders"],
     }),
+    getFreeSeats: builder.query({
+      query: (route_id) => `route/${route_id}/free_seats`,
+      providesTags: ["free_seats"],
+    }),
   }),
 });
 
-export const { useCreateOrderMutation } = createOrderApi;
+export const { useCreateOrderMutation, useGetFreeSeatsQuery } = createOrderApi;
