@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  seachFormValues: {},
-  isLoading: false,
-  from: "",
   to: "",
+  from: "",
   orderValues: {},
+  isLoading: false,
+  seachFormValues: {},
 };
 
 const orderFormSlice = createSlice({

@@ -26,7 +26,7 @@ export const Header = () => {
 
   const [openselect, setOpenSelect] = useState(false);
   const [openselectMobile, setOpenSelectMobile] = useState(false);
-  const [hamburgervisible, setHamburgerVisible] = useState("");
+  const [isHamburgerVisible, setHamburgerVisible] = useState("");
 
   const handleOpenOptions = useCallback((e) => {
     e.stopPropagation();
@@ -57,9 +57,9 @@ export const Header = () => {
   }, []);
 
   useEffect(() => {
-    if (hamburgervisible) addClassList("htmlOverflowHidden");
+    if (isHamburgerVisible) addClassList("htmlOverflowHidden");
     else addClassList("htmlOverFlowScroll");
-  }, [hamburgervisible]);
+  }, [isHamburgerVisible]);
 
   return (
     <>
@@ -96,7 +96,7 @@ export const Header = () => {
           <Icon name="hamburger" />
         </Hamburger>
       </HeaderContainer>
-      <MobileHeaderContainer hamburgervisible={hamburgervisible}>
+      <MobileHeaderContainer isHamburgerVisible={isHamburgerVisible}>
         <div>
           <MobileHamburgerHeader>
             <Logo black="true">Koreta</Logo>
@@ -207,7 +207,7 @@ const MobileHeaderContainer = styled.div`
     background-color: white;
     z-index: 1000;
     margin-bottom: 4rem;
-    left: ${({ hamburgervisible }) => (!hamburgervisible ? "100vw" : "0")};
+    left: ${({ isHamburgerVisible }) => (!isHamburgerVisible ? "100vw" : "0")};
     opacity: 1;
     transition-duration: 0.33s;
   }
