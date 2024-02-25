@@ -6,59 +6,136 @@ import { MainFooter } from "components/website-footer";
 import { OrderForm } from "sections/home/order-form";
 import { Icon } from "shared/IconGenerator";
 import { Button } from "components/button";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
-import { useCreateOrderMutation, useGetFreeSeatsQuery } from "store/apis";
+import { useBroneOrderMutation, useCreateOrderMutation, useGetFreeSeatsQuery } from "store/apis";
 
 import { styled } from "styled-components";
+import { Popup } from "shared/alerts";
+import { setFormPay } from "store/states";
+import { noop } from "shared/common";
 
-const initialValues = {
-  seat: "",
+const defaultInitialValues = {
   phone: "",
   email: "",
   lastname: "",
   firstname: "",
+};
+
+const externalAutobusFields = {
+  seat: "",
   transport_id: "",
 };
 
+const demandedDirectionFields = {
+  to: "",
+  from: "",
+};  
+
+const defaultPopup = () =>
+  Popup({
+    timer: 2000,
+    icon: "success",
+    title: "Вітання!",
+    showConfirmButton: false,
+    text: "Замовлення було успішно оформлене",
+  });
+
 const Page = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const { orderValues } = useSelector((state) => state.searchBusDirections);
 
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
-  const {
-    isError,
-    isSuccess,
-    data: freeSeatsData,
-    isLoading: isFreeSeatsLoading,
-  } = useGetFreeSeatsQuery(orderValues?.route_id);
+  const [createOrder, { isLoading, data, isSuccess: createOrderSucccess }] =
+    useCreateOrderMutation();
 
-  useEffect(
-    () => Object.entries(orderValues)?.length < 12 && router.push("/ticket-search"),
-    [orderValues]
-  );
+  const [broneOrder, { isSuccess: broneSuccess, data: broneData }] = useBroneOrderMutation();
 
-  const freeSeats = freeSeatsData?.body?.data?.response?.free_seats
+  const { data: freeSeatsData } = useGetFreeSeatsQuery(orderValues?.route_id);
+
+  const isDemandedDirection = router?.asPath === "/ticket-search/demanded-direction";
+
+  useEffect(() => {
+    if (!isDemandedDirection) {
+      Object.entries(orderValues)?.length < 12 && router.push("/ticket-search");
+    }
+    return noop;
+  }, [orderValues]);
+
+  useEffect(() => {
+    if (createOrderSucccess) {
+      if (!isDemandedDirection) broneOrder({ order_id: data?.body?.id });
+
+      if (isDemandedDirection) {
+        //default time 2000
+        defaultPopup();
+        setTimeout(() => router.push("/ticket-search"), 2000);
+      }
+    }
+
+    return noop;
+  }, [createOrderSucccess]);
+
+  useEffect(() => {
+    if (broneSuccess && !isDemandedDirection) {
+      //default time 2000
+      defaultPopup();
+
+      setTimeout(() => {
+        dispatch(setFormPay(broneData?.body));
+        router.push("order/pay");
+      }, 2000);
+    }
+
+    return noop;
+  }, [broneSuccess]);
+
+  const { free_seats: freeSeats, error: freeSeatsError } =
+    freeSeatsData?.body?.data?.response ?? {};
+
+  useEffect(() => {
+    if (freeSeats?.length === 0) {
+      Popup({
+        icon: "error",
+        title: "Error",
+        text: freeSeatsError,
+        showConfirmButton: true,
+      });
+    }
+
+    return noop;
+  }, [freeSeatsError]);
+
+  const getInitialValues = useMemo(() => {
+    const optionalValues = isDemandedDirection ? externalAutobusFields : demandedDirectionFields;
+
+    return { ...defaultInitialValues, ...optionalValues };
+  }, [isDemandedDirection]);
 
   const formik = useFormik({
-    initialValues,
-    validationSchema: orderFormTicketValidSchema(),
+    initialValues: getInitialValues,
+    validationSchema: orderFormTicketValidSchema(isDemandedDirection),
     onSubmit: async (values, helpers) => {
+      const selectedSeats = availableSeats?.find((seats) => seats.seat_id == formik.values.seat);
+
       try {
-        if (orderValues?.price && !isLoading) {
+        if ((orderValues?.price && !isLoading) || isDemandedDirection) {
           await createOrder({
+            to: values?.to,
+            from: values?.from,
+            name: values?.name,
             email: values?.email,
-            firstname: values?.name,
-            seat_id: values?.seat_id,
-            lastname: values?.surname,
-            price: orderValues?.price,
-            seat_num: values?.seat_num,
+            surname: values?.surname,
+            seat_id: values?.seat || 0,
             phone: values?.mobileNumber,
+            seat: selectedSeats?.seat_num,
+            price: orderValues?.price || 0,
             route_id: orderValues?.route_id,
-            transport_id: values?.transport_id,
+            is_microauto: isDemandedDirection,
+            transport_id: values?.transport_id || 0,
           });
-          router.push("/ticket-search/order/success");
         }
       } catch (err) {
         Popup({
@@ -72,11 +149,11 @@ const Page = () => {
     },
   });
 
-  //                seat_num
-  // req - route_id, seat, seat_id, transport_id, firstname, lastname, email, phone
-  // https://api.koretabus.com/api/route/eyJkYXRldGltZV9kZXBhcnR1cmUiOiIyMDI0LTAyLTIyIDE2OjUwOjAwIiwic3lzdGVtIjoibHV4cmVpc2VuIiwiZnJvbV9zdGF0aW9uX2lkIjoxLCJ0b19zdGF0aW9uX2lkIjoyLCJjYWxlbmRhcl9pZCI6OTI0OSwidHJpcF9pZCI6MjY1MjI5OCwidGltZXRhYmxlX2lkIjozNjE5LCJ1bmlxX3JvdXRlX2lkIjoxNTQ4fQ==/free_seats
-  // pay api postdan
-  // /orders/pay - order_id
+  const availableSeats = useMemo(
+    () =>
+      freeSeats?.filter((car) => car.transport_id == formik.values.transport_id)?.[0]?.available,
+    [freeSeats, formik]
+  );
 
   return (
     <>
@@ -84,12 +161,43 @@ const Page = () => {
         <title>Koreta | Bus Ticket Order</title>
       </Head>
       <OrderForm />
+
       <Container>
         <h2>Бронювання</h2>
         <DriverFormContainer>
           <FormTitle>Пасажир</FormTitle>
           <StyledDriverForm onSubmit={formik.handleSubmit}>
             <DriverFormWrapper>
+              {isDemandedDirection && (
+                <>
+                  <FieldWrapper>
+                    <label htmlFor="name">
+                      Звідки <Icon name="star" />
+                    </label>
+                    <InputTextField
+                      id="from"
+                      type="text"
+                      name="from"
+                      value={formik.values.from}
+                      onChange={formik.handleChange}
+                    />
+                    <ErrorText>{formik.values.from && formik.errors.from}</ErrorText>
+                  </FieldWrapper>
+                  <FieldWrapper>
+                    <label htmlFor="name">
+                      Куди <Icon name="star" />
+                    </label>
+                    <InputTextField
+                      id="to"
+                      name="to"
+                      type="text"
+                      value={formik.values.to}
+                      onChange={formik.handleChange}
+                    />
+                    <ErrorText>{formik.values.to && formik.errors.to}</ErrorText>
+                  </FieldWrapper>
+                </>
+              )}
               <FieldWrapper>
                 <label htmlFor="name">
                   Ім'я <Icon name="star" />
@@ -140,57 +248,63 @@ const Page = () => {
                 />
                 <ErrorText>{formik.values.email && formik.errors.email}</ErrorText>
               </FieldWrapper>
-              <FieldWrapper>
-                <label htmlFor="transport_id">
-                  Виберіть автомобіль водія <Icon name="star" />
-                </label>
-                <SelectField
-                  id="transport_id"
-                  name="transport_id"
-                  onChange={formik.handleChange}
-                  value={formik.values.transport_id}
-                >
-                  <option value="" disabled>
-                    Оберіть автомобіль
-                  </option>
-                  {/* Map through your transport_ids data to generate options */}
-                  {freeSeats?.map((car) => (
-                    <option key={car.id} value={car.transport_id}>
-                      {car.description}
-                    </option>
-                  ))}
-                </SelectField>
-                <ErrorText>{formik.values.transport_id && formik.errors.transport_id}</ErrorText>
-              </FieldWrapper>
-              <FieldWrapper>
-                <label htmlFor="seat">
-                  Виберіть місце <Icon name="star" />
-                </label>
-                <SelectField
-                  id="seat"
-                  name="seat"
-                  value={formik.values.seat}
-                  onChange={formik.handleChange}
-                  disabled={!formik.values.transport_id}
-                >
-                  <option value="" disabled>
-                    Оберіть місце
-                  </option>
-                  {/* Map through your freeSeats data to generate options */}
-                  {freeSeats
-                    ?.filter((car) => car.transport_id == formik.values.transport_id)
-                    ?.[0]?.available?.map(seatDesc => (
-                      <option key={seatDesc?.seat_id} value={seatDesc}>
-                        {seatDesc?.seat_num}
+              {!isDemandedDirection && (
+                <>
+                  <FieldWrapper>
+                    <label htmlFor="transport_id">
+                      Виберіть автомобіль водія <Icon name="star" />
+                    </label>
+                    <SelectField
+                      id="transport_id"
+                      name="transport_id"
+                      onChange={formik.handleChange}
+                      value={formik.values.transport_id}
+                    >
+                      <option value="" disabled>
+                        Оберіть автомобіль
                       </option>
-                    ))}
-                </SelectField>
-                <ErrorText>{formik.values.seat && formik.errors.seat}</ErrorText>
-              </FieldWrapper>
+                      {/* Map through your transport_ids data to generate options */}
+                      {freeSeats?.map((car) => (
+                        <option key={car.id} value={car.transport_id}>
+                          {car.description}
+                        </option>
+                      ))}
+                    </SelectField>
+                    <ErrorText>
+                      {formik.values.transport_id && formik.errors.transport_id}
+                    </ErrorText>
+                  </FieldWrapper>
+                  <FieldWrapper>
+                    <label htmlFor="seat">
+                      Виберіть місце <Icon name="star" />
+                    </label>
+                    <SelectField
+                      id="seat"
+                      name="seat"
+                      value={formik.values.seat}
+                      onChange={formik.handleChange}
+                      disabled={!formik.values.transport_id}
+                    >
+                      <option value="" disabled>
+                        Оберіть місце
+                      </option>
+                      {/* Map through your freeSeats data to generate options */}
+                      {availableSeats?.map((seatDesc) => (
+                        <option key={seatDesc?.seat_num} value={seatDesc?.seat_id}>
+                          {seatDesc?.seat_num}
+                        </option>
+                      ))}
+                    </SelectField>
+                    <ErrorText>{formik.values.seat && formik.errors.seat}</ErrorText>
+                  </FieldWrapper>
+                </>
+              )}
             </DriverFormWrapper>
             <PriceButtonContainer>
               <PriceButtonWrapper>
-                <PriceContent>{`Всього: ${orderValues?.price}`}</PriceContent>
+                {!isDemandedDirection && (
+                  <PriceContent>{`Всього: ${orderValues?.price}`}</PriceContent>
+                )}
                 <ButtonWrapper>
                   <Button padding="10px 0px" type="submit" text={"Надіслати"} loading={isLoading} />
                 </ButtonWrapper>
@@ -200,38 +314,41 @@ const Page = () => {
         </DriverFormContainer>
       </Container>
 
-      <WriteUsContainer>
-        <WriteUsTitle>Деталі обраної поїздки</WriteUsTitle>
-        <DetailContainer>
-          <DetailWrapper>
-            <DetailItemnWrapper>
-              <ItemTitle>{`Перевізник:`}</ItemTitle>
-              <ItemValue>{`${orderValues?.carrier_name}`}</ItemValue>
-            </DetailItemnWrapper>
-            <DetailItemnWrapper>
-              <ItemTitle>{`Тип:`}</ItemTitle>
-              <ItemValue>{`${orderValues?.is_microauto ? "Microbus" : "Bus"}`}</ItemValue>
-            </DetailItemnWrapper>
-            <DetailItemnWrapper>
-              <ItemTitle>{`Дата відвантаження:`}</ItemTitle>
-              <ItemValue>{`${orderValues?.date_departure}`}</ItemValue>
-            </DetailItemnWrapper>
-            <StreetLocations>{`${
-              (orderValues?.from_city, orderValues?.from_station)
-            }`}</StreetLocations>
-          </DetailWrapper>
-          <Divider></Divider>
-          <DetailWrapper>
-            <DetailItemnWrapper>
-              <ItemTitle>{`Дата прибуття:`}</ItemTitle>
-              <ItemValue>{`${orderValues?.date_arrival}`}</ItemValue>
-            </DetailItemnWrapper>
-            <StreetLocations>{`${
-              (orderValues?.to_city, orderValues?.to_station)
-            }`}</StreetLocations>
-          </DetailWrapper>
-        </DetailContainer>
-      </WriteUsContainer>
+      {!isDemandedDirection && (
+        <WriteUsContainer>
+          <WriteUsTitle>Деталі обраної поїздки</WriteUsTitle>
+          <DetailContainer>
+            <DetailWrapper>
+              <DetailItemnWrapper>
+                <ItemTitle>{`Перевізник:`}</ItemTitle>
+                <ItemValue>{`${orderValues?.carrier_name}`}</ItemValue>
+              </DetailItemnWrapper>
+              <DetailItemnWrapper>
+                <ItemTitle>{`Тип:`}</ItemTitle>
+                <ItemValue>{`${orderValues?.is_microauto ? "Microbus" : "Bus"}`}</ItemValue>
+              </DetailItemnWrapper>
+              <DetailItemnWrapper>
+                <ItemTitle>{`Дата відвантаження:`}</ItemTitle>
+                <ItemValue>{`${orderValues?.date_departure}`}</ItemValue>
+              </DetailItemnWrapper>
+              <StreetLocations>{`${
+                (orderValues?.from_city, orderValues?.from_station)
+              }`}</StreetLocations>
+            </DetailWrapper>
+            <Divider></Divider>
+            <DetailWrapper>
+              <DetailItemnWrapper>
+                <ItemTitle>{`Дата прибуття:`}</ItemTitle>
+                <ItemValue>{`${orderValues?.date_arrival}`}</ItemValue>
+              </DetailItemnWrapper>
+              <StreetLocations>{`${
+                (orderValues?.to_city, orderValues?.to_station)
+              }`}</StreetLocations>
+            </DetailWrapper>
+          </DetailContainer>
+        </WriteUsContainer>
+      )}
+
       <MainFooter />
     </>
   );
@@ -394,7 +511,8 @@ const DriverFormWrapper = styled.div`
     width: 100%;
   }
 
-  input, select {
+  input,
+  select {
     border-radius: 4px;
     background: #fff;
     box-shadow: 0px 0px 8px 0px rgba(32, 48, 99, 0.25);

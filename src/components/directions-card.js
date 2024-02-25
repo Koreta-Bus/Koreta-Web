@@ -7,26 +7,32 @@ import { OrderForm } from "sections/home/order-form";
 import { MainFooter } from "./website-footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { storeOrderValues } from "store/states";
 import { useRouter } from "next/router";
+import { isEmpty, isNotEmpty } from "shared/common";
 
 export const DirectionsCard = () => {
-  const { seachFormValues } = useSelector((state) => state.searchBusDirections);
-
-  const dispatch = useDispatch();
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { seachFormValues } = useSelector((state) => state.searchBusDirections);
 
   const [
     getSearchBusDirections,
     { data: busDirections, isSuccess, isError, isLoading: busDirectionsLoading },
   ] = useLazyGetSearchBusDirectionsQuery();
 
-  const trail = useTrail(busDirections?.body?.length ?? 0, {
-    from: { opacity: 0, transform: "translate3d(0, 40px, 0)" },
-    to: { opacity: 1, transform: "translate3d(0, 0, 0)" },
-    config: { mass: 1, tension: 800, friction: 85 },
+  const busDirectionsFiltered = useMemo(
+    () => busDirections?.body?.filter((data) => !data?.is_microauto),
+    [busDirections]
+  );
+
+  const trail = useTrail(busDirectionsFiltered?.length ?? 0, {
     delay: 500,
+    config: { mass: 1, tension: 800, friction: 85 },
+    to: { opacity: 1, transform: "translate3d(0, 0, 0)" },
+    from: { opacity: 0, transform: "translate3d(0, 40px, 0)" },
   });
 
   const handleToOrderForm = (direction) => {
@@ -49,34 +55,25 @@ export const DirectionsCard = () => {
     <>
       <OrderForm
         searchedInitialValues={seachFormValues}
-        getSearchBusDirections={getSearchBusDirections}
         busDirectionsLoading={busDirectionsLoading}
+        getSearchBusDirections={getSearchBusDirections}
       />
       <Container>
         <h2>Графік відправлення</h2>
-        {busDirections?.body?.length === 0 ? (
-          <NotFounDirectionContainer>
-            <span>Цей пункт призначення недоступний</span>
-          </NotFounDirectionContainer>
-        ) : null}
         <CardMainContainer>
           {trail?.map((style, index) => {
             const direction = busDirections?.body?.[index];
+            
             return (
               <animated.div style={style} key={index}>
                 <DirectionsCardContainer>
-                  <TopContainer isMicroAuto={direction.is_microauto}>
-                    {direction.is_microauto && (
-                      <LogoContainer>
-                        <IconWrapper>
-                          <Icon name="micro_autobus" />
-                        </IconWrapper>
-                      </LogoContainer>
-                    )}
+                  <TopContainer>
                     <TopContent>
                       <TopContent_Title>{direction?.route_name}</TopContent_Title>
                       <Yellow_Content>{direction?.carrier_name}</Yellow_Content>
-                      <SeatsCount>{`Вільне місце: ${direction?.free_seats ?? 'доступний'}`}</SeatsCount>
+                      <SeatsCount>{`Вільне місце: ${
+                        direction?.free_seats ?? "доступний"
+                      }`}</SeatsCount>
                     </TopContent>
                   </TopContainer>
                   <BottomContainer>
@@ -101,6 +98,27 @@ export const DirectionsCard = () => {
               </animated.div>
             );
           })}
+
+          {isNotEmpty(trail) && (
+            <InfoDirectionsContainer flexColumn>
+              <span>
+                Не знайшли точного напрямку? Ви можете приїхати на нашому мікроавтобусі - Корета
+              </span>
+              <div style={{ width: "max-content", margin: "0 auto", padding: "0 1rem" }}>
+                <Button
+                  padding="8px 16px"
+                  text={"Надішліть нам інформацію"}
+                  func={() => router.push("/ticket-search/demanded-direction")}
+                />
+              </div>
+            </InfoDirectionsContainer>
+          )}
+
+          {isEmpty(trail) && !busDirectionsLoading && (
+            <InfoDirectionsContainer>
+              <span>Цей пункт призначення недоступний</span>
+            </InfoDirectionsContainer>
+          )}
         </CardMainContainer>
       </Container>
       <MainFooter />
@@ -108,12 +126,15 @@ export const DirectionsCard = () => {
   );
 };
 
-const NotFounDirectionContainer = styled.div`
-  border: 2px solid ${WebsiteColors.PRIMARY};
+const InfoDirectionsContainer = styled.div`
+  border: 1px solid ${WebsiteColors.PRIMARY};
   border-radius: 8px;
   width: 100%;
   padding: 20px;
   display: flex;
+  flex-direction: ${({ flexColumn }) => (flexColumn ? "column" : "row")};
+  gap: ${({ flexColumn }) => flexColumn && "1rem"};
+  text-align: center;
   justify-content: center;
   align-items: center;
 

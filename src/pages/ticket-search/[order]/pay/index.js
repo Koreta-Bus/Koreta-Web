@@ -5,27 +5,18 @@ import { OrderForm } from "sections/home/order-form";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Popup } from "shared/alerts";
+import { isEmpty, noop } from "shared/common";
 
 import { styled } from "styled-components";
 
 const Page = () => {
   const router = useRouter();
-  const { orderValues } = useSelector((state) => state.searchBusDirections);
+
+  const { formPay } = useSelector((state) => state.searchBusDirections);
 
   useEffect(() => {
-    if (!orderValues.price) {
-      Popup({
-        icon: "error",
-        title: "Ціна",
-        text: "Ціну не вибрано, повертаємо вас на сторінку пошуку квитків",
-        timer: 2500,
-        showConfirmButton: false,
-      });
-      setTimeout(() => {
-        router.push("/ticket-search");
-      }, 2500);
-    }
+    isEmpty(formPay) && router.push("/ticket-search");
+    return noop;
   }, []);
 
   return (
@@ -40,35 +31,17 @@ const Page = () => {
           <Success>
             <Image alt="succes" src="/assets/website/success.png" />
           </Success>
-          <TextHereInfo>
-            <span>Дякуємо! Ваше бронювання успішне!</span>
-            <Divider />
-            <span>{`ЗАГАЛОМ: ${orderValues?.price}`}</span>
-            <span>{`Ви вибрали оплату при посадці! За потреби, менеджер додатково зв'яжеться з Вами для підтвердження бронювання`}</span>
-          </TextHereInfo>
+          <form method="POST" action={formPay?.action} accept-charset="utf-8">
+            <input type="hidden" name="data" value={formPay?.data} />
+            <input type="hidden" name="signature" value={formPay?.signature} />
+            <input type="image" src="//static.liqpay.ua/buttons/p1en.radius.png" name="btn_text" />
+          </form>
         </SuccessContainer>
       </Container>
       <MainFooter />
     </>
   );
 };
-
-const Divider = styled.div`
-  height: 2px;
-  width: 100%;
-  background-color: ${WebsiteColors.PRIMARY};
-  align-self: center;
-`;
-
-const TextHereInfo = styled.div`
-  color: #000000;
-  font-size: 20px;
-  line-height: 24px;
-  font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
 
 const Image = styled.img``;
 
@@ -109,6 +82,7 @@ const Container = styled.section`
 const SuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 32px;
   width: 100%;
   margin: 0 auto;

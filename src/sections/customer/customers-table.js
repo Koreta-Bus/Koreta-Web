@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { Scrollbar } from "components/scrollbar";
 import dayjs from "dayjs";
+import { noop } from "shared/common";
 
 const AllCels = {
   name: "Ім'я",
@@ -28,9 +29,13 @@ const AllCels = {
   from_station: "Зі станції",
   to_station: "До станції",
   from_city: "З міста",
+  from: 'З міста',
+  to: 'До міста',
   from_city_id: "ID міста відправлення",
   to_city: "До міста",
   to_city_id: "ID міста призначення",
+  order_from: 'Замовлення від',
+  status: 'Status'
 };
 
 const dateKeys = ["created_at", "updated_at"];
@@ -39,11 +44,11 @@ export const CustomersTable = (props) => {
   const {
     count = 0,
     items = [],
-    onPageChange = () => {},
+    onPageChange = noop,
     onRowsPerPageChange,
     page = 0,
     rowsPerPage = 0,
-    onClickRow = () => {},
+    onClickRow = noop,
   } = props;
 
   return (
@@ -66,8 +71,8 @@ export const CustomersTable = (props) => {
                     hover
                     key={
                       data?.id ??
-                      data?.created_at ??
                       date?.key ??
+                      data?.created_at ??
                       Math.floor(Math.random() * 100 * Math.random())
                     }
                     onClick={() => onClickRow(data)}

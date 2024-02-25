@@ -19,6 +19,14 @@ export const createOrderApi = createApi({
       }),
       invalidatesTags: ["orders"],
     }),
+    broneOrder: builder.mutation({
+      query: (body) => ({
+        body,
+        url: "orders/pay",
+        method: "POST",
+      }),
+      invalidatesTags: ["orders"],
+    }),
     getFreeSeats: builder.query({
       query: (route_id) => `route/${route_id}/free_seats`,
       providesTags: ["free_seats"],
@@ -26,4 +34,4 @@ export const createOrderApi = createApi({
   }),
 });
 
-export const { useCreateOrderMutation, useGetFreeSeatsQuery } = createOrderApi;
+export const { useCreateOrderMutation, useGetFreeSeatsQuery, useBroneOrderMutation } = createOrderApi;

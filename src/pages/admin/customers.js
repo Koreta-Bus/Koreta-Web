@@ -28,6 +28,7 @@ const Page = () => {
         timer: 2000,
         showConfirmButton: true,
       });
+      return undefined
     }
   }, [isError]);
 
@@ -51,12 +52,12 @@ const Page = () => {
               </Stack>
             </Stack>
             <CustomersTable
+              page={page}
+              rowsPerPage={rowsPerPage}
               count={data?.body?.length}
               items={customersInfos ?? []}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              page={page}
-              rowsPerPage={rowsPerPage}
             />
           </Stack>
         </Container>
