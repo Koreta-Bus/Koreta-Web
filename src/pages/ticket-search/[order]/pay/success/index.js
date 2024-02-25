@@ -4,12 +4,23 @@ import { MainFooter } from "components/website-footer";
 import { OrderForm } from "sections/home/order-form";
 
 import { styled } from "styled-components";
+import { Button } from "components/button";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Page = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 300,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <>
       <Head>
-        <title>Koreta | Bus Ticket Order</title>
+        <title>Koreta | Bus Ticket Order Success</title>
       </Head>
       <OrderForm />
       <Container>
@@ -20,9 +31,15 @@ const Page = () => {
           </Success>
           <TextHereInfo>
             <span>Дякуємо! Ваше бронювання успішне!</span>
-            <Divider />
-            <span>{`Ви вибрали оплату при посадці! За потреби, менеджер додатково зв'яжеться з Вами для підтвердження бронювання`}</span>
+            <span>Якщо у вас є які-небудь питання, ви можете написати нам.</span>
           </TextHereInfo>
+          <div style={{ maxWidth: "max-content" }}>
+            <Button
+              padding="8px 14px"
+              func={() => router.push("/")}
+              text={"Повернутися на головну сторінку"}
+            />
+          </div>
         </SuccessContainer>
       </Container>
       <MainFooter />
@@ -44,6 +61,7 @@ const TextHereInfo = styled.div`
   font-weight: 500;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
 `;
 
@@ -86,6 +104,7 @@ const Container = styled.section`
 const SuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 32px;
   width: 100%;
   margin: 0 auto;

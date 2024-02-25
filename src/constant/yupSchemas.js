@@ -32,8 +32,8 @@ export const driverFormValidSchema = () =>
 export const orderFormTicketValidSchema = (isDemandedDirection) => {
   const getRequiredFields = !isDemandedDirection
     ? {
-        transport_id: Yup.string().required('Поле "Оберіть автомобіль" обов\'язкове'),
         seat: Yup.mixed().required('Поле "Оберіть місце" обов\'язкове'),
+        transport_id: Yup.string().required('Поле "Оберіть автомобіль" обов\'язкове'),
       }
     : {
         from: Yup.string().required("Поле 'Звідки' обов'язкове"),
@@ -44,6 +44,7 @@ export const orderFormTicketValidSchema = (isDemandedDirection) => {
     name: Yup.string().required("Поле \"Ім'я\" обов'язкове"),
     surname: Yup.string().required('Поле "Прізвище'),
     mobileNumber: Yup.string()
+      .matches(/^\+\d+$/, 'Номер телефону повинен починатися з "+" і містити тільки цифри')
       .min(10, "Номер повинен містити щонайменше 10 цифр")
       .required('Поле "Номер телефону" обов\'язкове'),
     email: Yup.string()

@@ -22,15 +22,20 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Koreta | Bus Ticket Order</title>
+        <title>Koreta | Bus Ticket Pay</title>
       </Head>
       <OrderForm />
       <Container>
         <h2>Результат</h2>
         <SuccessContainer>
-          <Success>
-            <Image alt="succes" src="/assets/website/success.png" />
-          </Success>
+          <div>
+            Будь ласка, оплатіть своє замовлення протягом 30 хвилин, інакше ми відхилимо ваше
+            замовлення.
+          </div>
+          <div>Ви можете легко оплатити своє замовлення прямо внизу.</div>
+          <PaymentName>
+            Lig <strong>Pay</strong>
+          </PaymentName>
           <form method="POST" action={formPay?.action} accept-charset="utf-8">
             <input type="hidden" name="data" value={formPay?.data} />
             <input type="hidden" name="signature" value={formPay?.signature} />
@@ -43,17 +48,15 @@ const Page = () => {
   );
 };
 
-const Image = styled.img``;
+const PaymentName = styled.span`
+  color: #6ca81d;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.3rem;
 
-const Success = styled.div`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #effbf5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+  strong {
+    color: black;
+  }
 `;
 
 const Container = styled.section`
@@ -83,7 +86,7 @@ const SuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 0.6rem;
   width: 100%;
   margin: 0 auto;
   max-width: 1220px;
