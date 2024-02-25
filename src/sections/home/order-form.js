@@ -44,12 +44,13 @@ export const OrderForm = ({
   searchValue = false,
   getSearchBusDirections,
   busDirectionsLoading,
+  needJustLayout = false,
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const [fieldName, setFieldName] = useState("");
-  const [searchResult, setSearchResult] = useState(null)
+  const [searchResult, setSearchResult] = useState(null);
 
   const { from, to } = useSelector((state) => state.searchBusDirections);
 
@@ -76,7 +77,7 @@ export const OrderForm = ({
         };
 
   useEffect(() => {
-    const getDirections = async () => {
+    const getDirections = () => {
       if (
         item?.from?.cityId &&
         item?.to?.cityId &&
@@ -84,19 +85,21 @@ export const OrderForm = ({
         item?.personCount &&
         path === "/ticket-search"
       ) {
-        (await getSearchBusDirections({
+        getSearchBusDirections({
           from_city_id: item?.from?.cityId,
           to_city_id: item?.to?.cityId,
           departure_date: item?.formattedDate,
           free_seats: item?.personCount,
-        })) ?? null;
-      }else {
-        formik.resetForm()
+        }) ?? null;
+      } else {
+        formik.resetForm();
       }
     };
 
     getDirections();
-  }, []);
+
+    return undefined;
+  }, [path]);
 
   const [
     getAllCities,
@@ -107,7 +110,7 @@ export const OrderForm = ({
     },
   ] = useLazyGetAllCitiesQuery();
 
-  useEffect(() => setSearchResult(searchedCitiesData?.body),[searchedCitiesData])
+  useEffect(() => setSearchResult(searchedCitiesData?.body), [searchedCitiesData]);
 
   const inputFields = [
     {
@@ -154,35 +157,49 @@ export const OrderForm = ({
         : initialValues,
     validationSchema: orderFormValidSchema(),
     onSubmit: async (values, helpers) => {
+      const setToLocaleStorage = () =>
+        window.localStorage.setItem(
+          "orderForm",
+          JSON.stringify({
+            from,
+            to,
+            date: values?.date,
+            personCount: values?.personCount,
+            formattedDate: dayjs(values.date).format("YYYY-MM-DD").toString(),
+          })
+        );
       if (!busDirectionsLoading) {
         if (path === "/") {
           dispatch(setSeachFormValues(values));
           router.push(`/ticket-search?from=${values.from}&to=${values.to}`);
+          setToLocaleStorage();
         }
         if (path === "/ticket-search") {
-          window.localStorage.setItem(
-            "orderForm",
-            JSON.stringify({
-              from,
-              to,
-              date: values?.date,
-              personCount: values?.personCount,
-              formattedDate: dayjs(values.date).format("YYYY-MM-DD").toString(),
-            })
-          );
-          (await getSearchBusDirections({
-            from_city_id: from.cityId,
-            to_city_id: to.cityId,
-            free_seats: values.personCount,
-            departure_date: dayjs(values.date).format("YYYY-MM-DD").toString(),
-          })) ?? null;
+          setToLocaleStorage();
+          if (from.cityId && to.cityId) {
+            (await getSearchBusDirections({
+              to_city_id: to.cityId,
+              from_city_id: from.cityId,
+              free_seats: values.personCount,
+              departure_date: dayjs(values.date).format("YYYY-MM-DD").toString(),
+            })) ?? null;
+          } else {
+            formik.setFieldValue("from", "");
+            formik.setFieldValue("to", "");
+
+            const currentUrl = window.location.href;
+            const baseUrl = currentUrl.split("?")[0];
+
+            const modifiedUrl = baseUrl;
+            router.push(modifiedUrl);
+          }
         }
       }
     },
   });
 
-  const validPath = useMemo(() => validPaths.includes(path), [router]);
   const ishomepage = useMemo(() => path === "/", [router]);
+  const validPath = useMemo(() => validPaths.includes(path), [router]);
   const isSearchResult = useMemo(() => path === "/ticket-search", [router]);
 
   function customDebounce(func, wait) {
@@ -225,122 +242,122 @@ export const OrderForm = ({
           <TelePhone>Тел: +380 97 146 1991</TelePhone>
         </StyledHeaderMedia>
       </WebsitePageLayouts>
-      <OrderFormContainer ishomepage={validPath}>
-        <Header />
-        <TransparentDiv ishomepage={validPath} />
-        <OrderFormWrapper ishomepage={validPath} isSearchResult={isSearchResult}>
-          <OrderFormTitle ishomepage={ishomepage} isSearchResult={isSearchResult}>
-            <KvitkiText isSearchResult={isSearchResult}>
-              Квитки на автобус і мікроавтобус
-            </KvitkiText>
-            {isSearchResult ? (
-              <SearchCityValues>
-                <span>
-                  {formik.values.from ?? from.cityName ?? item?.from?.cityName ?? "Звідки"}
-                </span>
-                <span>-</span>
-                <span>{formik.values.to ?? to.cityName ?? item?.to?.cityName ?? "Куди"}</span>
-              </SearchCityValues>
-            ) : (
-              <>
+      {!needJustLayout && (
+        <OrderFormContainer ishomepage={validPath}>
+          <Header />
+          <TransparentDiv ishomepage={validPath} />
+          <OrderFormWrapper ishomepage={validPath} isSearchResult={isSearchResult}>
+            <OrderFormTitle ishomepage={ishomepage} isSearchResult={isSearchResult}>
+              <KvitkiText isSearchResult={isSearchResult}>
+                Квитки на автобус і мікроавтобус
+              </KvitkiText>
+              {isSearchResult ? (
+                <SearchCityValues>
+                  <span>
+                    {formik.values.from ?? from.cityName ?? item?.from?.cityName ?? "Звідки"}
+                  </span>
+                  <span>-</span>
+                  <span>{formik.values.to ?? to.cityName ?? item?.to?.cityName ?? "Куди"}</span>
+                </SearchCityValues>
+              ) : (
                 <h3>Пасажирські перевезення в Європу</h3>
-              </>
-            )}
-          </OrderFormTitle>
-          {validPath && (
-            <FormWrapper onSubmit={formik.handleSubmit}>
-              {inputFields.map((input) => {
-                return input?.date ? (
-                  <div className="datePickerContainer" key={input?.name}>
-                    <StyledMobileDatePicker>
-                      <CustomDatePicker
-                        isMobile={true}
-                        fontSize={formik.values["date"] === "Дата"}
-                        placeholder={"Date"}
-                        value={formik.values["date"]}
-                        onChange={(newValue) => formik.setFieldValue("date", newValue)}
-                        renderInput={(params) => (
-                          <StyledDatePickerTextField
-                            borderRed={!!(formik.touched["date"] && formik.errors["date"])}
-                            {...params}
-                            inputProps={{
-                              ...params.inputProps,
-                              placeholder: "Дата",
-                            }}
-                          />
-                        )}
-                        components={{
-                          OpenPickerIcon: DateIcon,
-                        }}
-                        minDate={minDate}
-                        maxDate={maxDate}
-                      />
-                    </StyledMobileDatePicker>
-                    <StyledDesktopDatePicker
-                      borderRed={!!(formik.touched["date"] && formik.errors["date"])}
-                    >
-                      <CustomDatePicker
-                        fontSize={formik.values["date"] === "Дата"}
-                        value={formik.values["date"]}
-                        onChange={(newValue) => formik.setFieldValue("date", newValue)}
-                        renderInput={(params) => (
-                          <StyledDatePickerTextField
-                            {...params}
-                            inputProps={{
-                              ...params.inputProps,
-                              placeholder: "Дата",
-                            }}
-                          />
-                        )}
-                        components={{
-                          OpenPickerIcon: DateIcon,
-                        }}
-                        minDate={minDate}
-                        maxDate={maxDate}
-                      />
-                    </StyledDesktopDatePicker>
-                  </div>
-                ) : (
-                  <>
-                    <InputField
-                      formik={formik}
-                      key={input.id}
-                      type={input.type}
-                      name={input.name}
-                      placeholder={input.placeholder}
-                      value={formik.values[input.name]}
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        formik.handleChange(e);
-                        if (fieldName !== input.name) setFieldName(input.name);
+              )}
+            </OrderFormTitle>
+            {validPath && (
+              <FormWrapper onSubmit={formik.handleSubmit}>
+                {inputFields.map((input) => {
+                  return input?.date ? (
+                    <div className="datePickerContainer" key={input?.name}>
+                      <StyledMobileDatePicker>
+                        <CustomDatePicker
+                          isMobile={true}
+                          fontSize={formik.values["date"] === "Дата"}
+                          placeholder={"Date"}
+                          value={formik.values["date"]}
+                          onChange={(newValue) => formik.setFieldValue("date", newValue)}
+                          renderInput={(params) => (
+                            <StyledDatePickerTextField
+                              borderRed={!!(formik.touched["date"] && formik.errors["date"])}
+                              {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                placeholder: "Дата",
+                              }}
+                            />
+                          )}
+                          components={{
+                            OpenPickerIcon: DateIcon,
+                          }}
+                          minDate={minDate}
+                          maxDate={maxDate}
+                        />
+                      </StyledMobileDatePicker>
+                      <StyledDesktopDatePicker
+                        borderRed={!!(formik.touched["date"] && formik.errors["date"])}
+                      >
+                        <CustomDatePicker
+                          fontSize={formik.values["date"] === "Дата"}
+                          value={formik.values["date"]}
+                          onChange={(newValue) => formik.setFieldValue("date", newValue)}
+                          renderInput={(params) => (
+                            <StyledDatePickerTextField
+                              {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                placeholder: "Дата",
+                              }}
+                            />
+                          )}
+                          components={{
+                            OpenPickerIcon: DateIcon,
+                          }}
+                          minDate={minDate}
+                          maxDate={maxDate}
+                        />
+                      </StyledDesktopDatePicker>
+                    </div>
+                  ) : (
+                    <>
+                      <InputField
+                        formik={formik}
+                        key={input.id}
+                        type={input.type}
+                        name={input.name}
+                        placeholder={input.placeholder}
+                        value={formik.values[input.name]}
+                        onChange={(e) => {
+                          const { value } = e.target;
+                          formik.handleChange(e);
+                          if (fieldName !== input.name) setFieldName(input.name);
 
-                        debouncedGetAllCities(value);
-                      }}
-                      icon={input.icon}
-                      iconWidth={input.iconWidth}
-                      iconHeight={input.iconHeight}
-                      iconStyle={input.iconStyle}
-                      className={input.className}
-                      containerClass={input.containerClass}
-                      maxLength={input.maxLength}
-                      result={input.name === fieldName && searchResult}
-                      setSearchResult={setSearchResult}
-                      isLoading={input.isLoading ?? false}
-                      borderRed={!!(formik.touched[input.name] && formik.errors[input.name])}
-                    />
-                  </>
-                );
-              })}
-              <Button
-                text="Пошук"
-                type={"submit"}
-                className={"gridContainer"}
-                loading={busDirectionsLoading}
-              />
-            </FormWrapper>
-          )}
-        </OrderFormWrapper>
-      </OrderFormContainer>
+                          debouncedGetAllCities(value);
+                        }}
+                        icon={input.icon}
+                        iconWidth={input.iconWidth}
+                        iconHeight={input.iconHeight}
+                        iconStyle={input.iconStyle}
+                        className={input.className}
+                        containerClass={input.containerClass}
+                        maxLength={input.maxLength}
+                        result={input.name === fieldName && searchResult}
+                        setSearchResult={setSearchResult}
+                        isLoading={input.isLoading ?? false}
+                        borderRed={!!(formik.touched[input.name] && formik.errors[input.name])}
+                      />
+                    </>
+                  );
+                })}
+                <Button
+                  text="Пошук"
+                  type={"submit"}
+                  className={"gridContainer"}
+                  loading={busDirectionsLoading}
+                />
+              </FormWrapper>
+            )}
+          </OrderFormWrapper>
+        </OrderFormContainer>
+      )}
     </>
   );
 };

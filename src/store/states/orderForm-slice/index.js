@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   to: "",
   from: "",
+  formPay: {},
   orderValues: {},
   isLoading: false,
   seachFormValues: {},
@@ -30,15 +31,19 @@ const orderFormSlice = createSlice({
     storeOrderValues: (state, action) => {
       state.orderValues = action.payload;
     },
+    setFormPay: (state, action) => {
+      state.formPay = action.payload;
+    },
   },
 });
 
 export const {
-  setSeachFormValues,
+  setFormPay,
   setIsLoading,
-  setOrderFormValue,
   exchangeValues,
   storeOrderValues,
+  setOrderFormValue,
+  setSeachFormValues,
 } = orderFormSlice.actions;
 
 export const orderFormReducer = orderFormSlice.reducer;

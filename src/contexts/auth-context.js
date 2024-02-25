@@ -98,7 +98,11 @@ export const AuthProvider = (props) => {
   };
 
   useEffect(
-    () => initialize(),
+    () => {
+      initialize()
+      return undefined;
+    },
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );

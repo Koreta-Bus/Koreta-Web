@@ -29,8 +29,18 @@ export const driverFormValidSchema = () =>
       .required('Поле "Опис" обов\'язкове'),
   });
 
-export const orderFormTicketValidSchema = () =>
-  Yup.object({
+export const orderFormTicketValidSchema = (isDemandedDirection) => {
+  const getRequiredFields = !isDemandedDirection
+    ? {
+        transport_id: Yup.string().required('Поле "Оберіть автомобіль" обов\'язкове'),
+        seat: Yup.mixed().required('Поле "Оберіть місце" обов\'язкове'),
+      }
+    : {
+        from: Yup.string().required("Поле 'Звідки' обов'язкове"),
+        to: Yup.string().required('Поле "Куди" обов\'язкове'),
+      };
+
+  const defaultFields = {
     name: Yup.string().required("Поле \"Ім'я\" обов'язкове"),
     surname: Yup.string().required('Поле "Прізвище'),
     mobileNumber: Yup.string()
@@ -40,9 +50,11 @@ export const orderFormTicketValidSchema = () =>
       .email("Введіть коректну електронну адресу")
       .max(255, "Електронна адреса має бути менше 255 символів")
       .required('Поле "Email" обов\'язкове'),
-    transport_id: Yup.string().required('Поле "Оберіть автомобіль" обов\'язкове'),
-    seat: Yup.mixed().required('Поле "Оберіть місце" обов\'язкове')
-  });
+    ...getRequiredFields,
+  };
+
+  Yup.object(defaultFields);
+};
 
 export const citiesCreateFormValisSchema = () =>
   Yup.object({
