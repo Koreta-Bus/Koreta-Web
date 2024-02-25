@@ -20,7 +20,7 @@ export const DirectionsCard = () => {
 
   const [
     getSearchBusDirections,
-    { data: busDirections, isSuccess, isError, isLoading: busDirectionsLoading },
+    { data: busDirections, isSuccess, isError, isLoading: busDirectionsLoading, isUninitialized },
   ] = useLazyGetSearchBusDirectionsQuery();
 
   const busDirectionsFiltered = useMemo(
@@ -63,7 +63,7 @@ export const DirectionsCard = () => {
         <CardMainContainer>
           {trail?.map((style, index) => {
             const direction = busDirections?.body?.[index];
-            
+
             return (
               <animated.div style={style} key={index}>
                 <DirectionsCardContainer>
@@ -90,7 +90,7 @@ export const DirectionsCard = () => {
                   </BottomContainer>
                   <Button
                     type={"text"}
-                    padding={"10px 0px"}
+                    padding={"6px 0px"}
                     text={direction?.price}
                     func={() => handleToOrderForm(direction)}
                   />
@@ -106,7 +106,8 @@ export const DirectionsCard = () => {
               </span>
               <div style={{ width: "max-content", margin: "0 auto", padding: "0 1rem" }}>
                 <Button
-                  padding="8px 16px"
+                  fontSize="12px"
+                  padding="6px 16px"
                   text={"Надішліть нам інформацію"}
                   func={() => router.push("/ticket-search/demanded-direction")}
                 />
@@ -114,7 +115,7 @@ export const DirectionsCard = () => {
             </InfoDirectionsContainer>
           )}
 
-          {isEmpty(trail) && !busDirectionsLoading && (
+          {isEmpty(trail) && isUninitialized && (
             <InfoDirectionsContainer>
               <span>Цей пункт призначення недоступний</span>
             </InfoDirectionsContainer>

@@ -7,30 +7,35 @@ import { exchangeValues, setOrderFormValue } from "store/states";
 
 import styled from "styled-components";
 
+/*
+  Камʹянець-Подільський
+  Дунаївці
+*/
+
 export const InputField = ({
-  icon,
-  key,
-  value,
-  onChange,
-  onBlur,
-  onFocus,
-  result,
   id,
+  key,
+  icon,
   name,
-  type = "text",
-  placeholder,
+  value,
+  onBlur,
+  formik,
+  result,
+  onFocus,
+  onChange,
   iconWidth,
+  isLoading,
   iconHeight,
+  placeholder,
+  type = "text",
   iconStyle = null,
   className = null,
-  containerClass = null,
   maxLength = null,
-  formik,
   borderRed = false,
-  isLoading,
-  setSearchResult,
+  containerClass = null,
 }) => {
   const dispatch = useDispatch();
+
   const [optionModalVisibility, setOptionModalVisibility] = useState(true);
 
   const handleInputChange = useCallback(
@@ -71,15 +76,15 @@ export const InputField = ({
       <InputWrapper className={className}>
         <Input
           {...{
+            id,
+            type,
+            name,
             value,
             onBlur,
             onFocus,
-            type,
-            id,
-            name,
+            maxLength,
             placeholder,
             onChange: name === "personCount" ? (e) => handleInputChange(e) : onChange,
-            maxLength,
           }}
           icon={!icon}
           autoComplete="off"
@@ -106,10 +111,7 @@ export const InputField = ({
               {result?.map(({ name: cityName, city_id }) => {
                 return (
                   <ResultOption
-                    onClick={() => {
-                      // setSearchResult(null);
-                      selectPlaceHandler(cityName, city_id);
-                    }}
+                    onClick={() => selectPlaceHandler(cityName, city_id)}
                   >
                     {cityName?.length > 11 && window.innerWidth > 780
                       ? `${cityName.substring(0, 11)}..`

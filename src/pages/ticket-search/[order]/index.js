@@ -17,10 +17,10 @@ import { setFormPay } from "store/states";
 import { noop } from "shared/common";
 
 const defaultInitialValues = {
+  name: "",
   phone: "",
   email: "",
-  lastname: "",
-  firstname: "",
+  surname: "",
 };
 
 const externalAutobusFields = {
@@ -31,7 +31,7 @@ const externalAutobusFields = {
 const demandedDirectionFields = {
   to: "",
   from: "",
-};  
+};
 
 const defaultPopup = () =>
   Popup({
@@ -48,14 +48,17 @@ const Page = () => {
 
   const { orderValues } = useSelector((state) => state.searchBusDirections);
 
-  const [createOrder, { isLoading, data, isSuccess: createOrderSucccess }] =
+  const [createOrder, { isLoading, data, isSuccess: isSuccessCreateOrder }] =
     useCreateOrderMutation();
-
-  const [broneOrder, { isSuccess: broneSuccess, data: broneData }] = useBroneOrderMutation();
 
   const { data: freeSeatsData } = useGetFreeSeatsQuery(orderValues?.route_id);
 
+  const [broneOrder, { isSuccess: isSuccessBrone, data: broneData }] = useBroneOrderMutation();
+
   const isDemandedDirection = router?.asPath === "/ticket-search/demanded-direction";
+
+  const { free_seats: freeSeats, error: freeSeatsError } =
+    freeSeatsData?.body?.data?.response ?? {};
 
   useEffect(() => {
     if (!isDemandedDirection) {
@@ -65,7 +68,7 @@ const Page = () => {
   }, [orderValues]);
 
   useEffect(() => {
-    if (createOrderSucccess) {
+    if (isSuccessCreateOrder) {
       if (!isDemandedDirection) broneOrder({ order_id: data?.body?.id });
 
       if (isDemandedDirection) {
@@ -76,10 +79,10 @@ const Page = () => {
     }
 
     return noop;
-  }, [createOrderSucccess]);
+  }, [isSuccessCreateOrder]);
 
   useEffect(() => {
-    if (broneSuccess && !isDemandedDirection) {
+    if (isSuccessBrone && !isDemandedDirection) {
       //default time 2000
       defaultPopup();
 
@@ -90,38 +93,26 @@ const Page = () => {
     }
 
     return noop;
-  }, [broneSuccess]);
-
-  const { free_seats: freeSeats, error: freeSeatsError } =
-    freeSeatsData?.body?.data?.response ?? {};
-
-  useEffect(() => {
-    if (freeSeats?.length === 0) {
-      Popup({
-        icon: "error",
-        title: "Error",
-        text: freeSeatsError,
-        showConfirmButton: true,
-      });
-    }
-
-    return noop;
-  }, [freeSeatsError]);
-
-  const getInitialValues = useMemo(() => {
-    const optionalValues = isDemandedDirection ? externalAutobusFields : demandedDirectionFields;
-
-    return { ...defaultInitialValues, ...optionalValues };
-  }, [isDemandedDirection]);
+  }, [isSuccessBrone]);
 
   const formik = useFormik({
-    initialValues: getInitialValues,
+    initialValues: (() => {
+      const optionalValues = !isDemandedDirection ? externalAutobusFields : demandedDirectionFields;
+      console.log(
+        { ...defaultInitialValues, ...optionalValues },
+        "{ ...defaultInitialValues, ...optionalValues }"
+      );
+
+      return { ...defaultInitialValues, ...optionalValues };
+    })(),
     validationSchema: orderFormTicketValidSchema(isDemandedDirection),
     onSubmit: async (values, helpers) => {
       const selectedSeats = availableSeats?.find((seats) => seats.seat_id == formik.values.seat);
 
+      const isRequired = isDemandedDirection ? values?.to && values?.from : orderValues?.price;
+
       try {
-        if ((orderValues?.price && !isLoading) || isDemandedDirection) {
+        if ((isRequired && !isLoading) || isDemandedDirection) {
           await createOrder({
             to: values?.to,
             from: values?.from,
@@ -135,6 +126,13 @@ const Page = () => {
             route_id: orderValues?.route_id,
             is_microauto: isDemandedDirection,
             transport_id: values?.transport_id || 0,
+          });
+        } else {
+          Popup({
+            timer: 2000,
+            icon: "error",
+            showConfirmButton: false,
+            title: "Деякі поля порожні.",
           });
         }
       } catch (err) {
@@ -263,7 +261,6 @@ const Page = () => {
                       <option value="" disabled>
                         Оберіть автомобіль
                       </option>
-                      {/* Map through your transport_ids data to generate options */}
                       {freeSeats?.map((car) => (
                         <option key={car.id} value={car.transport_id}>
                           {car.description}
@@ -288,7 +285,6 @@ const Page = () => {
                       <option value="" disabled>
                         Оберіть місце
                       </option>
-                      {/* Map through your freeSeats data to generate options */}
                       {availableSeats?.map((seatDesc) => (
                         <option key={seatDesc?.seat_num} value={seatDesc?.seat_id}>
                           {seatDesc?.seat_num}

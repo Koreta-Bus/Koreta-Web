@@ -40,10 +40,10 @@ function DateIcon(props) {
 }
 
 export const OrderForm = ({
-  searchedInitialValues,
   searchValue = false,
-  getSearchBusDirections,
   busDirectionsLoading,
+  searchedInitialValues,
+  getSearchBusDirections,
   needJustLayout = false,
 }) => {
   const router = useRouter();
@@ -122,6 +122,7 @@ export const OrderForm = ({
       placeholder: "Звідки",
       containerClass: "gridContainer",
       isLoading: fieldName === "from" && searchedCitiesIsLoading,
+
     },
     {
       id: "to",
@@ -332,6 +333,7 @@ export const OrderForm = ({
 
                           debouncedGetAllCities(value);
                         }}
+                        onFocus={() => setSearchResult(null)}
                         icon={input.icon}
                         iconWidth={input.iconWidth}
                         iconHeight={input.iconHeight}

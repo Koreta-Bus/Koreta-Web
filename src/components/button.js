@@ -5,11 +5,11 @@ import { WebsiteColors } from "theme/colors";
 export const Button = ({
   func,
   text,
+  className,
   type = "submit",
   loading = false,
-  className,
-  padding = "16px 0px",
   disabled = false,
+  padding = "16px 0px",
 }) => {
   return (
     <StyledButton
@@ -64,7 +64,7 @@ const StyledButton = styled.button`
   padding: ${({ padding }) => padding};
   border-radius: 8px;
   color: white;
-  font-size: 24px;
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : "24px")};
   line-height: 32px;
   text-align: center;
   cursor: pointer;
