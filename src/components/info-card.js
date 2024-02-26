@@ -47,9 +47,7 @@ export const InfoCard = () => {
 };
 
 const GridSectionWrapper = styled.div`
-  @media (max-width: 768px) {
-    margin-top: 9.5rem;
-  }
+
 `;
 
 const StyledGrid = styled(Grid)`

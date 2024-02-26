@@ -8,11 +8,11 @@ import styled from "styled-components";
 import Image from "next/image";
 
 const ContactDetails = [
-  {
-    key: "Search",
-    title: "Пошук квитків",
-    icon: "search",
-  },
+  // {
+  //   key: "Search",
+  //   title: "Пошук квитків",
+  //   icon: "search",
+  // },
   {
     key: "Phone",
     title: "+380 97 146 1991",

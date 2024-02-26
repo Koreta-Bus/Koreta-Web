@@ -43,6 +43,7 @@ export const InfoDirectionsContainer = styled.div`
 
   @media (max-width: 768px) {
     padding: 10px;
+    margin-top: 8rem;
 
     span {
       font-family: Sora, sans-serif;
