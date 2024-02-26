@@ -10,7 +10,8 @@ import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
 import { useEffect, useMemo } from "react";
 import { storeOrderValues } from "store/states";
 import { useRouter } from "next/router";
-import { isEmpty, isNotEmpty } from "shared/common";
+import { isEmpty } from "shared/common";
+import { InfoDirectionsContainer } from "./koreta-own-directions";
 
 export const DirectionsCard = () => {
   const router = useRouter();
@@ -60,6 +61,21 @@ export const DirectionsCard = () => {
       />
       <Container>
         <h2>Графік відправлення</h2>
+
+        <InfoDirectionsContainer flexColumn>
+          <span>
+            Не знайшли точного напрямку? Ви можете приїхати на нашому мікроавтобусі - Корета
+          </span>
+          <div style={{ width: "max-content", margin: "0 auto", padding: "0 1rem" }}>
+            <Button
+              fontSize="12px"
+              padding="6px 16px"
+              text={"Надішліть нам інформацію"}
+              func={() => router.push("/ticket-search/demanded-direction")}
+            />
+          </div>
+        </InfoDirectionsContainer>
+
         <CardMainContainer>
           {trail?.map((style, index) => {
             const direction = busDirections?.body?.[index];
@@ -99,22 +115,6 @@ export const DirectionsCard = () => {
             );
           })}
 
-          {isNotEmpty(trail) && (
-            <InfoDirectionsContainer flexColumn>
-              <span>
-                Не знайшли точного напрямку? Ви можете приїхати на нашому мікроавтобусі - Корета
-              </span>
-              <div style={{ width: "max-content", margin: "0 auto", padding: "0 1rem" }}>
-                <Button
-                  fontSize="12px"
-                  padding="6px 16px"
-                  text={"Надішліть нам інформацію"}
-                  func={() => router.push("/ticket-search/demanded-direction")}
-                />
-              </div>
-            </InfoDirectionsContainer>
-          )}
-
           {isEmpty(trail) && isUninitialized && (
             <InfoDirectionsContainer>
               <span>Цей пункт призначення недоступний</span>
@@ -126,35 +126,6 @@ export const DirectionsCard = () => {
     </>
   );
 };
-
-const InfoDirectionsContainer = styled.div`
-  border: 1px solid ${WebsiteColors.PRIMARY};
-  border-radius: 8px;
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  flex-direction: ${({ flexColumn }) => (flexColumn ? "column" : "row")};
-  gap: ${({ flexColumn }) => flexColumn && "1rem"};
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-
-  & span {
-    font-family: Sora, sans-serif;
-    font-size: 28px !important;
-    line-height: 28px !important;
-  }
-
-  @media (max-width: 768px) {
-    padding: 10px;
-
-    span {
-      font-family: Sora, sans-serif;
-      font-size: 18px !important;
-      line-height: 18px !important;
-    }
-  }
-`;
 
 const SeatsCount = styled.div``;
 

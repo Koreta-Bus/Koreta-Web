@@ -8,6 +8,7 @@ import { OrderForm } from "./order-form";
 import { LandingContainer, LandingPage } from "./home.styled";
 import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
 import { ImageCard } from "components/image-card";
+import { KoretaOwnDirections } from "components/koreta-own-directions";
 
 export const BusTickerOrder = () => {
   const [
@@ -20,10 +21,13 @@ export const BusTickerOrder = () => {
       <LandingContainer>
         <LandingPage>
           <OrderForm
-            getSearchBusDirections={getSearchBusDirections}
             busDirectionsLoading={busDirectionsLoading}
+            getSearchBusDirections={getSearchBusDirections}
           />
           <WebsitePageLayouts>
+            <div style={{ maxWidth: "1100px", margin: "2.5rem auto" }}>
+              <KoretaOwnDirections />
+            </div>
             <InfoCard />
             {/* <ImageCard /> */}
             <CountryImageCard />
