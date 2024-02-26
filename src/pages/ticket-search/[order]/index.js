@@ -98,10 +98,6 @@ const Page = () => {
   const formik = useFormik({
     initialValues: (() => {
       const optionalValues = !isDemandedDirection ? externalAutobusFields : demandedDirectionFields;
-      console.log(
-        { ...defaultInitialValues, ...optionalValues },
-        "{ ...defaultInitialValues, ...optionalValues }"
-      );
 
       return { ...defaultInitialValues, ...optionalValues };
     })(),

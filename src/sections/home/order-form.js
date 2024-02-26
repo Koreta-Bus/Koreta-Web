@@ -73,7 +73,7 @@ export const OrderForm = ({
           from: "",
           to: "",
           date: "",
-          personCount: "",
+          personCount: "1",
         };
 
   useEffect(() => {
