@@ -38,18 +38,14 @@ export const Header = () => {
     setOpenSelectMobile((prev) => !prev);
   }, []);
 
-  const routerHandler = useCallback((page) => {
-    router.push(page);
-  }, []);
+  const routerHandler = useCallback((page) => router.push(page), []);
 
   const mobileRouterHandler = useCallback((page) => {
     setTimeout(() => router.push(page), 240);
     setHamburgerVisible("");
   }, []);
 
-  const handleHamburger = useCallback((val) => {
-    setHamburgerVisible(val);
-  }, []);
+  const handleHamburger = useCallback((val) => setHamburgerVisible(val), []);
 
   const addClassList = useCallback((className) => {
     const root = document.getElementsByTagName("html")[0];
