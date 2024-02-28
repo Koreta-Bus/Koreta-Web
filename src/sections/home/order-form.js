@@ -329,6 +329,7 @@ export const OrderForm = ({
                         onChange={(e) => {
                           const { value } = e.target;
                           formik.handleChange(e);
+                          
                           if (fieldName !== input.name) setFieldName(input.name);
 
                           debouncedGetAllCities(value);
