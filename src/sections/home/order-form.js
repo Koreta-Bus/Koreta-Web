@@ -1,34 +1,45 @@
 import React, { useEffect, useMemo, useState } from "react";
+
 import { useFormik } from "formik";
-import { InputField } from "components/input-field";
-import { Button } from "components/button";
-import { Header } from "components/header";
-import { Icon } from "shared/IconGenerator";
+
 import { useRouter } from "next/router";
-import { WebsitePageLayouts } from "layouts/website";
+
+import dayjs from "dayjs";
+
 import { useDispatch, useSelector } from "react-redux";
+
+import { Header } from "components/header";
+import { Button } from "components/button";
+import { InputField } from "components/input-field";
+
+import { Icon } from "shared/IconGenerator";
+
+import { WebsitePageLayouts } from "layouts/website";
+
 import { setSeachFormValues } from "store/states";
-import { orderFormValidSchema } from "constant";
 import { useLazyGetAllCitiesQuery } from "store/apis";
+
+import { orderFormValidSchema } from "constant";
+
 import {
-  ContactDetail,
-  CustomDatePicker,
-  FormWrapper,
+  TelePhone,
   KvitkiText,
-  OrderFormContainer,
+  FormWrapper,
+  ContactDetail,
   OrderFormTitle,
+  TransparentDiv,
+  StyledOnlyMedia,
+  CustomDatePicker,
   OrderFormWrapper,
   SearchCityValues,
-  StyledDatePickerTextField,
-  StyledDesktopDatePicker,
   StyledHeaderMedia,
+  OrderFormContainer,
   StyledMobileDatePicker,
-  StyledOnlyMedia,
-  TelePhone,
-  TransparentDiv,
+  StyledDesktopDatePicker,
+  StyledDatePickerTextField,
 } from "./styled.order.form";
+
 import { SocialMedia } from "shared/socialMedia";
-import dayjs from "dayjs";
 
 const validPaths = ["/", "/ticket-search"];
 
@@ -329,7 +340,7 @@ export const OrderForm = ({
                         onChange={(e) => {
                           const { value } = e.target;
                           formik.handleChange(e);
-                          
+
                           if (fieldName !== input.name) setFieldName(input.name);
 
                           debouncedGetAllCities(value);
