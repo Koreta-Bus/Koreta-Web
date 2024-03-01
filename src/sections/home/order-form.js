@@ -51,7 +51,6 @@ function DateIcon(props) {
 }
 
 export const OrderForm = ({
-  searchValue = false,
   busDirectionsLoading,
   searchedInitialValues,
   getSearchBusDirections,
