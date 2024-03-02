@@ -1,7 +1,10 @@
 import Head from "next/head";
+
 import { Box, Container, Stack, Typography } from "@mui/material";
-import { Layout as DashboardLayout  } from "layouts/dashboard/layout";
-import { SettingsPassword } from "sections/settings/settings-password";
+
+import Layout from "layouts/dashboard/layout";
+
+const SettingsPassword = dynamic(() => import("sections/settings/settings-password"));
 
 const Page = () => (
   <>
@@ -25,6 +28,6 @@ const Page = () => (
   </>
 );
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Page;

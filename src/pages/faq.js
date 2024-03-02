@@ -1,5 +1,7 @@
 import Head from "next/head";
-import { FaqAccordion } from "sections/faq/faq-accordion";
+import dynamic from "next/dynamic";
+
+const FaqAccordion = dynamic(() => import('sections/faq/faq-accordion'));
 
 const Page = () => (
   <>

@@ -75,7 +75,7 @@ const AboutusInfoCard = [
   },
 ];
 
-export const ForCarriersSection = () => {
+const ForCarriersSection = () => {
   
   return (
     <div>
@@ -128,6 +128,8 @@ export const ForCarriersSection = () => {
     </div>
   );
 };
+
+export default ForCarriersSection
 
 const BottomInfo = styled.p``;
 

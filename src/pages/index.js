@@ -1,6 +1,7 @@
 import Head from "next/head";
+import dynamic from "next/dynamic";
 
-import { BusTickerOrder } from "sections/home/bus-ticket-order";
+const BusTickerOrder = dynamic(() => import('sections/home/bus-ticket-order'));
 
 const Page = () => (
   <>

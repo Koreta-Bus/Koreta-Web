@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import {
   Box,
   Card,
-  CardHeader,
-  Divider,
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
+  Divider,
   TableRow,
+  TableCell,
+  TableBody,
+  TableHead,
+  CardHeader,
 } from "@mui/material";
 import { Scrollbar } from "components/scrollbar";
 export const OverviewLatestOrders = (props) => {

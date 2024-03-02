@@ -8,7 +8,7 @@ const user = {
   timezone: "GTM-4",
 };
 
-export const AccountProfile = () => (
+const AccountProfile = () => (
   <Card>
     <CardContent>
       <Box
@@ -40,3 +40,5 @@ export const AccountProfile = () => (
     <Divider />
   </Card>
 );
+
+export default AccountProfile
