@@ -1,5 +1,7 @@
 import Head from "next/head";
-import { ContactSection } from "sections/contact/contact-card";
+import dynamic from "next/dynamic";
+
+const ContactSection = dynamic(() => import('sections/contact/contact-card'));
 
 const Page = () => (
   <>

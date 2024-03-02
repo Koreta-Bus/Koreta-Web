@@ -61,7 +61,7 @@ const AboutusInfoCard = [
   },
 ];
 
-export const AboutUsSection = () => {
+const AboutUsSection = () => {
   return (
     <div>
       <OrderForm />
@@ -109,6 +109,8 @@ export const AboutUsSection = () => {
     </div>
   );
 };
+
+export default AboutUsSection
 
 const BottomInfo = styled.p`
   padding-top: 32px;

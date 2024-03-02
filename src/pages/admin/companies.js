@@ -1,6 +1,8 @@
 import Head from "next/head";
+
 import { Box, Container} from "@mui/material";
-import { Layout as DashboardLayout } from "layouts/dashboard/layout";
+
+import Layout  from "layouts/dashboard/layout";
 
 const Page = () => (
   <>
@@ -19,6 +21,6 @@ const Page = () => (
   </>
 );
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Page;

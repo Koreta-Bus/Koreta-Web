@@ -12,7 +12,7 @@ import {
   StyledTitleTypography,
 } from "./faq.styled";
 
-export const FaqAccordion = () => {
+const FaqAccordion = () => {
   return (
     <div>
       <OrderForm />
@@ -95,3 +95,5 @@ export const FaqAccordion = () => {
     </div>
   );
 };
+
+export default FaqAccordion

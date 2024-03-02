@@ -2,14 +2,14 @@ import { useCallback } from "react";
 import {
   Box,
   Card,
-  CardContent,
-  CardHeader,
   Divider,
   TextField,
+  CardHeader,
+  CardContent,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 
-export const AccountProfileDetails = () => {
+const AccountProfileDetails = () => {
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
   }, []);
@@ -75,3 +75,5 @@ export const AccountProfileDetails = () => {
     </form>
   );
 };
+
+export default AccountProfileDetails

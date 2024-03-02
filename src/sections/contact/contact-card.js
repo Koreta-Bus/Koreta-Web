@@ -31,7 +31,7 @@ const ContactCardInfos = [
   },
 ];
 
-export const ContactSection = () => {
+const ContactSection = () => {
   return (
     <div>
       <OrderForm />
@@ -46,3 +46,4 @@ export const ContactSection = () => {
   );
 };
 
+export default ContactSection

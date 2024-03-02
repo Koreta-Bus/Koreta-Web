@@ -10,7 +10,7 @@ import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
 import { ImageCard } from "components/image-card";
 import { KoretaOwnDirections } from "components/koreta-own-directions";
 
-export const BusTickerOrder = () => {
+const BusTickerOrder = () => {
   const [
     getSearchBusDirections,
     { data: busDirections, isSuccess, error, isLoading: busDirectionsLoading },
@@ -38,3 +38,5 @@ export const BusTickerOrder = () => {
     </LocalizationProvider>
   );
 };
+
+export default BusTickerOrder
