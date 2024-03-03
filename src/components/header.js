@@ -5,7 +5,6 @@ import { FlexAllCenter } from "./styled.global";
 import { WebsiteColors } from "theme/colors";
 import { SocialMedia } from "shared/socialMedia";
 import styled from "styled-components";
-import Image from "next/image";
 
 const ContactDetails = [
   // {
@@ -68,9 +67,9 @@ export const Header = () => {
               <MenuItem>Контакти і Співпраця</MenuItem>
               <IconWrapper dorotate={openselect}>
                 <Icon
+                  name="down_arrow"
                   onClick={handleOpenOptions}
                   onBlur={() => setOpenSelect("")}
-                  name="down_arrow"
                 />
               </IconWrapper>
               <MenuItemOptions openselect={openselect}>
