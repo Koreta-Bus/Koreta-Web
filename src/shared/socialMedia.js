@@ -15,6 +15,6 @@ export const SocialMedia = [
     key: "Viber",
     title: "Viber",
     icon: "viber",
-    path: "https://viber://add?number=380732166696",
+    path: "viber://chat?number=380732166696",
   },
 ];
