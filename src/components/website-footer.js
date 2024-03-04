@@ -64,12 +64,13 @@ const FooterMenuLists = [
   },
   {
     title: "Ми у соц. мережах",
-    lists: [...SocialMedia],
+    lists: SocialMedia,
   },
 ];
 
 export const MainFooter = () => {
   const router = useRouter()
+  
   return (
     <Footer>
       <WebsitePageLayouts>
