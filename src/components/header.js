@@ -101,7 +101,7 @@ export const Header = () => {
           </MobileHamburgerHeader>
           <ContactDetailsContainer>
             {ContactDetails?.map(({ key, title, icon, path }) => (
-              <ContactDetail key={key} href={path} target="_blank">
+              <ContactDetail key={key} onClick={() => path && router.push(path)}>
                   <span>
                     <Icon name={icon} />
                   </span>
@@ -162,7 +162,7 @@ const HeaderOptionsContainer = styled.div`
   }
 `;
 
-const ContactDetail = styled.div`
+const ContactDetail = styled.span`
   display: flex;
   align-items: center;
   gap: 16px;
