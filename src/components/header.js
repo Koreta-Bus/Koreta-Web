@@ -1,10 +1,17 @@
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { Icon } from "shared/IconGenerator";
-import { FlexAllCenter } from "./styled.global";
-import { WebsiteColors } from "theme/colors";
-import { SocialMedia } from "shared/socialMedia";
+
+import { useRouter } from "next/router";
+
 import styled from "styled-components";
+
+import { Icon } from "shared/IconGenerator";
+
+import { FlexAllCenter } from "./styled.global";
+
+import { WebsiteColors } from "theme/colors";
+
+import { SocialMedia } from "shared/socialMedia";
+
 
 const ContactDetails = [
   // {
