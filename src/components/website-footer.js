@@ -1,9 +1,14 @@
-import { WebsiteColors } from "theme/colors";
-import { FlexAllCenter } from "./styled.global";
-import { Icon } from "shared/IconGenerator";
 import Image from "next/image";
-import { SocialMedia } from "shared/socialMedia";
 import { useRouter } from "next/router";
+
+import { WebsiteColors } from "theme/colors";
+
+import { FlexAllCenter } from "./styled.global";
+
+import { Icon } from "shared/IconGenerator";
+
+import { SocialMedia } from "shared/socialMedia";
+
 import { WebsitePageLayouts } from "layouts/website";
 
 import styled from "styled-components";
