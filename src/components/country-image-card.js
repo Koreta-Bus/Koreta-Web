@@ -1,7 +1,11 @@
 import React from "react";
+
 import Image from "next/image";
+
 import { Grid } from "@mui/material";
+
 import { CountryImageLayout } from "layouts/website/CountryImageLayout";
+
 import { WebsiteColors } from "theme/colors";
 
 import styled from "styled-components";

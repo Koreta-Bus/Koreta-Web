@@ -1,16 +1,25 @@
-import styled from "styled-components";
-import { WebsiteColors } from "theme/colors";
-import { Button } from "./button";
-import { Icon } from "shared/IconGenerator";
-import { useTrail, animated } from "react-spring";
-import { OrderForm } from "sections/home/order-form";
-import { MainFooter } from "./website-footer";
-import { useDispatch, useSelector } from "react-redux";
-import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
 import { useEffect, useMemo } from "react";
-import { storeOrderValues } from "store/states";
+
+import { useDispatch, useSelector } from "react-redux";
+
 import { useRouter } from "next/router";
+
+import styled from "styled-components";
+
+import { useTrail, animated } from "react-spring";
+
+import { WebsiteColors } from "theme/colors";
+
+import { OrderForm } from "sections/home/order-form";
+
+import { Button } from "./button";
+import { MainFooter } from "./website-footer";
+
+import { storeOrderValues } from "store/states";
+import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
+
 import { isEmpty } from "shared/common";
+
 import { InfoDirectionsContainer } from "./koreta-own-directions";
 
 export const DirectionsCard = () => {
