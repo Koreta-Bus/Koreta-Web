@@ -1,11 +1,18 @@
 import { useFormik } from "formik";
-import { WebsiteColors } from "theme/colors";
-import { Button } from "./button";
+
 import { getDatabase, ref, set } from "firebase/database";
-import { Popup } from "shared/alerts";
-import { app } from "config/firebase";
-import { createdAt } from "shared/date";
+
+import { WebsiteColors } from "theme/colors";
+
 import { driverFormValidSchema } from "constant";
+
+import { Popup } from "shared/alerts";
+
+import { Button } from "./button";
+
+import { app } from "config/firebase";
+
+import { createdAt } from "shared/date";
 import { Icon } from "shared/IconGenerator";
 
 import styled from "styled-components";

@@ -1,5 +1,7 @@
 import { Icon } from "shared/IconGenerator";
-import styled, { css } from "styled-components";
+
+import styled from "styled-components";
+
 import { WebsiteColors } from "theme/colors";
 
 export const ContactCard = ({ ContactCardInfos }) => {
