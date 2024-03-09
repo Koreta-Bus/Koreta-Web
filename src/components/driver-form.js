@@ -19,10 +19,10 @@ import styled from "styled-components";
 
 const initialValues = {
   name: "",
-  mobileNumber: "",
-  nameOfLegalEntity: "",
   email: "",
   description: "",
+  mobileNumber: "",
+  nameOfLegalEntity: "",
 };
 
 export const DriverForm = () => {

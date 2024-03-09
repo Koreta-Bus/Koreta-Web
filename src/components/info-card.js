@@ -1,5 +1,7 @@
 import { Grid } from "@mui/material";
+
 import { FlexAllCenter } from "./styled.global";
+
 import { WebsiteColors } from "theme/colors";
 
 import styled from "styled-components";

@@ -1,5 +1,7 @@
-import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
+
+import { useTheme } from "@mui/material/styles";
+
 
 export const Logo = () => {
   const theme = useTheme();
