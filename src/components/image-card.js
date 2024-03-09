@@ -59,9 +59,9 @@ export const ImageCard = () => {
                   sizes="100vw"
                   quality={100}
                   style={{
+                    margin,
                     maxWidth,
                     maxHeight,
-                    margin,
                   }}
                   {...rest}
                 />

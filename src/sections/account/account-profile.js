@@ -1,7 +1,7 @@
 import { Avatar, Box, Card, CardContent, Divider, Typography } from "@mui/material";
 
 const user = {
-  avatar: "/assets/koreta-logo.png",
+  avatar: "/assets/koreta-splash.png",
   city: "Kharkow",
   country: "Ukraine",
   name: "Koreta",
