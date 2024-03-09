@@ -89,7 +89,7 @@ export const TopNav = (props) => {
                 height: 40,
                 width: 40,
               }}
-              src="/assets/koreta-logo.png"
+              src="/assets/koreta-splash.png"
             />
           </Stack>
         </Stack>

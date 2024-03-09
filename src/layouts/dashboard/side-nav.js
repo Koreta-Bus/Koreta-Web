@@ -38,14 +38,14 @@ export const SideNav = (props) => {
             href="/admin"
             sx={{
               display: "inline-flex",
-              height: 32,
-              width: 32,
+              height: 100,
+              width: 200,
             }}
           >
             <Image
-              src="/assets/koreta-logo.png"
+              src="/assets/logo-white.png"
               alt="Picture of the brand"
-              width={100}
+              width={200}
               height={100}
             />
           </Box>
