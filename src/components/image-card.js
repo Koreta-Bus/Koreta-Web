@@ -1,6 +1,9 @@
 import React from "react";
+
 import Image from "next/image";
+
 import { Grid } from "@mui/material";
+
 import { ImageCardLayout } from "layouts/website/ImageCardLayout";
 
 import styled from "styled-components";

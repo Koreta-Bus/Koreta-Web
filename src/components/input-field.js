@@ -1,8 +1,13 @@
-import { Icon } from "shared/IconGenerator";
-import { WebsiteColors } from "theme/colors";
-import { IconButton } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+
+import { IconButton } from "@mui/material";
+
 import { useDispatch } from "react-redux";
+
+import { WebsiteColors } from "theme/colors";
+
+import { Icon } from "shared/IconGenerator";
+
 import { exchangeValues, setOrderFormValue } from "store/states";
 
 import styled from "styled-components";
