@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, memo, useState } from "react";
 
 import { useFormik } from "formik";
 
@@ -50,7 +50,7 @@ function DateIcon(props) {
   return <Icon name="calendar" {...props} />;
 }
 
-export const OrderForm = ({
+const OrderForm = ({
   busDirectionsLoading,
   searchedInitialValues,
   getSearchBusDirections,
@@ -66,9 +66,9 @@ export const OrderForm = ({
 
   const path = router.asPath.split("?")[0];
 
-  const item =
-    localStorage.getItem("orderForm") !== undefined
-      ? JSON.parse(localStorage.getItem("orderForm"))
+  let item =
+    sessionStorage.getItem("orderForm") !== undefined
+      ? JSON.parse(sessionStorage.getItem("orderForm"))
       : {};
 
   const initialValues =
@@ -132,7 +132,6 @@ export const OrderForm = ({
       placeholder: "Звідки",
       containerClass: "gridContainer",
       isLoading: fieldName === "from" && searchedCitiesIsLoading,
-
     },
     {
       id: "to",
@@ -169,7 +168,7 @@ export const OrderForm = ({
     validationSchema: orderFormValidSchema(),
     onSubmit: async (values, helpers) => {
       const setToLocaleStorage = () =>
-        window.localStorage.setItem(
+        window.sessionStorage.setItem(
           "orderForm",
           JSON.stringify({
             from,
@@ -374,3 +373,5 @@ export const OrderForm = ({
     </>
   );
 };
+
+export default memo(OrderForm)

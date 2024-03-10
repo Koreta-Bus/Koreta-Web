@@ -1,12 +1,15 @@
+import { useEffect } from "react";
+
 import Head from "next/head";
-import { WebsiteColors } from "theme/colors";
-import { MainFooter } from "components/website-footer";
-import { OrderForm } from "sections/home/order-form";
+import { useRouter } from "next/router";
 
 import { styled } from "styled-components";
+
+import { WebsiteColors } from "theme/colors";
+
 import { Button } from "components/button";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+
+import { DefaultLayout } from "layouts/website/DefaultLayout";
 
 const Page = () => {
   const router = useRouter();
@@ -17,32 +20,33 @@ const Page = () => {
       behavior: "smooth",
     });
   }, []);
+  
   return (
     <>
       <Head>
         <title>Koreta | Bus Ticket Order Success</title>
       </Head>
-      <OrderForm />
-      <Container>
-        <h2>Результат</h2>
-        <SuccessContainer>
-          <Success>
-            <Image alt="succes" src="/assets/website/success.png" />
-          </Success>
-          <TextHereInfo>
-            <span>Дякуємо! Ваше бронювання успішне!</span>
-            <span>Якщо у вас є які-небудь питання, ви можете написати нам.</span>
-          </TextHereInfo>
-          <div style={{ maxWidth: "max-content" }}>
-            <Button
-              padding="8px 14px"
-              func={() => router.push("/")}
-              text={"Повернутися на головну сторінку"}
-            />
-          </div>
-        </SuccessContainer>
-      </Container>
-      <MainFooter />
+      <DefaultLayout>
+        <Container>
+          <h2>Результат</h2>
+          <SuccessContainer>
+            <Success>
+              <Image alt="succes" src="/assets/website/success.png" />
+            </Success>
+            <TextHereInfo>
+              <span>Дякуємо! Ваше бронювання успішне!</span>
+              <span>Якщо у вас є які-небудь питання, ви можете написати нам.</span>
+            </TextHereInfo>
+            <div style={{ maxWidth: "max-content" }}>
+              <Button
+                padding="8px 14px"
+                func={() => router.push("/")}
+                text={"Повернутися на головну сторінку"}
+              />
+            </div>
+          </SuccessContainer>
+        </Container>
+      </DefaultLayout>
     </>
   );
 };

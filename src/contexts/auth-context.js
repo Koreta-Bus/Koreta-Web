@@ -1,12 +1,11 @@
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-  useRef,
   useState,
+  useContext,
+  useReducer,
+  useCallback,
+  createContext,
 } from "react";
+
 import PropTypes from "prop-types";
 
 const HANDLERS = {
@@ -16,7 +15,7 @@ const HANDLERS = {
 };
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   user: null,
 };
 
@@ -59,53 +58,12 @@ const handlers = {
 const reducer = (state, action) =>
   handlers[action.type] ? handlers[action.type](state, action) : state;
 
-// The role of this context is to propagate authentication state through the App tree.
-
 export const AuthContext = createContext({ undefined });
 
 export const AuthProvider = (props) => {
   const { children } = props;
-  const [state, dispatch] = useReducer(reducer, initialState);
   const [isAuthenticated, setIsAuthenticated] = useState("");
-  const initialized = useRef(false);
-
-  const initialize = async () => {
-    // Prevent from calling twice in development mode with React.StrictMode enabled
-    if (initialized.current) {
-      return;
-    }
-
-    initialized.current = true;
-
-    try {
-      if (isAuthenticated) {
-        setIsAuthenticated(window.sessionStorage.getItem("token"));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-
-    if (isAuthenticated) {
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-        payload: "user",
-      });
-    } else {
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-      });
-    }
-  };
-
-  useEffect(
-    () => {
-      initialize()
-      return undefined;
-    },
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const skip = useCallback(() => {
     try {
@@ -143,10 +101,10 @@ export const AuthProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        ...state,
         skip,
         signIn,
         signOut,
+        ...state,
         setIsAuthenticated,
         isAuthenticated,
       }}

@@ -1,9 +1,11 @@
 import { DirectionsCard } from "components/directions-card";
 
-export const DirectionsSearch = () => {
+const DirectionsSearch = () => {
   return (
     <div>
       <DirectionsCard />
     </div>
   );
 };
+
+export default DirectionsSearch

@@ -10,7 +10,7 @@ import { useTrail, animated } from "react-spring";
 
 import { WebsiteColors } from "theme/colors";
 
-import { OrderForm } from "sections/home/order-form";
+import OrderForm from "sections/home/order-form";
 
 import { Button } from "./button";
 import { MainFooter } from "./website-footer";

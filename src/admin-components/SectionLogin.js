@@ -21,8 +21,6 @@ const SectionLogin = () => {
   const auth = useAuth();
   const router = useRouter();
 
-  const [error, setError] = useState();
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -101,11 +99,11 @@ const SectionLogin = () => {
                   helperText={formik.touched.password && formik.errors.password}
                 />
               </Stack>
-              {error && (
+              {/* {error && (
                 <Typography color="error" sx={{ mt: 3 }} variant="body2">
                   {error}
                 </Typography>
-              )}
+              )} */}
               <ButtonWrapper style={{ marginTop: "1rem" }}>
                 <Button variant="contained" fullWidth type="submit">
                   Continue

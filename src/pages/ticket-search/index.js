@@ -1,5 +1,9 @@
 import Head from "next/head";
-import { DirectionsSearch } from "sections/search/directions-search";
+import dynamic from "next/dynamic";
+
+const DirectionsSearch = dynamic(() => import("sections/search/directions-search"), {
+  ssr: false,
+});
 
 const Page = () => (
   <>
