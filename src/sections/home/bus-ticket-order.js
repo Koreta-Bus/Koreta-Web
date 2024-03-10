@@ -1,19 +1,24 @@
 import { WebsitePageLayouts } from "layouts/website";
-import { InfoCard } from "components/info-card";
-import { CountryImageCard } from "components/country-image-card";
-import { MainFooter } from "components/website-footer";
+
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { OrderForm } from "./order-form";
+
+import { InfoCard } from "components/info-card";
+import { MainFooter } from "components/website-footer";
+import { CountryImageCard } from "components/country-image-card";
+
 import { LandingContainer, LandingPage } from "./home.styled";
+
 import { useLazyGetSearchBusDirectionsQuery } from "store/apis";
-import { ImageCard } from "components/image-card";
+
 import { KoretaOwnDirections } from "components/koreta-own-directions";
 
-const BusTickerOrder = () => {
+import OrderForm from "./order-form";
+
+const BusTicketOrder = () => {
   const [
     getSearchBusDirections,
-    { data: busDirections, isSuccess, error, isLoading: busDirectionsLoading },
+    { isLoading: busDirectionsLoading },
   ] = useLazyGetSearchBusDirectionsQuery();
 
   return (
@@ -39,4 +44,4 @@ const BusTickerOrder = () => {
   );
 };
 
-export default BusTickerOrder
+export default BusTicketOrder

@@ -1,10 +1,10 @@
 import { ContactCard } from "components/contact-card";
-import { MainFooter } from "components/website-footer";
+
 import { WebsitePageLayouts } from "layouts/website";
-import { OrderForm } from "sections/home/order-form";
-import { WebsiteColors } from "theme/colors";
 
 import { PageSectionWrapper, SectionTitle } from "components/styled.global";
+
+import { DefaultLayout } from "layouts/website/DefaultLayout";
 
 const ContactCardInfos = [
   {
@@ -34,16 +34,16 @@ const ContactCardInfos = [
 const ContactSection = () => {
   return (
     <div>
-      <OrderForm />
-      <WebsitePageLayouts>
-        <PageSectionWrapper>
-          <SectionTitle>Наші контакти</SectionTitle>
-          <ContactCard {...{ ContactCardInfos }} />
-        </PageSectionWrapper>
-      </WebsitePageLayouts>
-      <MainFooter />
+      <DefaultLayout>
+        <WebsitePageLayouts>
+          <PageSectionWrapper>
+            <SectionTitle>Наші контакти</SectionTitle>
+            <ContactCard {...{ ContactCardInfos }} />
+          </PageSectionWrapper>
+        </WebsitePageLayouts>
+      </DefaultLayout>
     </div>
   );
 };
 
-export default ContactSection
+export default ContactSection;

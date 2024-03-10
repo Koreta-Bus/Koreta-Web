@@ -2,8 +2,6 @@ import { orderFormTicketValidSchema } from "constant";
 import { useFormik } from "formik";
 import Head from "next/head";
 import { WebsiteColors } from "theme/colors";
-import { MainFooter } from "components/website-footer";
-import { OrderForm } from "sections/home/order-form";
 import { Icon } from "shared/IconGenerator";
 import { Button } from "components/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +13,7 @@ import { styled } from "styled-components";
 import { Popup } from "shared/alerts";
 import { setFormPay } from "store/states";
 import { noop } from "shared/common";
+import { DefaultLayout } from "layouts/website/DefaultLayout";
 
 const defaultInitialValues = {
   name: "",
@@ -88,7 +87,7 @@ const Page = () => {
 
       setTimeout(() => {
         dispatch(setFormPay(broneData?.body));
-        router.push("order/pay");
+        router.push(`${data?.body?.id}/pay`);
       }, 2000);
     }
 
@@ -154,194 +153,198 @@ const Page = () => {
       <Head>
         <title>Koreta | Bus Ticket Order</title>
       </Head>
-      <OrderForm />
 
-      <Container>
-        <h2>Бронювання</h2>
-        <DriverFormContainer>
-          <FormTitle>Пасажир</FormTitle>
-          <StyledDriverForm onSubmit={formik.handleSubmit}>
-            <DriverFormWrapper>
-              {isDemandedDirection && (
-                <>
-                  <FieldWrapper>
-                    <label htmlFor="name">
-                      Звідки <Icon name="star" />
-                    </label>
-                    <InputTextField
-                      id="from"
-                      type="text"
-                      name="from"
-                      value={formik.values.from}
-                      onChange={formik.handleChange}
-                    />
-                    <ErrorText>{formik.values.from && formik.errors.from}</ErrorText>
-                  </FieldWrapper>
-                  <FieldWrapper>
-                    <label htmlFor="name">
-                      Куди <Icon name="star" />
-                    </label>
-                    <InputTextField
-                      id="to"
-                      name="to"
-                      type="text"
-                      value={formik.values.to}
-                      onChange={formik.handleChange}
-                    />
-                    <ErrorText>{formik.values.to && formik.errors.to}</ErrorText>
-                  </FieldWrapper>
-                </>
-              )}
-              <FieldWrapper>
-                <label htmlFor="name">
-                  Ім'я <Icon name="star" />
-                </label>
-                <InputTextField
-                  id="name"
-                  type="text"
-                  name="name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                />
-                <ErrorText>{formik.values.name && formik.errors.name}</ErrorText>
-              </FieldWrapper>
-              <FieldWrapper>
-                <label htmlFor="surname">
-                  Прізвище <Icon name="star" />
-                </label>
-                <InputTextField
-                  type="text"
-                  id="surname"
-                  name="surname"
-                  value={formik.values.surname}
-                  onChange={formik.handleChange}
-                />
-                <ErrorText>{formik.values.surname && formik.errors.surname}</ErrorText>
-              </FieldWrapper>
-              <FieldWrapper>
-                <label htmlFor="mobileNumber">
-                  Номер телефону <Icon name="star" />
-                </label>
-                <InputTextField
-                  type="text"
-                  id="mobileNumber"
-                  name="mobileNumber"
-                  onChange={formik.handleChange}
-                  value={formik.values.mobileNumber}
-                />
-                <ErrorText>{formik.values.mobileNumber && formik.errors.mobileNumber}</ErrorText>
-              </FieldWrapper>
-              <FieldWrapper>
-                <label htmlFor="email">Email, веб-сайт (якщо наявні)</label>
-                <InputTextField
-                  id="email"
-                  type="text"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                />
-                <ErrorText>{formik.values.email && formik.errors.email}</ErrorText>
-              </FieldWrapper>
-              {!isDemandedDirection && (
-                <>
-                  <FieldWrapper>
-                    <label htmlFor="transport_id">
-                      Виберіть автомобіль водія <Icon name="star" />
-                    </label>
-                    <SelectField
-                      id="transport_id"
-                      name="transport_id"
-                      onChange={formik.handleChange}
-                      value={formik.values.transport_id}
-                    >
-                      <option value="" disabled>
-                        Оберіть автомобіль
-                      </option>
-                      {freeSeats?.map((car) => (
-                        <option key={car.id} value={car.transport_id}>
-                          {car.description}
-                        </option>
-                      ))}
-                    </SelectField>
-                    <ErrorText>
-                      {formik.values.transport_id && formik.errors.transport_id}
-                    </ErrorText>
-                  </FieldWrapper>
-                  <FieldWrapper>
-                    <label htmlFor="seat">
-                      Виберіть місце <Icon name="star" />
-                    </label>
-                    <SelectField
-                      id="seat"
-                      name="seat"
-                      value={formik.values.seat}
-                      onChange={formik.handleChange}
-                      disabled={!formik.values.transport_id}
-                    >
-                      <option value="" disabled>
-                        Оберіть місце
-                      </option>
-                      {availableSeats?.map((seatDesc) => (
-                        <option key={seatDesc?.seat_num} value={seatDesc?.seat_id}>
-                          {seatDesc?.seat_num}
-                        </option>
-                      ))}
-                    </SelectField>
-                    <ErrorText>{formik.values.seat && formik.errors.seat}</ErrorText>
-                  </FieldWrapper>
-                </>
-              )}
-            </DriverFormWrapper>
-            <PriceButtonContainer>
-              <PriceButtonWrapper>
-                {!isDemandedDirection && (
-                  <PriceContent>{`Всього: ${orderValues?.price}`}</PriceContent>
+      <DefaultLayout>
+        <Container>
+          <h2>Бронювання</h2>
+          <DriverFormContainer>
+            <FormTitle>Пасажир</FormTitle>
+            <StyledDriverForm onSubmit={formik.handleSubmit}>
+              <DriverFormWrapper>
+                {isDemandedDirection && (
+                  <>
+                    <FieldWrapper>
+                      <label htmlFor="name">
+                        Звідки <Icon name="star" />
+                      </label>
+                      <InputTextField
+                        id="from"
+                        type="text"
+                        name="from"
+                        value={formik.values.from}
+                        onChange={formik.handleChange}
+                      />
+                      <ErrorText>{formik.values.from && formik.errors.from}</ErrorText>
+                    </FieldWrapper>
+                    <FieldWrapper>
+                      <label htmlFor="name">
+                        Куди <Icon name="star" />
+                      </label>
+                      <InputTextField
+                        id="to"
+                        name="to"
+                        type="text"
+                        value={formik.values.to}
+                        onChange={formik.handleChange}
+                      />
+                      <ErrorText>{formik.values.to && formik.errors.to}</ErrorText>
+                    </FieldWrapper>
+                  </>
                 )}
-                <ButtonWrapper>
-                  <Button padding="10px 0px" type="submit" text={"Надіслати"} loading={isLoading} />
-                </ButtonWrapper>
-              </PriceButtonWrapper>
-            </PriceButtonContainer>
-          </StyledDriverForm>
-        </DriverFormContainer>
-      </Container>
+                <FieldWrapper>
+                  <label htmlFor="name">
+                    Ім'я <Icon name="star" />
+                  </label>
+                  <InputTextField
+                    id="name"
+                    type="text"
+                    name="name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                  />
+                  <ErrorText>{formik.values.name && formik.errors.name}</ErrorText>
+                </FieldWrapper>
+                <FieldWrapper>
+                  <label htmlFor="surname">
+                    Прізвище <Icon name="star" />
+                  </label>
+                  <InputTextField
+                    type="text"
+                    id="surname"
+                    name="surname"
+                    value={formik.values.surname}
+                    onChange={formik.handleChange}
+                  />
+                  <ErrorText>{formik.values.surname && formik.errors.surname}</ErrorText>
+                </FieldWrapper>
+                <FieldWrapper>
+                  <label htmlFor="mobileNumber">
+                    Номер телефону <Icon name="star" />
+                  </label>
+                  <InputTextField
+                    type="text"
+                    id="mobileNumber"
+                    name="mobileNumber"
+                    onChange={formik.handleChange}
+                    value={formik.values.mobileNumber}
+                  />
+                  <ErrorText>{formik.values.mobileNumber && formik.errors.mobileNumber}</ErrorText>
+                </FieldWrapper>
+                <FieldWrapper>
+                  <label htmlFor="email">Email, веб-сайт (якщо наявні)</label>
+                  <InputTextField
+                    id="email"
+                    type="text"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                  />
+                  <ErrorText>{formik.values.email && formik.errors.email}</ErrorText>
+                </FieldWrapper>
+                {!isDemandedDirection && (
+                  <>
+                    <FieldWrapper>
+                      <label htmlFor="transport_id">
+                        Виберіть автомобіль водія <Icon name="star" />
+                      </label>
+                      <SelectField
+                        id="transport_id"
+                        name="transport_id"
+                        onChange={formik.handleChange}
+                        value={formik.values.transport_id}
+                      >
+                        <option value="" disabled>
+                          Оберіть автомобіль
+                        </option>
+                        {freeSeats?.map((car) => (
+                          <option key={car.id} value={car.transport_id}>
+                            {car.description}
+                          </option>
+                        ))}
+                      </SelectField>
+                      <ErrorText>
+                        {formik.values.transport_id && formik.errors.transport_id}
+                      </ErrorText>
+                    </FieldWrapper>
+                    <FieldWrapper>
+                      <label htmlFor="seat">
+                        Виберіть місце <Icon name="star" />
+                      </label>
+                      <SelectField
+                        id="seat"
+                        name="seat"
+                        value={formik.values.seat}
+                        onChange={formik.handleChange}
+                        disabled={!formik.values.transport_id}
+                      >
+                        <option value="" disabled>
+                          Оберіть місце
+                        </option>
+                        {availableSeats?.map((seatDesc) => (
+                          <option key={seatDesc?.seat_num} value={seatDesc?.seat_id}>
+                            {seatDesc?.seat_num}
+                          </option>
+                        ))}
+                      </SelectField>
+                      <ErrorText>{formik.values.seat && formik.errors.seat}</ErrorText>
+                    </FieldWrapper>
+                  </>
+                )}
+              </DriverFormWrapper>
+              <PriceButtonContainer>
+                <PriceButtonWrapper>
+                  {!isDemandedDirection && (
+                    <PriceContent>{`Всього: ${orderValues?.price}`}</PriceContent>
+                  )}
+                  <ButtonWrapper>
+                    <Button
+                      padding="10px 0px"
+                      type="submit"
+                      text={"Надіслати"}
+                      loading={isLoading}
+                    />
+                  </ButtonWrapper>
+                </PriceButtonWrapper>
+              </PriceButtonContainer>
+            </StyledDriverForm>
+          </DriverFormContainer>
+        </Container>
 
-      {!isDemandedDirection && (
-        <WriteUsContainer>
-          <WriteUsTitle>Деталі обраної поїздки</WriteUsTitle>
-          <DetailContainer>
-            <DetailWrapper>
-              <DetailItemnWrapper>
-                <ItemTitle>{`Перевізник:`}</ItemTitle>
-                <ItemValue>{`${orderValues?.carrier_name}`}</ItemValue>
-              </DetailItemnWrapper>
-              <DetailItemnWrapper>
-                <ItemTitle>{`Тип:`}</ItemTitle>
-                <ItemValue>{`${orderValues?.is_microauto ? "Microbus" : "Bus"}`}</ItemValue>
-              </DetailItemnWrapper>
-              <DetailItemnWrapper>
-                <ItemTitle>{`Дата відвантаження:`}</ItemTitle>
-                <ItemValue>{`${orderValues?.date_departure}`}</ItemValue>
-              </DetailItemnWrapper>
-              <StreetLocations>{`${
-                (orderValues?.from_city, orderValues?.from_station)
-              }`}</StreetLocations>
-            </DetailWrapper>
-            <Divider></Divider>
-            <DetailWrapper>
-              <DetailItemnWrapper>
-                <ItemTitle>{`Дата прибуття:`}</ItemTitle>
-                <ItemValue>{`${orderValues?.date_arrival}`}</ItemValue>
-              </DetailItemnWrapper>
-              <StreetLocations>{`${
-                (orderValues?.to_city, orderValues?.to_station)
-              }`}</StreetLocations>
-            </DetailWrapper>
-          </DetailContainer>
-        </WriteUsContainer>
-      )}
-
-      <MainFooter />
+        {!isDemandedDirection && (
+          <WriteUsContainer>
+            <WriteUsTitle>Деталі обраної поїздки</WriteUsTitle>
+            <DetailContainer>
+              <DetailWrapper>
+                <DetailItemnWrapper>
+                  <ItemTitle>{`Перевізник:`}</ItemTitle>
+                  <ItemValue>{`${orderValues?.carrier_name}`}</ItemValue>
+                </DetailItemnWrapper>
+                <DetailItemnWrapper>
+                  <ItemTitle>{`Тип:`}</ItemTitle>
+                  <ItemValue>{`${orderValues?.is_microauto ? "Microbus" : "Bus"}`}</ItemValue>
+                </DetailItemnWrapper>
+                <DetailItemnWrapper>
+                  <ItemTitle>{`Дата відвантаження:`}</ItemTitle>
+                  <ItemValue>{`${orderValues?.date_departure}`}</ItemValue>
+                </DetailItemnWrapper>
+                <StreetLocations>{`${
+                  (orderValues?.from_city, orderValues?.from_station)
+                }`}</StreetLocations>
+              </DetailWrapper>
+              <Divider></Divider>
+              <DetailWrapper>
+                <DetailItemnWrapper>
+                  <ItemTitle>{`Дата прибуття:`}</ItemTitle>
+                  <ItemValue>{`${orderValues?.date_arrival}`}</ItemValue>
+                </DetailItemnWrapper>
+                <StreetLocations>{`${
+                  (orderValues?.to_city, orderValues?.to_station)
+                }`}</StreetLocations>
+              </DetailWrapper>
+            </DetailContainer>
+          </WriteUsContainer>
+        )}
+      </DefaultLayout>
     </>
   );
 };

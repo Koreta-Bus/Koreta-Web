@@ -1,13 +1,17 @@
-import Head from "next/head";
-import { WebsiteColors } from "theme/colors";
-import { MainFooter } from "components/website-footer";
-import { OrderForm } from "sections/home/order-form";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
+
+import { useSelector } from "react-redux";
+
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { isEmpty, noop } from "shared/common";
 
 import { styled } from "styled-components";
+
+import { DefaultLayout } from "layouts/website/DefaultLayout";
+
+import { WebsiteColors } from "theme/colors";
+
+import { isEmpty, noop } from "shared/common";
 
 const Page = () => {
   const router = useRouter();
@@ -24,26 +28,30 @@ const Page = () => {
       <Head>
         <title>Koreta | Bus Ticket Pay</title>
       </Head>
-      <OrderForm />
-      <Container>
-        <h2>Результат</h2>
-        <SuccessContainer>
-          <div>
-            Будь ласка, оплатіть своє замовлення протягом 30 хвилин, інакше ми відхилимо ваше
-            замовлення.
-          </div>
-          <div>Ви можете легко оплатити своє замовлення прямо внизу.</div>
-          <PaymentName>
-            Lig <strong>Pay</strong>
-          </PaymentName>
-          <form method="POST" action={formPay?.action} accept-charset="utf-8">
-            <input type="hidden" name="data" value={formPay?.data} />
-            <input type="hidden" name="signature" value={formPay?.signature} />
-            <input type="image" src="//static.liqpay.ua/buttons/p1en.radius.png" name="btn_text" />
-          </form>
-        </SuccessContainer>
-      </Container>
-      <MainFooter />
+      <DefaultLayout>
+        <Container>
+          <h2>Результат</h2>
+          <SuccessContainer>
+            <div>
+              Будь ласка, оплатіть своє замовлення протягом 30 хвилин, інакше ми відхилимо ваше
+              замовлення.
+            </div>
+            <div>Ви можете легко оплатити своє замовлення прямо внизу.</div>
+            <PaymentName>
+              Lig <strong>Pay</strong>
+            </PaymentName>
+            <form method="POST" action={formPay?.action} accept-charset="utf-8">
+              <input type="hidden" name="data" value={formPay?.data} />
+              <input type="hidden" name="signature" value={formPay?.signature} />
+              <input
+                type="image"
+                src="//static.liqpay.ua/buttons/p1en.radius.png"
+                name="btn_text"
+              />
+            </form>
+          </SuccessContainer>
+        </Container>
+      </DefaultLayout>
     </>
   );
 };

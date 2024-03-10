@@ -12,11 +12,12 @@ createEmotionCache;
 import { Provider } from "react-redux";
 import { store } from "store/store";
 import { uk } from "date-fns/locale";
+import { SplashScreenImage } from "components/splash-screen";
+
 
 import "simplebar-react/dist/simplebar.min.css";
 import "sweetalert2/src/sweetalert2.scss";
 import "../styles/index.css";
-import { SplashScreenImage } from "components/splash-screen";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -42,11 +43,7 @@ const App = (props) => {
           <AuthProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
-              <AuthConsumer>
-                {(auth) =>
-                  auth.isLoading ? <SplashScreen /> : getLayout(<Component {...pageProps} />)
-                }
-              </AuthConsumer>
+              <AuthConsumer>{() => getLayout(<Component {...pageProps} />)}</AuthConsumer>
             </ThemeProvider>
           </AuthProvider>
         </LocalizationProvider>
