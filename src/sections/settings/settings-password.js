@@ -28,7 +28,7 @@ const ERROR_MESSAGES = {
   INVALID_PASSWORD: "Пароль или email введены неверно.",
 };
 
-export const SettingsPassword = () => {
+const SettingsPassword = () => {
   const [values, setValues] = useState(initialValues);
 
   const handleChange = useCallback((event) => {
@@ -164,3 +164,5 @@ export const SettingsPassword = () => {
     </form>
   );
 };
+
+export default SettingsPassword
