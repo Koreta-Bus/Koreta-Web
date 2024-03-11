@@ -1,8 +1,8 @@
 import Head from "next/head";
 
-import { Box, Container} from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 
-import Layout  from "layouts/dashboard/layout";
+import Layout from "layouts/dashboard/layout";
 
 const Page = () => (
   <>
@@ -16,7 +16,9 @@ const Page = () => (
         py: 8,
       }}
     >
-      <Container maxWidth="xl"></Container>
+      <Container maxWidth="xl">
+        <Typography variant="h4">Companies</Typography>
+      </Container>
     </Box>
   </>
 );

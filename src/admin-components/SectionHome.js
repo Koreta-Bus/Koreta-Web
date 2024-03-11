@@ -52,7 +52,7 @@ const SectionHome = () => (
           />
         </Grid>
         <Grid xs={12} md={12} lg={12}>
-          <OverviewLatestOrders
+          {/* <OverviewLatestOrders
             orders={[
               {
                 amount: 30.5,
@@ -127,7 +127,7 @@ const SectionHome = () => (
               },
             ]}
             sx={{ height: "100%" }}
-          />
+          /> */}
         </Grid>
       </Grid>
     </Container>
