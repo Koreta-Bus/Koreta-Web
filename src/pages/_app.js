@@ -14,14 +14,13 @@ import { store } from "store/store";
 import { uk } from "date-fns/locale";
 import { SplashScreenImage } from "components/splash-screen";
 
-
 import "simplebar-react/dist/simplebar.min.css";
 import "sweetalert2/src/sweetalert2.scss";
 import "../styles/index.css";
 
 const clientSideEmotionCache = createEmotionCache();
 
-const SplashScreen = () => <SplashScreenImage />;
+// const SplashScreen = () => <SplashScreenImage />;
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -43,7 +42,9 @@ const App = (props) => {
           <AuthProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
-              <AuthConsumer>{() => getLayout(<Component {...pageProps} />)}</AuthConsumer>
+              <AuthConsumer>
+                {() => getLayout(<Component {...pageProps} />)}
+              </AuthConsumer>
             </ThemeProvider>
           </AuthProvider>
         </LocalizationProvider>

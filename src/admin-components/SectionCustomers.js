@@ -17,7 +17,7 @@ const SectionCustomers = () => {
   const useCustomers = (page, rowsPerPage, customers) =>
     useMemo(() => applyPagination(customers, page, rowsPerPage), [page, rowsPerPage, data]);
 
-  const customersInfos = useCustomers(page, rowsPerPage, data?.body);
+  const customersInfos = useCustomers(page, rowsPerPage, data?.body ?? []);
 
   const handlePageChange = useCallback((_, value) => setPage(value), []);
 
