@@ -1,13 +1,13 @@
 import Swal from "sweetalert2";
 
 export const Popup = ({
-  icon = "success",
-  title = "Authentication",
   text = "",
   timer = 0,
+  icon = "success",
+  title = "Authentication",
   showConfirmButton = true,
+  confirmButtonText = null,
   confirmButtonColor = '#3085d6',
-  confirmButtonText = null
 }) => {
   Swal.fire({
     icon,
@@ -15,7 +15,7 @@ export const Popup = ({
     text,
     timer,
     showConfirmButton,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor,
     confirmButtonText: confirmButtonText ?? 'Close'
   });
 };
