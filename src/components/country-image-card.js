@@ -13,39 +13,39 @@ import styled from "styled-components";
 const cardData = [
   {
     title: "Польща",
-    subTitle: "Автобусні маршрути з України в усі куточки Польщі.",
-    src: "/assets/website/poland.png",
     alt: "Bus Ticket Order - Poland",
+    src: "/assets/website/poland.png",
+    subTitle: "Автобусні маршрути з України в усі куточки Польщі.",
   },
   {
     title: "Німеччина",
-    subTitle: "Комфортна і відмінна поїздка практично в будь-яке місто Німеччини!",
     src: "/assets/website/germany.png",
     alt: "Bus Ticket Order - Німеччина (Germany)",
+    subTitle: "Комфортна і відмінна поїздка практично в будь-яке місто Німеччини!",
   },
   {
     title: "Чехія",
-    subTitle: "Чудова Чехія. Комфортні автобусні поїздки з нами!",
     src: "/assets/website/czech.png",
     alt: "Bus Ticket Order - Чехія (Czech Republic)",
+    subTitle: "Чудова Чехія. Комфортні автобусні поїздки з нами!",
   },
   {
     title: "Нідерланди",
-    subTitle: "Подорожуйте з нами до Нідерландів, однієї з найкрасивіших країн",
     src: "/assets/website/niderland.png",
     alt: "Bus Ticket Order - Нідерланди (Niderland)",
+    subTitle: "Подорожуйте з нами до Нідерландів, однієї з найкрасивіших країн",
   },
   {
     title: "Бельгія",
-    subTitle: "Ви коли-небудь були в Бельгії? Сюди з комфортом можна доїхати на «Кореті»",
     src: "/assets/website/belgium.png",
     alt: "Bus Ticket Order - Бельгія (Belgium)",
+    subTitle: "Ви коли-небудь були в Бельгії? Сюди з комфортом можна доїхати на «Кореті»",
   },
   {
     title: "Швейцарія",
-    subTitle: "Гори, озера, луки. Це Швейцарія!",
     src: "/assets/website/sweden.png",
     alt: "Bus Ticket Order - Швейцарія (Sweden)",
+    subTitle: "Гори, озера, луки. Це Швейцарія!",
   },
 ];
 

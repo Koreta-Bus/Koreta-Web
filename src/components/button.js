@@ -17,9 +17,9 @@ export const Button = ({
     <StyledButton
       type={type}
       onClick={func}
-      className={className}
       padding={padding}
       disabled={disabled}
+      className={className}
     >
       {!!loading ? (
         <SpinnerContainer>
