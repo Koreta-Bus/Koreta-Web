@@ -1,9 +1,8 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
 import Layout from "layouts/dashboard/layout";
 
-const SectionCities = dynamic(() => import("admin-components/SectionCities"));
+import SectionCities from 'admin-components/SectionCities';
 
 const Page = () => {
   return (

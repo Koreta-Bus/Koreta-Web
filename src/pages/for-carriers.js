@@ -1,7 +1,6 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
-const ForCarriersSection = dynamic(() => import('sections/carriers/for-carriers'));
+import ForCarriersSection from 'sections/carriers/for-carriers';
 
 const Page = () => (
   <>

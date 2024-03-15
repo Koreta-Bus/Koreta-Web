@@ -14,10 +14,19 @@ const SectionCustomers = () => {
 
   const { data, isError } = useGetAllOrdersQuery();
 
+  const filteredData = useMemo(
+    () =>
+      data?.body?.map((item) => {
+        const { response, ...rest } = item;
+        return rest;
+      }),
+    [data]
+  );
+
   const useCustomers = (page, rowsPerPage, customers) =>
     useMemo(() => applyPagination(customers, page, rowsPerPage), [page, rowsPerPage, data]);
 
-  const customersInfos = useCustomers(page, rowsPerPage, data?.body ?? []);
+  const customersInfos = useCustomers(page, rowsPerPage, filteredData ?? []);
 
   const handlePageChange = useCallback((_, value) => setPage(value), []);
 
@@ -53,7 +62,7 @@ const SectionCustomers = () => {
           <CustomersTable
             page={page}
             rowsPerPage={rowsPerPage}
-            count={data?.body?.length}
+            count={filteredData?.length}
             items={customersInfos ?? []}
             onPageChange={handlePageChange}
             onRowsPerPageChange={handleRowsPerPageChange}

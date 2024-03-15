@@ -1,9 +1,8 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
 import Layout from "layouts/dashboard/layout";
 
-const SectionDrivers = dynamic(() => import("admin-components/SectionDrivers"));
+import SectionDrivers from 'admin-components/SectionDrivers';
 
 const Page = () => {
   return (
