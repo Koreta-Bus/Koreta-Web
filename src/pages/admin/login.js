@@ -1,10 +1,8 @@
 import Head from "next/head";
 
-import dynamic from "next/dynamic";
-
 import { Layout } from "layouts/auth/layout";
 
-const SectionLogin = dynamic(() => import("admin-components/SectionLogin"));
+import SectionLogin from 'admin-components/SectionLogin';
 
 const Page = () => {
   return (

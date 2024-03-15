@@ -87,7 +87,7 @@ const Page = () => {
 
       setTimeout(() => {
         dispatch(setFormPay(broneData?.body));
-        router.push(`${data?.body?.id}/pay`);
+        router.push(`/ticket-search/${data?.body?.id}/pay`);
       }, 2000);
     }
 

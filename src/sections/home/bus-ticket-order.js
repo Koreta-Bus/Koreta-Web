@@ -34,7 +34,6 @@ const BusTicketOrder = () => {
               <KoretaOwnDirections />
             </div>
             <InfoCard />
-            {/* <ImageCard /> */}
             <CountryImageCard />
           </WebsitePageLayouts>
           <MainFooter />

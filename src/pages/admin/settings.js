@@ -1,11 +1,10 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
 import { Box, Container, Stack, Typography } from "@mui/material";
 
 import Layout from "layouts/dashboard/layout";
 
-const SettingsPassword = dynamic(() => import("sections/settings/settings-password"));
+import SettingsPassword from 'sections/settings/settings-password';
 
 const Page = () => (
   <>

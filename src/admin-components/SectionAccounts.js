@@ -1,9 +1,7 @@
-import dynamic from "next/dynamic";
-
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 
-const AccountProfile = dynamic(() => import("sections/account/account-profile"));
-const AccountProfileDetails = dynamic(() => import("sections/account/account-profile-details"));
+import AccountProfile from "sections/account/account-profile";
+import AccountProfileDetails from "sections/account/account-profile-details";
 
 const SectionAccounts = () => {
   return (

@@ -63,8 +63,6 @@ export const DriverForm = () => {
     },
   });
 
-  console.log(formik.errors, "formik erros");
-
   return (
     <DriverFormContainer>
       <FormTitle>Напишіть нам</FormTitle>

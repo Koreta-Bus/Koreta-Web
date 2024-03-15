@@ -1,8 +1,7 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
-const Layout = dynamic(() => import('layouts/dashboard/layout'));
-const SectionAccounts = dynamic(() => import('admin-components/SectionAccounts'));
+import Layout from 'layouts/dashboard/layout';
+import SectionAccounts from 'admin-components/SectionAccounts';
 
 const Page = () => (
   <>

@@ -1,7 +1,6 @@
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
-const AboutUsSection = dynamic(() => import('sections/aboutus/about-us-info'));
+import AboutUsSection from 'sections/aboutus/about-us-info';
 
 const Page = () => (
   <>
