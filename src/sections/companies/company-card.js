@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-import ClockIcon from "@heroicons/react/24/solid/ClockIcon";
+
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from "@mui/material";
+
+import ClockIcon from "@heroicons/react/24/solid/ClockIcon";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+
 
 export const CompanyCard = (props) => {
   const { company } = props;

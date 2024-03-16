@@ -20,7 +20,6 @@ export const AuthGuard = (props) => {
       return;
     }
 
-    // Prevent from calling twice in development mode with React.StrictMode enabled
     if (ignore.current) {
       return;
     }
