@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
+
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from "@mui/material";
+
 import ArrowUpIcon from "@heroicons/react/24/solid/ArrowUpIcon";
 import ArrowDownIcon from "@heroicons/react/24/solid/ArrowDownIcon";
 import DriverIcon from "@heroicons/react/24/solid/ViewfinderCircleIcon";
