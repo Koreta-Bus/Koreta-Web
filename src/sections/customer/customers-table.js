@@ -1,16 +1,20 @@
 import PropTypes from "prop-types";
+
 import {
   Box,
   Card,
   Table,
+  TableRow,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
-  TableRow,
 } from "@mui/material";
-import { Scrollbar } from "components/scrollbar";
+
 import dayjs from "dayjs";
+
+import { Scrollbar } from "components/scrollbar";
+
 import { noop } from "shared/common";
 
 const AllCels = {
