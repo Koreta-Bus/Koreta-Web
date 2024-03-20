@@ -1,14 +1,17 @@
 import PropTypes from "prop-types";
-import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+
 import {
-  Button,
   Card,
-  CardContent,
-  CardHeader,
-  Divider,
+  Button,
   SvgIcon,
+  Divider,
+  CardHeader,
+  CardContent,
 } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
+
+import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+
 import { Chart } from "components/chart";
 
 const useChartOptions = () => {
