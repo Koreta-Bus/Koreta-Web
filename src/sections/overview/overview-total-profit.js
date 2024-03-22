@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
+
 import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
+
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from "@mui/material";
 
 export const OverviewTotalProfit = (props) => {
