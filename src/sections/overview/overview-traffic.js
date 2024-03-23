@@ -1,17 +1,20 @@
 import PropTypes from "prop-types";
+
 import CustoemrsIcon from "@heroicons/react/24/solid/UsersIcon";
-import DriversIcon from "@heroicons/react/24/solid/UserCircleIcon";
 import TicketsCount from "@heroicons/react/24/solid/WalletIcon";
+import DriversIcon from "@heroicons/react/24/solid/UserCircleIcon";
+
 import {
   Box,
   Card,
-  CardContent,
-  CardHeader,
   Stack,
   SvgIcon,
-  Typography,
   useTheme,
+  CardHeader,
+  Typography,
+  CardContent,
 } from "@mui/material";
+
 import { Chart } from "components/chart";
 
 const useChartOptions = (labels) => {
