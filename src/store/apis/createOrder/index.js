@@ -34,4 +34,5 @@ export const createOrderApi = createApi({
   }),
 });
 
-export const { useCreateOrderMutation, useGetFreeSeatsQuery, useBroneOrderMutation } = createOrderApi;
+export const { useCreateOrderMutation, useGetFreeSeatsQuery, useBroneOrderMutation } =
+  createOrderApi;

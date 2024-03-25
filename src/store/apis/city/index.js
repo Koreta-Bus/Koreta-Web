@@ -26,4 +26,5 @@ export const createCityApi = createApi({
   }),
 });
 
-export const { useCreateCityMutation, useLazyCreatedCitiesQuery, useCreatedCitiesQuery} = createCityApi;
+export const { useCreateCityMutation, useCreatedCitiesQuery, useLazyCreatedCitiesQuery } =
+  createCityApi;
