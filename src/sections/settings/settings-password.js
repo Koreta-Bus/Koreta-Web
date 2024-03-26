@@ -1,27 +1,30 @@
 import { useCallback, useState } from "react";
+
 import {
-  Button,
   Card,
+  Stack,
+  Button,
+  Divider,
+  TextField,
+  CardHeader,
   CardActions,
   CardContent,
-  CardHeader,
-  Divider,
-  Stack,
-  TextField,
 } from "@mui/material";
+
 import {
-  EmailAuthProvider,
   getAuth,
-  reauthenticateWithCredential,
   updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "firebase/auth";
+
 import { Popup } from "shared/alerts";
 
 const initialValues = {
-  password: "",
-  confirm: "",
-  currentPassword: "",
   email: "",
+  confirm: "",
+  password: "",
+  currentPassword: "",
 };
 
 const ERROR_MESSAGES = {
@@ -31,12 +34,14 @@ const ERROR_MESSAGES = {
 const SettingsPassword = () => {
   const [values, setValues] = useState(initialValues);
 
-  const handleChange = useCallback((event) => {
-    setValues((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  }, []);
+  const handleChange = useCallback(
+    (event) =>
+      setValues((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value,
+      })),
+    []
+  );
 
   const handleSubmit = useCallback(
     (event) => {
@@ -54,19 +59,19 @@ const SettingsPassword = () => {
             .catch((error) => {
               Popup({
                 icon: "error",
+                showConfirmButton: true,
                 title: "Обновление пароля",
                 text:
                   ERROR_MESSAGES[error.errors[0].message] ??
                   "Что-то пошло не так во время обновления пароля, ",
-                showConfirmButton: true,
+                });
               });
-            });
         } else {
           Popup({
             icon: "error",
             title: "Аутентификация",
-            text: "Не найден авторизованный пользователь.",
             showConfirmButton: true,
+            text: "Не найден авторизованный пользователь.",
           });
         }
       };
@@ -81,27 +86,27 @@ const SettingsPassword = () => {
             .then(() => {
               setValues(initialValues);
               Popup({
+                timer: 2000,
                 icon: "success",
+                showConfirmButton: false,
                 title: "Обновление пароля",
                 text: "Пароль успешно обновлен",
-                timer: 2000,
-                showConfirmButton: false,
               });
             })
             .catch((error) => {
               Popup({
                 icon: "error",
+                showConfirmButton: true,
                 title: "Обновление пароля",
                 text: "Что-то пошло не так во время обновления пароля",
-                showConfirmButton: true,
               });
             });
         } else {
           Popup({
             icon: "error",
             title: "Аутентификация",
-            text: "Не найден авторизованный пользователь.",
             showConfirmButton: true,
+            text: "Не найден авторизованный пользователь.",
           });
         }
       };
@@ -122,35 +127,35 @@ const SettingsPassword = () => {
           <Stack spacing={3} sx={{ maxWidth: 400 }}>
             <TextField
               fullWidth
-              label="Email"
-              name="email"
-              onChange={handleChange}
               type="text"
+              name="email"
+              label="Email"
               value={values.email}
+              onChange={handleChange}
             />
             <TextField
               fullWidth
-              label="Current Password"
+              type="password"
               name="currentPassword"
               onChange={handleChange}
-              type="password"
+              label="Current Password"
               value={values.currentPassword}
             />
             <TextField
               fullWidth
-              label="Password"
-              name="password"
-              onChange={handleChange}
               type="password"
+              name="password"
+              label="Password"
+              onChange={handleChange}
               value={values.password}
             />
             <TextField
               fullWidth
-              label="Repeat Password"
               name="confirm"
-              onChange={handleChange}
               type="password"
               value={values.confirm}
+              label="Repeat Password"
+              onChange={handleChange}
             />
           </Stack>
         </CardContent>
@@ -165,4 +170,4 @@ const SettingsPassword = () => {
   );
 };
 
-export default SettingsPassword
+export default SettingsPassword;
