@@ -1,9 +1,9 @@
-export const noop = () => {}
+export const noop = () => {};
 
 export function isNulOrUndefined(v) {
-    return v === null || v === undefined;
+  return v === null || v === undefined;
 }
-  
+
 export function isEmpty(o) {
   if (Number.isNaN(o)) return true;
   if (isNulOrUndefined(o)) return true;
@@ -16,3 +16,6 @@ export function isEmpty(o) {
 export function isNotEmpty(o) {
   return !isEmpty(o);
 }
+
+export const generateQuery = (query) =>
+  Object.entries(query).reduce((acc, [k, v]) => (v ? `${acc}${k}=${v}&` : acc), "");
