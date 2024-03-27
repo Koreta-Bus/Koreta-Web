@@ -53,6 +53,7 @@ const SectionLogin = () => {
       sx={{
         flex: "1 1 auto",
         display: "flex",
+        minHeight: '100vh',
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "background.paper",
