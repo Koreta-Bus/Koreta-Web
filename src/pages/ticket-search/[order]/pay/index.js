@@ -11,15 +11,21 @@ import { DefaultLayout } from "layouts/website/DefaultLayout";
 
 import { WebsiteColors } from "theme/colors";
 
-import { isEmpty, noop } from "shared/common";
+import { isEmpty, isNotEmpty, noop } from "shared/common";
 
 const Page = () => {
   const router = useRouter();
 
+  const { query } = router;
+
   const { formPay } = useSelector((state) => state.searchBusDirections);
 
+  const filledPayData = isNotEmpty(formPay) ? formPay : isNotEmpty(query) ? query : null;
+
   useEffect(() => {
-    isEmpty(formPay) && router.push("/ticket-search");
+    if(router.isReady)
+      isEmpty(filledPayData) && router.push("/ticket-search");
+    
     return noop;
   }, []);
 
@@ -40,13 +46,13 @@ const Page = () => {
             <PaymentName>
               Lig <strong>Pay</strong>
             </PaymentName>
-            <form method="POST" action={formPay?.action} accept-charset="utf-8">
-              <input type="hidden" name="data" value={formPay?.data} />
-              <input type="hidden" name="signature" value={formPay?.signature} />
+            <form method="POST" action={filledPayData?.action} accept-charset="utf-8">
+              <input type="hidden" name="data" value={filledPayData?.data} />
+              <input type="hidden" name="signature" value={filledPayData?.signature} />
               <input
                 type="image"
-                src="//static.liqpay.ua/buttons/p1en.radius.png"
                 name="btn_text"
+                src="//static.liqpay.ua/buttons/p1en.radius.png"
               />
             </form>
           </SuccessContainer>

@@ -4,8 +4,6 @@ import { useFormik } from "formik";
 
 import { useRouter } from "next/router";
 
-import dayjs from "dayjs";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import { Header } from "components/header";
@@ -40,6 +38,7 @@ import {
 } from "./styled.order.form";
 
 import { SocialMedia } from "shared/socialMedia";
+import { formatDate } from "shared/date";
 
 const validPaths = ["/", "/ticket-search"];
 
@@ -66,10 +65,7 @@ const OrderForm = ({
 
   const path = router.asPath.split("?")[0];
 
-  let item =
-    sessionStorage.getItem("orderForm") !== undefined
-      ? JSON.parse(sessionStorage.getItem("orderForm"))
-      : {};
+  let item = {};
 
   const initialValues =
     item?.from?.cityName && item?.to?.cityName && item?.date && item?.personCount
@@ -85,7 +81,6 @@ const OrderForm = ({
           date: "",
           personCount: "1",
         };
-
   useEffect(() => {
     const getDirections = () => {
       if (
@@ -175,7 +170,7 @@ const OrderForm = ({
             to,
             date: values?.date,
             personCount: values?.personCount,
-            formattedDate: dayjs(values.date).format("YYYY-MM-DD").toString(),
+            formattedDate: formatDate(values.date),
           })
         );
       if (!busDirectionsLoading) {
@@ -191,7 +186,7 @@ const OrderForm = ({
               to_city_id: to.cityId,
               from_city_id: from.cityId,
               free_seats: values.personCount,
-              departure_date: dayjs(values.date).format("YYYY-MM-DD").toString(),
+              departure_date: formatDate(values.date),
             })) ?? null;
           } else {
             formik.setFieldValue("from", "");

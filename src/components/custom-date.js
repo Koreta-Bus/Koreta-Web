@@ -1,4 +1,4 @@
-import { styled } from "@mui/system";
+import { styled } from "styled-components";
 
 import { DatePicker } from "@mui/x-date-pickers";
 

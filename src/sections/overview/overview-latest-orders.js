@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-
 import PropTypes from "prop-types";
 
 import {
@@ -15,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { Scrollbar } from "components/scrollbar";
+import { formatDate } from "shared/date";
 export const OverviewLatestOrders = (props) => {
   const { orders = [], sx } = props;
 
@@ -36,7 +35,7 @@ export const OverviewLatestOrders = (props) => {
             </TableHead>
             <TableBody>
               {orders.map((order) => {
-                const createdAt = format(order.createdAt, "dd/MM/yyyy");
+                const createdAt = formatDate(order.createdAt);
                 return (
                   <TableRow hover key={order.id}>
                     <TableCell>{order.ref}</TableCell>

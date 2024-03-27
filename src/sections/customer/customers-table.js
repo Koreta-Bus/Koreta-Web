@@ -11,11 +11,10 @@ import {
   TablePagination,
 } from "@mui/material";
 
-import dayjs from "dayjs";
-
 import { Scrollbar } from "components/scrollbar";
 
 import { noop } from "shared/common";
+import { formatDate } from "shared/date";
 
 const AllCels = {
   name: "Ім'я",
@@ -83,7 +82,7 @@ export const CustomersTable = (props) => {
                   >
                     {Object.entries(data).map(([key, value]) => {
                       let val = dateKeys.includes(key)
-                        ? dayjs(data?.created_at).format("YYYY-MM-DD").toString()
+                        ? formatDate(data?.created_at)
                         : value;
 
                       val = key === "price" && !value.includes("UAH") ? `${value} UAH` : value;

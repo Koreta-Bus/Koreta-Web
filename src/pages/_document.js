@@ -1,7 +1,5 @@
-import { Children } from "react";
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import createEmotionServer from "@emotion/server/create-instance";
-import { createEmotionCache } from "utils/create-emotion-cache";
+import { ServerStyleSheet } from "styled-components";
 
 const Favicon = () => (
   <>
@@ -36,8 +34,8 @@ class CustomDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <Favicon />
           <Fonts />
+          <Favicon />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
           <link
@@ -59,30 +57,28 @@ class CustomDocument extends Document {
 }
 
 CustomDocument.getInitialProps = async (ctx) => {
+  const sheet = new ServerStyleSheet();
   const originalRenderPage = ctx.renderPage;
-  const cache = createEmotionCache();
-  const { extractCriticalToChunks } = createEmotionServer(cache);
 
-  ctx.renderPage = () =>
-    originalRenderPage({
-      enhanceApp: (App) => (props) => <App emotionCache={cache} {...props} />,
-    });
+  try {
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+      });
 
-  const initialProps = await Document.getInitialProps(ctx);
-  const emotionStyles = extractCriticalToChunks(initialProps.html);
-  const emotionStyleTags = emotionStyles.styles.map((style) => (
-    <style
-      data-emotion={`${style.key} ${style.ids.join(" ")}`}
-      key={style.key}
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: style.css }}
-    />
-  ));
-
-  return {
-    ...initialProps,
-    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags],
-  };
+    const initialProps = await Document.getInitialProps(ctx);
+    return {
+      ...initialProps,
+      styles: (
+        <>
+          {initialProps.styles}
+          {sheet.getStyleElement()}
+        </>
+      ),
+    };
+  } finally {
+    sheet.seal();
+  }
 };
 
 export default CustomDocument;
