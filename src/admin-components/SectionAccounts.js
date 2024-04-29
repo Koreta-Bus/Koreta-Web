@@ -1,6 +1,7 @@
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 
 import AccountProfile from "sections/account/account-profile";
+
 import AccountProfileDetails from "sections/account/account-profile-details";
 
 const SectionAccounts = () => {
