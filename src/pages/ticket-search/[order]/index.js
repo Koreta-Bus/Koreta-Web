@@ -160,7 +160,7 @@ const Page = () => {
           <DriverFormContainer>
             <FormTitle>Пасажир</FormTitle>
             <StyledDriverForm onSubmit={formik.handleSubmit}>
-              <DriverFormWrapper>
+              <DriverFormWrapper isDemandedDirection>
                 {isDemandedDirection && (
                   <>
                     <FieldWrapper>
@@ -292,7 +292,7 @@ const Page = () => {
                 )}
               </DriverFormWrapper>
               <PriceButtonContainer>
-                <PriceButtonWrapper>
+                <PriceButtonWrapper isDemandedDirection>
                   {!isDemandedDirection && (
                     <PriceContent>{`Всього: ${orderValues?.price}`}</PriceContent>
                   )}
@@ -468,7 +468,7 @@ const PriceButtonWrapper = styled.div`
   gap: 32px;
   margin: 0 auto;
   align-items: center;
-  margin-top: 80px;
+  margin-top: ${({isDemandedDirection}) => isDemandedDirection ? '40px' : '80px'};
 `;
 
 const PriceContent = styled.span`
@@ -496,7 +496,7 @@ const DriverFormWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
-  padding-bottom: 4rem;
+  padding-bottom: ${({isDemandedDirection}) => isDemandedDirection ? '1rem' : '4rem'};;
 
   @media (max-width: 768px) {
     display: flex;
